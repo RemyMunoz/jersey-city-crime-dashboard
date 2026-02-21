@@ -100,7 +100,7 @@
     <div class="section-label">Map Layers</div>
     <div class="toggle-row">
       <div class="toggle-label"><div class="toggle-swatch" style="background:#e63946;opacity:.6;"></div>Ward Boundaries</div>
-      <label class="toggle"><input type="checkbox" id="togWards" checked onchange="toggleLayer('wards')"><span class="slider"></span></label>
+      <label class="toggle"><input type="checkbox" id="togWards" onchange="toggleLayer('wards')"><span class="slider"></span></label>
     </div>
     <div class="toggle-row">
       <div class="toggle-label"><div class="toggle-swatch" style="background:#4CC9F0;opacity:.5;"></div>Police Districts</div>
@@ -210,7 +210,7 @@ const map = new mapboxgl.Map({
 });
 map.addControl(new mapboxgl.NavigationControl(),'top-right');
 
-const layerState = { wards:true, districts:true, precincts:true };
+const layerState = { wards:false, districts:true, precincts:true };
 const allMarkers = [];
 
 /* ── SIDEBAR: WARDS ── */
@@ -264,6 +264,9 @@ map.on('load',()=>{
   map.addLayer({id:'ward-labels',type:'symbol',source:'wards',
     layout:{'text-field':['concat','Ward ',['upcase',['get','ward']]],'text-font':['DIN Pro Bold','Arial Unicode MS Bold'],'text-size':13,'text-anchor':'center'},
     paint:{'text-color':'#ffffff','text-halo-color':'rgba(0,0,0,0.7)','text-halo-width':1.5}});
+  if(!layerState.wards){
+    ['wards-fill','wards-border','ward-labels'].forEach(l=>map.setLayoutProperty(l,'visibility','none'));
+  }
 
   // Precinct markers
   precincts.forEach(p=>{
