@@ -36,6 +36,9 @@
   .stat-card.blue .stat-value { color:#457b9d; }
   .stat-sub { font-size:10px; color:#6b7280; margin-top:3px; font-family:'Space Mono',monospace; }
   .stat-change { font-size:10px; margin-top:4px; font-family:'Space Mono',monospace; }
+  .sparkline{position:absolute;right:8px;bottom:8px;opacity:.9;pointer-events:none;}
+  .sparkline svg{width:60px;height:30px;display:block;}
+  .sparkline path{fill:none;stroke-width:2;}
   .up{color:var(--trend-up);} .down{color:var(--trend-down);} .neutral{color:var(--trend-neutral);}
   .with-tooltip{cursor:help;}
   .with-tooltip:hover::after{
@@ -69,11 +72,15 @@
   .source-url{font-family:'Space Mono',monospace; font-size:10px; color:#6b7280; text-decoration:none; word-break:break-all;}
   .source-url:hover{color:#8fb8d3; text-decoration:underline;}
   .source-desc{font-size:10px; color:#b6bcc7; line-height:1.4; margin-top:5px;}
+  .about-panel .about-body{padding:0 10px 10px; border-top:1px solid var(--accent);}
+  .about-panel p{font-size:11px; color:#6b7280; line-height:1.5; margin-top:10px;}
   .ward-list,.precinct-list { display:flex; flex-direction:column; gap:8px; }
-  .ward-item { display:flex; align-items:center; gap:10px; padding:8px 10px; background:var(--bg); border:1px solid var(--border); border-radius:5px; cursor:pointer; transition:border-color .2s; }
+  .ward-item { display:flex; align-items:flex-start; gap:10px; padding:8px 10px; background:var(--bg); border:1px solid var(--border); border-radius:5px; cursor:pointer; transition:border-color .2s; }
   .ward-item:hover { border-color:var(--blue); }
   .ward-dot { width:10px; height:10px; border-radius:50%; flex-shrink:0; }
-  .ward-name { font-size:12px; font-weight:500; flex:1; }
+  .ward-content{flex:1;}
+  .ward-name { font-size:12px; font-weight:500; }
+  .ward-top-crime{font-size:10px;color:#f4a261;margin-top:3px;}
   .ward-score { font-family:'Space Mono',monospace; font-size:11px; color:var(--muted); }
   .precinct-item { display:flex; align-items:flex-start; gap:10px; padding:9px 10px; background:var(--bg); border:1px solid var(--border); border-radius:5px; cursor:pointer; transition:border-color .2s; }
   .precinct-item:hover { border-color:#f4a261; }
@@ -121,10 +128,22 @@
   </div>
 
   <div class="section">
+    <details class="collapse-panel about-panel">
+      <summary>About</summary>
+      <div class="about-body">
+        <p>Jersey City's crime data is scattered across federal, state, and city sources — each with different formats, methodologies, and update schedules. Most residents, real estate professionals, and stakeholders have no way to navigate it.</p>
+        <p>This dashboard consolidates verified FBI UCR data, NJ State Police reports, and JCPD statistics into a single view, updated annually each January when new federal data is released.</p>
+        <p>Built by a Jersey City Police Officer. Badge #3458, North District.</p>
+        <p>Data is current as of: 2024 (FBI UCR, released Sept 2025)<br>Next update: January 2026 when 2025 data becomes available</p>
+      </div>
+    </details>
+  </div>
+
+  <div class="section">
     <div class="section-label">2024 Key Stats</div>
     <div class="stats-grid">
-      <div class="stat-card red"><div class="stat-label">Homicides</div><div class="stat-value">7</div><div class="stat-change down">▼ 40% vs 2023</div></div>
-      <div class="stat-card yellow"><div class="stat-label">Shootings</div><div class="stat-value">29</div><div class="stat-change down">▼ 45% vs 2023</div></div>
+      <div class="stat-card red"><div class="stat-label">Homicides</div><div class="stat-value">7</div><div class="stat-change down">▼ 40% vs 2023</div><div class="sparkline"><svg viewBox="0 0 60 30" aria-hidden="true"><path d="M0 2 L30 15 L60 28" stroke="#52b788"></path></svg></div></div>
+      <div class="stat-card yellow"><div class="stat-label">Shootings</div><div class="stat-value">29</div><div class="stat-change down">▼ 45% vs 2023</div><div class="sparkline"><svg viewBox="0 0 60 30" aria-hidden="true"><path d="M0 2 L30 5 L60 28" stroke="#52b788"></path></svg></div></div>
       <div class="stat-card red"><div class="stat-label">Assaults</div><div class="stat-value">986</div><div class="stat-change up">▲ 25% vs 2023</div></div>
       <div class="stat-card blue with-tooltip" data-tooltip="City-Data crime index. US average is 235.3. Higher = more crime. JC is near the national average.">
         <div class="stat-label">Crime Index</div>
@@ -308,7 +327,7 @@ const wardList = document.getElementById('wardList');
 [...wardsGeoJSON.features].sort((a,b)=>a.properties.ward.localeCompare(b.properties.ward)).forEach(f=>{
   const w=f.properties.ward.toUpperCase(), d=wardData[w]||{description:'',incidents:'N/A',dot:'#457b9d'};
   const el=document.createElement('div'); el.className='ward-item';
-  el.innerHTML=`<div class="ward-dot" style="background:${d.dot}"></div><div class="ward-name">Ward ${w} — ${d.description}</div><div class="ward-score">${d.incidents}</div>`;
+  el.innerHTML=`<div class="ward-dot" style="background:${d.dot}"></div><div class="ward-content"><div class="ward-name">Ward ${w} — ${d.description}</div><div class="ward-top-crime">Top crime: ${d.topCrime}</div></div><div class="ward-score">${d.incidents}</div>`;
   el.addEventListener('click',()=>zoomToFeature(f));
   wardList.appendChild(el);
 });
