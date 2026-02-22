@@ -107,15 +107,61 @@
   h1 { font-size:18px; font-weight:600; line-height:1.2; }
   .subtitle { font-size:11px; color:var(--muted); margin-top:4px; font-family:'Space Mono',monospace; }
   .section { padding:16px 20px; border-bottom:1px solid var(--border); }
+  .section-collapsible { padding:0; }
+  .panel-content { padding: 0 16px 14px; }
   .section-label {
     font-family: 'DM Mono', monospace;
     font-size: 0.62rem;
-    letter-spacing: 2px;
+    letter-spacing: 2.5px;
     text-transform: uppercase;
     color: var(--accent);
-    padding: 14px 20px 8px;
-    border-top: 1px solid var(--border-dim);
-    margin-top: 4px;
+    padding: 14px 16px 6px;
+  }
+  .section-subtitle {
+    font-size: 0.72rem;
+    color: var(--muted);
+    line-height: 1.5;
+    margin-bottom: 10px;
+  }
+  .consumer-guide {
+    padding: 14px 16px;
+    background: rgba(0,194,255,0.04);
+    border-bottom: 1px solid var(--border);
+  }
+  .guide-step {
+    display: flex;
+    align-items: flex-start;
+    gap: 10px;
+    margin-bottom: 10px;
+    font-size: 0.78rem;
+    color: var(--muted);
+    line-height: 1.5;
+  }
+  .guide-step:last-child { margin-bottom: 0; }
+  .guide-num {
+    width: 20px;
+    height: 20px;
+    background: var(--accent);
+    color: #000;
+    border-radius: 50%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 0.65rem;
+    font-weight: 700;
+    flex-shrink: 0;
+    margin-top: 1px;
+  }
+  .guide-text strong {
+    color: var(--text);
+    font-weight: 600;
+  }
+  .score-explainer {
+    font-size: 0.72rem;
+    color: var(--muted);
+    padding: 0 16px 10px;
+    line-height: 1.5;
+    font-style: italic;
   }
   .stats-grid { display:grid; grid-template-columns:1fr 1fr; gap:10px; }
   .stat-card {
@@ -268,22 +314,31 @@
     line-height:1.5;
   }
   details.collapse-panel{border:1px solid var(--border); border-radius:6px; background:var(--bg);}
-  summary {
+  details > summary {
     font-family: 'DM Mono', monospace;
-    font-size: 0.72rem;
-    letter-spacing: 1.5px;
+    font-size: 0.65rem;
+    letter-spacing: 2px;
     text-transform: uppercase;
     color: var(--muted);
     cursor: pointer;
-    padding: 10px 20px;
+    padding: 12px 16px;
     list-style: none;
     display: flex;
     align-items: center;
     justify-content: space-between;
     transition: color 0.2s;
     user-select: none;
+    border-top: 1px solid var(--border-dim);
   }
-  summary:hover { color: var(--accent); }
+  details > summary::after {
+    content: '+';
+    font-size: 0.9rem;
+    color: var(--accent);
+    transition: transform 0.2s;
+  }
+  details[open] > summary::after {
+    content: '-';
+  }
   details[open] > summary { color: var(--accent); }
   details.collapse-panel summary::-webkit-details-marker{display:none;}
   .sources-list{padding:0 10px 10px; display:flex; flex-direction:column; gap:8px;}
@@ -292,8 +347,6 @@
   .source-url{font-family:'Space Mono',monospace; font-size:10px; color:#6b7280; text-decoration:none; word-break:break-all;}
   .source-url:hover{color:#8fb8d3; text-decoration:underline;}
   .source-desc{font-size:10px; color:#b6bcc7; line-height:1.4; margin-top:5px;}
-  .about-panel .about-body{padding:0 10px 10px; border-top:1px solid var(--accent);}
-  .about-panel p{font-size:11px; color:#6b7280; line-height:1.5; margin-top:10px;}
   .ward-list,.precinct-list { display:flex; flex-direction:column; gap:8px; }
   .ward-item { display:flex; align-items:flex-start; gap:10px; padding:8px 10px; background:var(--bg); border:1px solid var(--border); border-radius:5px; cursor:pointer; transition:border-color .2s; }
   .ward-item:hover { border-color:var(--blue); }
@@ -488,115 +541,29 @@
     </div>
   </div>
 
-  <div class="section">
-    <details class="collapse-panel about-panel">
-      <summary>About</summary>
-      <div class="about-body">
-        <p>Jersey City's crime data is scattered across federal, state, and city sources — each with different formats, methodologies, and update schedules. Most residents, real estate professionals, and stakeholders have no way to navigate it.</p>
-        <p>This dashboard consolidates verified FBI UCR data, NJ State Police reports, and JCPD statistics into a single view, updated annually each January when new federal data is released.</p>
-        <p>Built by a Jersey City resident.</p>
-        <p>Data current as of: 2024 (FBI UCR, released Sept 2025)<br>2025 YTD: Jan-Sep 2025 (JCPD NIBRS, updated quarterly)<br>Next full update: January 2027 when 2026 data becomes available.</p>
-      </div>
-    </details>
-  </div>
-
-  <div class="section">
-    <div class="section-label">2024 Key Stats</div>
-    <div class="stats-grid">
-      <div class="stat-card red"><div class="stat-label">Homicides</div><div class="stat-value">7</div><div class="stat-change down">▼ 40% vs 2023</div><div class="sparkline"><svg viewBox="0 0 60 30" aria-hidden="true"><path d="M0 2 L30 15 L60 28" stroke="#52b788"></path></svg></div></div>
-      <div class="stat-card yellow"><div class="stat-label">Shootings</div><div class="stat-value">29</div><div class="stat-change down">▼ 45% vs 2023</div><div class="sparkline"><svg viewBox="0 0 60 30" aria-hidden="true"><path d="M0 2 L30 5 L60 28" stroke="#52b788"></path></svg></div></div>
-      <div class="stat-card red"><div class="stat-label">Assaults</div><div class="stat-value">986</div><div class="stat-change up">▲ 25% vs 2023</div></div>
-      <div class="stat-card blue with-tooltip" data-tooltip="City-Data crime index. US average is 235.3. Higher = more crime. JC is near the national average.">
-        <div class="stat-label">Crime Index</div>
-        <div class="stat-value">251</div>
-        <div class="stat-sub">US avg: 235.3</div>
-        <div class="stat-change up">▲ 13% vs 2023</div>
-      </div>
+  <div class="section consumer-guide">
+    <div class="guide-step">
+      <span class="guide-num">1</span>
+      <span class="guide-text">Browse the <strong>Ward Safety Scores</strong> below to compare neighborhoods</span>
+    </div>
+    <div class="guide-step">
+      <span class="guide-num">2</span>
+      <span class="guide-text">Search an <strong>address</strong> using the bar on the map (top right)</span>
+    </div>
+    <div class="guide-step">
+      <span class="guide-num">3</span>
+      <span class="guide-text">Toggle <strong>map layers</strong> to see schools, parks, transit &amp; more</span>
     </div>
   </div>
 
   <div class="section">
-    <div class="section-label">2025 Key Stats</div>
-    <div class="stats-grid">
-      <div class="stat-card red"><div class="stat-label">Homicides</div><div class="stat-value">10</div><div class="stat-sub">2025 YTD (Jan-Sep)</div></div>
-      <div class="stat-card yellow"><div class="stat-label">Shootings</div><div class="stat-value">31</div><div class="stat-sub">2025 YTD (Jan-Sep)</div></div>
-      <div class="stat-card red"><div class="stat-label">Aggravated Assault</div><div class="stat-value">742</div><div class="stat-sub">2025 YTD (Jan-Sep)</div></div>
-      <div class="stat-card blue"><div class="stat-label">Theft</div><div class="stat-value">3,019</div><div class="stat-sub">2025 YTD (Jan-Sep)</div></div>
-      <div class="stat-card yellow"><div class="stat-label">Stolen Vehicles</div><div class="stat-value">648</div><div class="stat-sub">2025 YTD (Jan-Sep)</div></div>
-      <div class="stat-card blue"><div class="stat-label">Robbery</div><div class="stat-value">294</div><div class="stat-sub">2025 YTD (Jan-Sep)</div></div>
-    </div>
-    <div class="freshness-badge"><span class="freshness-dot"></span>NIBRS · Jan-Sep 2025 · Updated Quarterly</div>
+    <div class="section-label">Neighborhood Safety Scores</div>
+    <div class="score-explainer">Scores are 0-100. Higher = safer. Based on verified crime data.</div>
+    <div class="ward-list" id="wardList"></div>
   </div>
 
   <div class="section">
-    <div class="section-label">2025 Monthly Breakdown</div>
-    <div class="chart-header">
-      <div class="stat-label" style="margin-bottom:0;">Category</div>
-      <select id="crime-category-select" class="chart-select">
-        <option value="Theft" selected>Theft</option>
-        <option value="Stolen Vehicles">Stolen Vehicles</option>
-        <option value="Robbery">Robbery</option>
-        <option value="Aggravated Assault">Aggravated Assault</option>
-        <option value="Criminal Mischief">Criminal Mischief</option>
-        <option value="Burglary">Burglary</option>
-        <option value="Homicides">Homicides</option>
-        <option value="Shooting Incidents">Shooting Incidents</option>
-        <option value="Shooting Victims">Shooting Victims</option>
-      </select>
-    </div>
-    <div class="chart-wrap">
-      <canvas id="crime-trend-chart"></canvas>
-    </div>
-  </div>
-
-  <div class="section">
-    <div class="section-label">2025 YTD Summary</div>
-    <div class="summary-table-wrap">
-      <table class="summary-table">
-        <thead>
-          <tr><th>Offense</th><th>YTD</th><th>Proj. Full Year</th></tr>
-        </thead>
-        <tbody>
-          <tr><td class="offense-critical">Homicides</td><td class="ytd-val">10</td><td class="proj-val">~13</td></tr>
-          <tr><td class="offense-critical">Shooting Incidents</td><td class="ytd-val">31</td><td class="proj-val">~41</td></tr>
-          <tr><td class="offense-critical">Shooting Victims</td><td class="ytd-val">40</td><td class="proj-val">~53</td></tr>
-          <tr><td>Robbery</td><td class="ytd-val">294</td><td class="proj-val">~392</td></tr>
-          <tr><td>Aggravated Assault</td><td class="ytd-val">742</td><td class="proj-val">~989</td></tr>
-          <tr><td>Criminal Mischief</td><td class="ytd-val">1,706</td><td class="proj-val">~2,275</td></tr>
-          <tr><td>Burglary</td><td class="ytd-val">375</td><td class="proj-val">~500</td></tr>
-          <tr><td>Theft</td><td class="ytd-val">3,019</td><td class="proj-val">~4,025</td></tr>
-          <tr><td>Stolen Vehicles</td><td class="ytd-val">648</td><td class="proj-val">~864</td></tr>
-        </tbody>
-      </table>
-    </div>
-    <div class="summary-foot">Source: JCPD Official Stats · NIBRS · Projection = YTD ÷ 9 × 12</div>
-  </div>
-
-  <div class="section">
-    <div class="section-label">2024 Crime Breakdown</div>
-    <div class="nibrs-note">⚠️ <strong>Data Note:</strong> JCPD switched to the NIBRS reporting system in January 2024, replacing the older UCR/CompStat format. Pre-2024 year-over-year comparisons may reflect methodology changes, not actual crime shifts. NIBRS captures more crime categories and greater detail than previous systems.</div>
-    <div class="crime-table-wrap">
-      <table class="crime-table">
-        <thead>
-          <tr><th>Crime Type</th><th style="text-align:right;">Count + Trend</th></tr>
-        </thead>
-        <tbody>
-          <tr><td>Violent Crime (total)</td><td class="crime-metric">609 <span class="down">↓ 47.8%</span></td></tr>
-          <tr><td>Property Crime (total)</td><td class="crime-metric">3,825 <span class="down">↓ 2.9%</span></td></tr>
-          <tr><td>Aggravated Assault</td><td class="crime-metric">986 <span class="up">↑ 25%</span></td></tr>
-          <tr><td>Total Thefts</td><td class="crime-metric">4,125 <span class="up">↑ 41%</span></td></tr>
-          <tr><td>Auto Theft</td><td class="crime-metric">806 <span class="up">↑ 28%</span></td></tr>
-          <tr><td>Robbery <span class="crime-type-note">(NJ Statewide)</span></td><td class="crime-metric">9,743 <span class="down">↓ 7%</span></td></tr>
-          <tr><td>Illegal Guns Recovered</td><td class="crime-metric">214 <span class="neutral">—</span></td></tr>
-        </tbody>
-      </table>
-    </div>
-    <div class="crime-note">Homicides (7) and shootings (29) reflect historic lows. Everyday property crime remains elevated.</div>
-    <div class="crime-source">Source: FBI UCR 2024 / jerseycitynj.gov</div>
-  </div>
-
-  <div class="section">
-    <div class="section-label">Map Layers</div>
+    <div class="section-label">Explore the Map</div>
     <div class="section-category-label category-default">Map Layers</div>
     <div class="toggle-row">
       <div class="toggle-label"><div class="toggle-swatch" style="background:linear-gradient(90deg,#e63946,#f4a261);opacity:.75;"></div>Ward Boundaries + Density</div>
@@ -653,9 +620,99 @@
     <div class="safety-disclaimer">Source: Jersey City Open Data Portal</div>
   </div>
 
-  <div class="section">
-    <div class="section-label">Ward Crime Density</div>
-    <div class="ward-list" id="wardList"></div>
+  <div class="section section-collapsible">
+    <details class="collapse-panel">
+      <summary>2025 Crime Numbers (Jan-Sep)</summary>
+      <div class="panel-content">
+        <div class="section-subtitle">YTD figures from JCPD NIBRS reporting</div>
+        <div class="stats-grid">
+          <div class="stat-card red"><div class="stat-label">Homicides</div><div class="stat-value">10</div><div class="stat-sub">2025 YTD (Jan-Sep)</div></div>
+          <div class="stat-card yellow"><div class="stat-label">Shootings</div><div class="stat-value">31</div><div class="stat-sub">2025 YTD (Jan-Sep)</div></div>
+          <div class="stat-card blue"><div class="stat-label">Theft</div><div class="stat-value">3,019</div><div class="stat-sub">2025 YTD (Jan-Sep)</div></div>
+          <div class="stat-card yellow"><div class="stat-label">Stolen Vehicles</div><div class="stat-value">648</div><div class="stat-sub">2025 YTD (Jan-Sep)</div></div>
+        </div>
+        <div class="freshness-badge"><span class="freshness-dot"></span>NIBRS · Jan-Sep 2025 · Updated Quarterly</div>
+      </div>
+    </details>
+  </div>
+
+  <div class="section section-collapsible">
+    <details class="collapse-panel">
+      <summary>Monthly Crime Trends</summary>
+      <div class="panel-content">
+        <div class="chart-header">
+          <div class="stat-label" style="margin-bottom:0;">Category</div>
+          <select id="crime-category-select" class="chart-select">
+            <option value="Theft" selected>Theft</option>
+            <option value="Stolen Vehicles">Stolen Vehicles</option>
+            <option value="Robbery">Robbery</option>
+            <option value="Aggravated Assault">Aggravated Assault</option>
+            <option value="Criminal Mischief">Criminal Mischief</option>
+            <option value="Burglary">Burglary</option>
+            <option value="Homicides">Homicides</option>
+            <option value="Shooting Incidents">Shooting Incidents</option>
+            <option value="Shooting Victims">Shooting Victims</option>
+          </select>
+        </div>
+        <div class="chart-wrap">
+          <canvas id="crime-trend-chart"></canvas>
+        </div>
+      </div>
+    </details>
+  </div>
+
+  <div class="section section-collapsible">
+    <details class="collapse-panel">
+      <summary>Full Crime Breakdown</summary>
+      <div class="panel-content">
+        <div class="summary-table-wrap">
+          <table class="summary-table">
+            <thead>
+              <tr><th>Offense</th><th>YTD</th><th>Proj. Full Year</th></tr>
+            </thead>
+            <tbody>
+              <tr><td class="offense-critical">Homicides</td><td class="ytd-val">10</td><td class="proj-val">~13</td></tr>
+              <tr><td class="offense-critical">Shooting Incidents</td><td class="ytd-val">31</td><td class="proj-val">~41</td></tr>
+              <tr><td class="offense-critical">Shooting Victims</td><td class="ytd-val">40</td><td class="proj-val">~53</td></tr>
+              <tr><td>Robbery</td><td class="ytd-val">294</td><td class="proj-val">~392</td></tr>
+              <tr><td>Aggravated Assault</td><td class="ytd-val">742</td><td class="proj-val">~989</td></tr>
+              <tr><td>Criminal Mischief</td><td class="ytd-val">1,706</td><td class="proj-val">~2,275</td></tr>
+              <tr><td>Burglary</td><td class="ytd-val">375</td><td class="proj-val">~500</td></tr>
+              <tr><td>Theft</td><td class="ytd-val">3,019</td><td class="proj-val">~4,025</td></tr>
+              <tr><td>Stolen Vehicles</td><td class="ytd-val">648</td><td class="proj-val">~864</td></tr>
+            </tbody>
+          </table>
+        </div>
+        <div class="summary-foot">Source: JCPD Official Stats · NIBRS · Projection = YTD ÷ 9 × 12</div>
+      </div>
+    </details>
+  </div>
+
+  <div class="section section-collapsible">
+    <details class="collapse-panel">
+      <summary>2024 Annual Data</summary>
+      <div class="panel-content">
+        <div class="nibrs-note">⚠️ <strong>Data Note:</strong> JCPD switched to the NIBRS reporting system in January 2024, replacing the older UCR/CompStat format. Pre-2024 year-over-year comparisons may reflect methodology changes, not actual crime shifts. NIBRS captures more crime categories and greater detail than previous systems.</div>
+        <div class="crime-table-wrap">
+          <table class="crime-table">
+            <thead>
+              <tr><th>Crime Type</th><th style="text-align:right;">Count + Trend</th></tr>
+            </thead>
+            <tbody>
+              <tr><td>Violent Crime (total)</td><td class="crime-metric">609 <span class="down">↓ 47.8%</span></td></tr>
+              <tr><td>Property Crime (total)</td><td class="crime-metric">3,825 <span class="down">↓ 2.9%</span></td></tr>
+              <tr><td>Aggravated Assault</td><td class="crime-metric">986 <span class="up">↑ 25%</span></td></tr>
+              <tr><td>Total Thefts</td><td class="crime-metric">4,125 <span class="up">↑ 41%</span></td></tr>
+              <tr><td>Auto Theft</td><td class="crime-metric">806 <span class="up">↑ 28%</span></td></tr>
+              <tr><td>Robbery <span class="crime-type-note">(NJ Statewide)</span></td><td class="crime-metric">9,743 <span class="down">↓ 7%</span></td></tr>
+              <tr><td>Illegal Guns Recovered</td><td class="crime-metric">214 <span class="neutral">—</span></td></tr>
+            </tbody>
+          </table>
+        </div>
+        <div class="crime-note">Homicides (7) and shootings (29) reflect historic lows. Everyday property crime remains elevated.</div>
+        <div class="crime-source">Source: FBI UCR 2024 / jerseycitynj.gov</div>
+      </div>
+    </details>
   </div>
 
   <div class="section">
