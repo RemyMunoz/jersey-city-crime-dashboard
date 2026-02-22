@@ -1256,7 +1256,8 @@ async function loadLiquorLayer() {
         'circle-color': '#f43f5e',
         'circle-opacity': 0.8,
         'circle-stroke-width': 1,
-        'circle-stroke-color': '#0a0c10'
+        'circle-stroke-color': '#0a0c10',
+        'circle-emissive-strength': 1
       }
     });
 
@@ -1330,7 +1331,8 @@ async function loadParksLayer() {
         'circle-color': '#22c55e',
         'circle-opacity': 0.8,
         'circle-stroke-width': 1,
-        'circle-stroke-color': '#0a0c10'
+        'circle-stroke-color': '#0a0c10',
+        'circle-emissive-strength': 1
       }
     });
 
@@ -1466,7 +1468,7 @@ function isInsideJerseyCity(lng, lat) {
 
 /* ── MAP INIT ── */
 const map = new mapboxgl.Map({
-  container:'map', style:'mapbox://styles/mapbox/dark-v11',
+  container:'map', style:'mapbox://styles/mapbox/standard',
   center:[-74.0776,40.7282], zoom:12.2
 });
 map.addControl(new mapboxgl.NavigationControl(),'top-right');
@@ -1570,13 +1572,15 @@ precincts.forEach(p=>{
 
 /* ── MAP LOAD ── */
 map.on('load',()=>{
+  map.setConfigProperty('basemap', 'lightPreset', 'night');
+  map.setConfigProperty('basemap', 'showPointOfInterestLabels', false);
 
   // District polygons (behind wards)
   map.addSource('districts',{type:'geojson',data:districtGeoJSON});
   map.addLayer({id:'districts-fill',type:'fill',source:'districts',
-    paint:{'fill-color':['get','color'],'fill-opacity':0.08}});
+    paint:{'fill-color':['get','color'],'fill-opacity':0.08,'fill-emissive-strength':0.8}});
   map.addLayer({id:'districts-border',type:'line',source:'districts',
-    paint:{'line-color':['get','color'],'line-width':2.5,'line-opacity':0.7,'line-dasharray':[5,3]}});
+    paint:{'line-color':['get','color'],'line-width':2.5,'line-opacity':0.7,'line-dasharray':[5,3],'line-emissive-strength':1}});
   map.addLayer({id:'district-labels',type:'symbol',source:'districts',
     layout:{'text-field':['get','name'],'text-font':['DIN Pro Italic','Arial Unicode MS Regular'],'text-size':11,'text-anchor':'center'},
     paint:{'text-color':['get','color'],'text-halo-color':'rgba(0,0,0,0.85)','text-halo-width':1.5,'text-opacity':0.9}});
@@ -1584,9 +1588,9 @@ map.on('load',()=>{
   // Ward polygons (on top)
   map.addSource('wards',{type:'geojson',data:wardsGeoJSON});
   map.addLayer({id:'wards-fill',type:'fill',source:'wards',
-    paint:{'fill-color':['match',['upcase',['get','ward']],'A','#e63946','B','#c1121f','C','#e9c46a','D','#f4a261','E','#2d6a4f','F','#1a472a','#457b9d'],'fill-opacity':0.50}});
+    paint:{'fill-color':['match',['upcase',['get','ward']],'A','#e63946','B','#c1121f','C','#e9c46a','D','#f4a261','E','#2d6a4f','F','#1a472a','#457b9d'],'fill-opacity':0.50,'fill-emissive-strength':0.8}});
   map.addLayer({id:'wards-border',type:'line',source:'wards',
-    paint:{'line-color':'#ffffff','line-width':1.5,'line-opacity':0.4}});
+    paint:{'line-color':'#ffffff','line-width':1.5,'line-opacity':0.4,'line-emissive-strength':1}});
   map.addLayer({id:'ward-labels',type:'symbol',source:'wards',
     layout:{'text-field':['concat','Ward ',['upcase',['get','ward']]],'text-font':['DIN Pro Bold','Arial Unicode MS Bold'],'text-size':13,'text-anchor':'center'},
     paint:{'text-color':'#ffffff','text-halo-color':'rgba(0,0,0,0.7)','text-halo-width':1.5}});
@@ -1620,11 +1624,11 @@ map.on('load',()=>{
   // Community layers
   map.addSource('schools',{type:'geojson',data:schoolsData});
   map.addLayer({id:'schools-points',type:'circle',source:'schools',
-    paint:{'circle-color':'#4ade80','circle-radius':6,'circle-stroke-color':'#ffffff','circle-stroke-width':1.5},
+    paint:{'circle-color':'#4ade80','circle-radius':6,'circle-stroke-color':'#ffffff','circle-stroke-width':1.5,'circle-emissive-strength':1},
     layout:{visibility:'none'}});
   map.addSource('libraries',{type:'geojson',data:librariesData});
   map.addLayer({id:'libraries-points',type:'circle',source:'libraries',
-    paint:{'circle-color':'#60a5fa','circle-radius':6,'circle-stroke-color':'#ffffff','circle-stroke-width':1.5},
+    paint:{'circle-color':'#60a5fa','circle-radius':6,'circle-stroke-color':'#ffffff','circle-stroke-width':1.5,'circle-emissive-strength':1},
     layout:{visibility:'none'}});
 
   map.addSource('affordable-housing', { type:'geojson', data:affordableHousingData });
@@ -1638,7 +1642,8 @@ map.on('load',()=>{
       'circle-color':['get','color'],
       'circle-opacity':0.85,
       'circle-stroke-width':1.5,
-      'circle-stroke-color':'#0a0c10'
+      'circle-stroke-color':'#0a0c10',
+      'circle-emissive-strength':1
     }
   });
 
@@ -1653,7 +1658,8 @@ map.on('load',()=>{
       'circle-color':'#1d4ed8',
       'circle-opacity':0.9,
       'circle-stroke-width':2,
-      'circle-stroke-color':'#93c5fd'
+      'circle-stroke-color':'#93c5fd',
+      'circle-emissive-strength':1
     }
   });
   map.addLayer({
