@@ -18,6 +18,46 @@
   html { scroll-behavior: smooth; }
   body { background: var(--bg); color: var(--white); font-family: 'DM Sans', sans-serif; overflow-x: hidden; }
   ::-webkit-scrollbar { width: 5px; } ::-webkit-scrollbar-track { background: var(--bg); } ::-webkit-scrollbar-thumb { background: #0090cc; border-radius: 3px; }
+  .beta-badge {
+    position: fixed;
+    top: 72px;
+    right: 20px;
+    z-index: 200;
+    background: #00ffe0;
+    color: #000;
+    font-family: 'Bebas Neue', sans-serif;
+    font-size: 0.95rem;
+    letter-spacing: 2px;
+    padding: 4px 12px 4px 10px;
+    border-radius: 4px;
+    transform: rotate(15deg);
+    transform-origin: center;
+    animation: betaBounce 1.8s ease-in-out infinite;
+    box-shadow: 0 0 12px rgba(0,255,224,0.5);
+    cursor: default;
+    user-select: none;
+    line-height: 1.4;
+    text-align: center;
+  }
+  .beta-badge .beta-main {
+    display: block;
+    font-size: 1.1rem;
+  }
+  .beta-badge .beta-sub {
+    display: block;
+    font-family: 'DM Sans', sans-serif;
+    font-size: 0.5rem;
+    font-weight: 700;
+    letter-spacing: 1px;
+    text-transform: uppercase;
+    opacity: 0.75;
+    margin-top: -2px;
+  }
+  @keyframes betaBounce {
+    0%, 100% { transform: rotate(15deg) scale(1); box-shadow: 0 0 12px rgba(0,255,224,0.5); }
+    25% { transform: rotate(17deg) scale(1.08); box-shadow: 0 0 22px rgba(0,255,224,0.9); }
+    75% { transform: rotate(13deg) scale(0.96); box-shadow: 0 0 8px rgba(0,255,224,0.3); }
+  }
 
   /* NAV */
   nav { position: fixed; top: 0; left: 0; right: 0; z-index: 100; display: flex; align-items: center; justify-content: space-between; padding: 18px 48px; background: rgba(6,6,14,0.8); backdrop-filter: blur(20px); border-bottom: 1px solid rgba(0,194,255,0.08); transition: background 0.3s; }
@@ -178,6 +218,10 @@
 </style>
 </head>
 <body>
+<div class="beta-badge">
+  <span class="beta-main">BETA</span>
+  <span class="beta-sub">Work in Progress</span>
+</div>
 
 <nav id="navbar">
   <a href="#" class="nav-logo">BLOCK<span>IQ</span> JC</a>
