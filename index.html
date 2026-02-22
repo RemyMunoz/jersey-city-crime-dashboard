@@ -824,6 +824,63 @@ const parksQuery = `
 out center;
 `;
 
+const supplementalParks = [
+  { name: "Metro Field", lat: 40.71039976821976, lon: -74.09482209821624 },
+  { name: "Harmon Street Pool", lat: 40.71606416216135, lon: -74.07003968039884 },
+  { name: "Oak Street Park", lat: 40.71214803329527, lon: -74.07426271992558 },
+  { name: "Cornelius Parker Park", lat: 40.71498361984668, lon: -74.0724056786271 },
+  { name: "Martiniak-Enright Park", lat: 40.690771789013155, lon: -74.097888465849 },
+  { name: "Ralph Taylor Memorial Park", lat: 40.697109491502744, lon: -74.09036185520252 },
+  { name: "Ferris Triangle Park", lat: 40.698505013228136, lon: -74.09220018781512 },
+  { name: "Wilkinson Avenue Park", lat: 40.707006281430914, lon: -74.08107010898169 },
+  { name: "Virginia Avenue Park", lat: 40.7131093543283, lon: -74.07842976258243 },
+  { name: "LaPOINTE Park", lat: 40.72961010827611, lon: -74.07114065811858 },
+  { name: "Monticello Avenue Mini Park", lat: 40.715769447296374, lon: -74.07334544917744 },
+  { name: "Bramhall Avenue Mini Park", lat: 40.715428745706305, lon: -74.07459185958305 },
+  { name: "Meluso Park", lat: 40.71686786316065, lon: -74.05014761127438 },
+  { name: "Terry DeHere / Garfield Avenue Park", lat: 40.713476108120105, lon: -74.06829705124365 },
+  { name: "Veterans Park", lat: 40.71196149308096, lon: -74.03284557605008 },
+  { name: "Sgt. Anthony Park", lat: 40.73223301410334, lon: -74.05145712868855 },
+  { name: "Pat DeAngelo Playground", lat: 40.72643737777658, lon: -74.0494589951141 },
+  { name: "First Street Playground", lat: 40.72282882922412, lon: -74.05164023272543 },
+  { name: "Claremont Avenue Playground", lat: 40.70719850749779, lon: -74.0757002656043 },
+  { name: "Sixteenth Street Playground", lat: 40.732915090391444, lon: -74.0422250174482 },
+  { name: "Wayne Street Playground", lat: 40.71989813796251, lon: -74.04606161203758 },
+  { name: "Ege Avenue Playground", lat: 40.71571788666441, lon: -74.08625895333087 },
+  { name: "Arthur Ashe Basketball Court", lat: 40.71138523438411, lon: -74.07284765408383 },
+  { name: "Fulton Park", lat: 40.7045144018124, lon: -74.08712923941324 },
+  { name: "Pope Triangle", lat: 40.722028500666724, lon: -74.06560903414481 },
+  { name: "Brett Triangle", lat: 40.73372308328924, lon: -74.06739680317939 },
+  { name: "Fairmount Triangle", lat: 40.720133211745384, lon: -74.06699316164367 },
+  { name: "McGinley Square", lat: 40.72529446555031, lon: -74.06771165984678 },
+  { name: "Apple Tree House", lat: 40.73010399057435, lon: -74.06632262873215 },
+  { name: "Laurel Court", lat: 40.722210421890054, lon: -74.04230123015905 },
+  { name: "Cueno Place Park", lat: 40.738070624236094, lon: -74.04726889303765 },
+  { name: "Tumulty Park", lat: 40.73783906730096, lon: -74.04690578737251 },
+  { name: "Riverview Park", lat: 40.74402534591779, lon: -74.04278011196905 },
+  { name: "Fisk Park", lat: 40.744544668066034, lon: -74.04341009076747 },
+  { name: "Woodland Avenue Park", lat: 40.699876963545755, lon: -74.09578546804589 },
+  { name: "Stevens Park (Greenville)", lat: 40.702272111846504, lon: -74.08875078555548 },
+  { name: "Lt. R.B. Grover Memorial Park", lat: 40.71108517865195, lon: -74.08514605040376 },
+  { name: "City Hall Park", lat: 40.717781252387724, lon: -74.04361655861156 },
+  { name: "Dr. Lena Edwards Park", lat: 40.71294375065562, lon: -74.05842634387562 },
+  { name: "Gateway Park Complex", lat: 40.71888124438111, lon: -74.05693092164833 },
+  { name: "Hackensack River Greenway", lat: 40.723441704489204, lon: -74.09658083727692 },
+  { name: "Skinner Memorial Park", lat: 40.70432848366318, lon: -74.0761425992637 },
+  { name: "Pavonia/Marion Playground Pool", lat: 40.73492454422242, lon: -74.07060139735843 },
+  { name: "Roberto Clemente LL", lat: 40.72555083321334, lon: -74.04150100619441 },
+  { name: "Exchange Place Waterfront", lat: 40.71605296982352, lon: -74.03114790168574 },
+  { name: "Terrace Avenue / Edward Crincoli Park", lat: 40.75247595821529, lon: -74.05654425175157 }
+];
+
+function haversineMeters(lat1, lon1, lat2, lon2) {
+  const R = 6371000;
+  const dLat = (lat2 - lat1) * Math.PI / 180;
+  const dLon = (lon2 - lon1) * Math.PI / 180;
+  const a = Math.sin(dLat / 2) ** 2 + Math.cos(lat1 * Math.PI / 180) * Math.cos(lat2 * Math.PI / 180) * Math.sin(dLon / 2) ** 2;
+  return R * 2 * Math.atan2(Math.sqrt(a), Math.sqrt(1 - a));
+}
+
 async function fetchOverpassPOI(query) {
   const body = 'data=' + encodeURIComponent(query);
   const overpassEndpoints = [
@@ -953,13 +1010,41 @@ async function loadParksLayer() {
   showLayerLoading('Parks');
   try {
     const data = await fetchOverpassPOI(parksQuery);
+    const overpassFeatures = (data && data.features) ? data.features : [];
+    const overpassPositions = overpassFeatures
+      .map((feature) => {
+        const coords = feature && feature.geometry && feature.geometry.coordinates;
+        if (!coords || coords.length < 2) return null;
+        return { lat: Number(coords[1]), lon: Number(coords[0]) };
+      })
+      .filter((point) => Number.isFinite(point.lat) && Number.isFinite(point.lon));
+
+    const supplementalFeatures = supplementalParks
+      .filter((park) => {
+        if (!isInsideJerseyCity(park.lon, park.lat)) return false;
+        return !overpassPositions.some((op) => haversineMeters(park.lat, park.lon, op.lat, op.lon) < 150);
+      })
+      .map((park) => ({
+        type: 'Feature',
+        geometry: { type: 'Point', coordinates: [park.lon, park.lat] },
+        properties: {
+          name: park.name,
+          type: 'park',
+          source: 'JC Open Data'
+        }
+      }));
+
+    const mergedData = {
+      type: 'FeatureCollection',
+      features: [...overpassFeatures, ...supplementalFeatures]
+    };
 
     if (map.getSource('parks')) {
-      map.getSource('parks').setData(data);
+      map.getSource('parks').setData(mergedData);
       return;
     }
 
-    map.addSource('parks', { type: 'geojson', data });
+    map.addSource('parks', { type: 'geojson', data: mergedData });
 
     map.addLayer({
       id: 'parks-layer',
@@ -984,6 +1069,7 @@ async function loadParksLayer() {
         <div style="font-family:'DM Sans',sans-serif;padding:4px">
           <div style="font-family:'Space Mono',monospace;font-size:10px;color:#22c55e;text-transform:uppercase;letter-spacing:0.1em;margin-bottom:4px">${typeLabel}</div>
           <div style="font-size:13px;font-weight:600;color:#e8eaed">${p.name || 'Unnamed'}</div>
+          ${p.source ? `<div style="font-size:10px;color:#6b7280;margin-top:4px;font-family:'Space Mono',monospace;">Source: ${p.source}</div>` : ''}
         </div>
       `)
         .addTo(map);
