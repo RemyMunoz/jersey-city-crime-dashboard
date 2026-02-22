@@ -6,6 +6,8 @@
 <title>Jersey City Crime Dashboard 2024</title>
 <link href="https://api.mapbox.com/mapbox-gl-js/v3.1.2/mapbox-gl.css" rel="stylesheet">
 <script src="https://api.mapbox.com/mapbox-gl-js/v3.1.2/mapbox-gl.js"></script>
+<link rel="stylesheet" href="https://api.mapbox.com/mapbox-gl-js/plugins/mapbox-gl-geocoder/v5.0.0/mapbox-gl-geocoder.css">
+<script src="https://api.mapbox.com/mapbox-gl-js/plugins/mapbox-gl-geocoder/v5.0.0/mapbox-gl-geocoder.min.js"></script>
 <link href="https://fonts.googleapis.com/css2?family=Space+Mono:wght@400;700&family=DM+Sans:wght@300;400;500;600&display=swap" rel="stylesheet">
 <style>
   * { margin:0; padding:0; box-sizing:border-box; }
@@ -91,10 +93,78 @@
   .precinct-wards { font-size:10px; color:#f4a261; margin-top:3px; }
   .toggle-row { display:flex; align-items:center; justify-content:space-between; padding:8px 0; border-bottom:1px solid var(--border); }
   .toggle-row:last-child{border-bottom:none;}
+  .section-category-label {
+    font-family:'Space Mono',monospace;
+    font-size:8px;
+    letter-spacing:.15em;
+    text-transform:uppercase;
+    color:#6b7280;
+    padding:12px 0 6px;
+    border-top:1px solid #1e2229;
+    margin-top:4px;
+  }
+  .section-category-label:first-of-type { border-top:none; padding-top:0; margin-top:0; }
+  .category-default{color:#6b7280;}
+  .category-crime{color:#e63946;}
+  .category-community{color:#4ade80;}
+  .category-muted{color:#6b7280;}
   .toggle-label { font-size:12px; display:flex; align-items:center; gap:8px; }
   .toggle-swatch { width:14px; height:14px; border-radius:3px; }
   .safety-label{color:#4ade80;}
   .safety-disclaimer{font-size:9px;color:#6b7280;line-height:1.5;font-family:'Space Mono',monospace;margin-top:8px;}
+  .locked-toggle-row{opacity:.4;cursor:not-allowed;}
+  .locked-badge{
+    font-family:'Space Mono',monospace;
+    font-size:9px;
+    color:#6b7280;
+    border:1px solid #2a2d35;
+    border-radius:999px;
+    padding:2px 7px;
+    text-transform:uppercase;
+    letter-spacing:.06em;
+  }
+  .ward-main-row{display:flex;align-items:center;justify-content:space-between;gap:8px;}
+  .ward-score-pill{
+    font-family:'Space Mono',monospace;
+    font-size:9px;
+    font-weight:700;
+    padding:2px 7px;
+    border-radius:999px;
+    border:1px solid rgba(255,255,255,.2);
+    color:#0a0c10;
+    white-space:nowrap;
+  }
+  .ward-meta{display:flex;align-items:center;justify-content:space-between;gap:8px;margin-top:3px;}
+  .ward-incidents{font-size:10px;color:#6b7280;font-family:'Space Mono',monospace;}
+  .score-card{
+    margin:8px 0 10px;
+    border:1px solid #1e2229;
+    border-radius:6px;
+    padding:8px 10px;
+    background:#0a0c10;
+    text-align:center;
+  }
+  .score-value{
+    font-family:'Space Mono',monospace;
+    font-size:32px;
+    font-weight:700;
+    line-height:1;
+  }
+  .score-label{
+    margin-top:4px;
+    font-family:'Space Mono',monospace;
+    font-size:10px;
+    letter-spacing:.12em;
+    text-transform:uppercase;
+  }
+  .score-caption{
+    margin-top:4px;
+    font-size:10px;
+    color:#6b7280;
+    font-family:'Space Mono',monospace;
+    text-transform:uppercase;
+    letter-spacing:.08em;
+  }
   .toggle { position:relative; width:36px; height:20px; }
   .toggle input{opacity:0;width:0;height:0;}
   .slider{position:absolute;cursor:pointer;top:0;left:0;right:0;bottom:0;background:#2a2d35;border-radius:20px;transition:.3s;}
@@ -118,6 +188,31 @@
   .popup-stat-val{font-family:'Space Mono',monospace;color:#457b9d;text-align:right;font-size:11px;}
   .precinct-marker{width:34px;height:34px;border-radius:50%;border:3px solid #fff;display:flex;align-items:center;justify-content:center;cursor:pointer;box-shadow:0 2px 14px rgba(0,0,0,.7);transition:transform .15s;}
   .precinct-marker:hover{transform:scale(1.2);}
+  .mapboxgl-ctrl-geocoder {
+    background-color:#111318 !important;
+    border:1px solid #1e2229 !important;
+    border-radius:6px !important;
+    box-shadow:none !important;
+    min-width:280px !important;
+  }
+  .mapboxgl-ctrl-geocoder input {
+    color:#e8eaed !important;
+    background-color:#111318 !important;
+    font-family:'DM Sans',sans-serif !important;
+    font-size:13px !important;
+  }
+  .mapboxgl-ctrl-geocoder input::placeholder { color:#6b7280 !important; }
+  .mapboxgl-ctrl-geocoder .mapboxgl-ctrl-geocoder--icon { fill:#6b7280 !important; }
+  .mapboxgl-ctrl-geocoder .suggestions {
+    background-color:#111318 !important;
+    border:1px solid #1e2229 !important;
+  }
+  .mapboxgl-ctrl-geocoder .suggestions > li > a { color:#e8eaed !important; }
+  .mapboxgl-ctrl-geocoder .suggestions > .active > a,
+  .mapboxgl-ctrl-geocoder .suggestions > li > a:hover {
+    background-color:#1e2229 !important;
+    color:#e8eaed !important;
+  }
 </style>
 </head>
 <body>
@@ -181,9 +276,10 @@
 
   <div class="section">
     <div class="section-label">Map Layers</div>
+    <div class="section-category-label category-default">Map Layers</div>
     <div class="toggle-row">
       <div class="toggle-label"><div class="toggle-swatch" style="background:#e63946;opacity:.6;"></div>Ward Boundaries</div>
-      <label class="toggle"><input type="checkbox" id="togWards" onchange="toggleLayer('wards')"><span class="slider"></span></label>
+      <label class="toggle"><input type="checkbox" id="togWardBoundaries" onchange="toggleLayer('wardBoundaries')"><span class="slider"></span></label>
     </div>
     <div class="toggle-row">
       <div class="toggle-label"><div class="toggle-swatch" style="background:#4CC9F0;opacity:.5;"></div>Police Districts</div>
@@ -193,7 +289,16 @@
       <div class="toggle-label"><div class="toggle-swatch" style="background:#7B61FF;border-radius:50%;width:14px;height:14px;"></div>Precinct Stations</div>
       <label class="toggle"><input type="checkbox" id="togPrecincts" checked onchange="toggleLayer('precincts')"><span class="slider"></span></label>
     </div>
-    <div class="section-label safety-label" style="margin-top:12px;">Community Layers</div>
+    <div class="section-category-label category-crime">Crime Data</div>
+    <div class="toggle-row">
+      <div class="toggle-label"><div class="toggle-swatch" style="background:#e63946;opacity:.55;"></div>Ward Crime Density</div>
+      <label class="toggle"><input type="checkbox" id="togWardDensity" onchange="toggleLayer('wardDensity')"><span class="slider"></span></label>
+    </div>
+    <div class="toggle-row">
+      <div class="toggle-label"><div class="toggle-swatch" style="background:linear-gradient(90deg,#4ade80,#facc15,#fb923c,#ef4444);"></div>Crime Heatmap</div>
+      <label class="toggle"><input type="checkbox" id="togHeatmap" onchange="toggleLayer('crimeHeatmap')"><span class="slider"></span></label>
+    </div>
+    <div class="section-category-label category-community">Community</div>
     <div class="toggle-row">
       <div class="toggle-label"><div class="toggle-swatch" style="background:#4ade80;border-radius:50%;"></div>Schools &amp; Daycares</div>
       <label class="toggle"><input type="checkbox" id="togSchools" onchange="toggleLayer('schools')"><span class="slider"></span></label>
@@ -201,6 +306,15 @@
     <div class="toggle-row">
       <div class="toggle-label"><div class="toggle-swatch" style="background:#60a5fa;border-radius:50%;"></div>Libraries</div>
       <label class="toggle"><input type="checkbox" id="togLibraries" onchange="toggleLayer('libraries')"><span class="slider"></span></label>
+    </div>
+    <div class="section-category-label category-muted">Safety (Coming Soon)</div>
+    <div class="toggle-row locked-toggle-row" title="Coming soon — data verification in progress">
+      <div class="toggle-label"><div class="toggle-swatch" style="background:#6b7280;opacity:.6;border-radius:50%;"></div>CCTV Coverage</div>
+      <div class="locked-badge">Locked 🔒</div>
+    </div>
+    <div class="toggle-row locked-toggle-row" title="Coming soon — data verification in progress">
+      <div class="toggle-label"><div class="toggle-swatch" style="background:#6b7280;opacity:.6;border-radius:50%;"></div>Street Lighting</div>
+      <div class="locked-badge">Locked 🔒</div>
     </div>
     <div class="safety-disclaimer">Source: Jersey City Open Data Portal</div>
   </div>
@@ -266,6 +380,13 @@
       <div class="legend-row" id="schoolsLegendRow" style="display:none;"><div class="legend-dot" style="background:#4ade80"></div>Schools &amp; Daycares</div>
       <div class="legend-row" id="librariesLegendRow" style="display:none;"><div class="legend-dot" style="background:#60a5fa"></div>Libraries</div>
     </div>
+    <div class="legend-section" id="heatmapLegend" style="display:none;">
+      <div class="legend-section-title">Crime Heatmap</div>
+      <div class="legend-row"><div class="legend-dot" style="background:#4ade80"></div>Lower density</div>
+      <div class="legend-row"><div class="legend-dot" style="background:#facc15"></div>Moderate</div>
+      <div class="legend-row"><div class="legend-dot" style="background:#fb923c"></div>Elevated</div>
+      <div class="legend-row"><div class="legend-dot" style="background:#ef4444"></div>High density</div>
+    </div>
   </div>
 </div>
 
@@ -273,12 +394,51 @@
 mapboxgl.accessToken = 'pk.eyJ1IjoiY2xhd3JlbXkiLCJhIjoiY21sdzFlMTU0MGRxaDNlb252N3U1aWp5MyJ9.gJ3BZ2twJBzvlIDlW_sA7Q';
 
 const wardData = {
-  'A':{ description:'Greenville / West Side',       incidents:312, level:'High',        topCrime:'Assault',   color:'#e63946', dot:'#e63946' },
-  'B':{ description:'Bergen-Lafayette / MLK',       incidents:278, level:'High',        topCrime:'Robbery',   color:'#c1121f', dot:'#c1121f' },
-  'C':{ description:'Heights / North',              incidents:198, level:'Medium-High', topCrime:'Larceny',   color:'#e9c46a', dot:'#e9c46a' },
-  'D':{ description:'Journal Square / West Bergen', incidents:176, level:'Medium',      topCrime:'Burglary',  color:'#f4a261', dot:'#f4a261' },
-  'E':{ description:'Downtown / Newport',           incidents:142, level:'Lower',       topCrime:'Theft',     color:'#2d6a4f', dot:'#52b788' },
-  'F':{ description:'Greenville / South',           incidents:118, level:'Lower',       topCrime:'Vandalism', color:'#1a472a', dot:'#74c69d' }
+  'A':{ description:'Greenville / West Side',       incidents:312, level:'High',        topCrime:'Assault',   color:'#e63946', dot:'#e63946', safetyScore:45 },
+  'B':{ description:'Bergen-Lafayette / MLK',       incidents:245, level:'High',        topCrime:'Robbery',   color:'#c1121f', dot:'#c1121f', safetyScore:57 },
+  'C':{ description:'Heights / North',              incidents:198, level:'Medium-High', topCrime:'Larceny',   color:'#e9c46a', dot:'#e9c46a', safetyScore:65 },
+  'D':{ description:'Journal Square / West Bergen', incidents:176, level:'Medium',      topCrime:'Burglary',  color:'#f4a261', dot:'#f4a261', safetyScore:69 },
+  'E':{ description:'Downtown / Newport',           incidents:142, level:'Lower',       topCrime:'Theft',     color:'#2d6a4f', dot:'#52b788', safetyScore:75 },
+  'F':{ description:'Greenville / South',           incidents:118, level:'Lower',       topCrime:'Vandalism', color:'#1a472a', dot:'#74c69d', safetyScore:79 }
+};
+
+function calculateSafetyScore(ward){
+  const cityAvg = 198;
+  const incidents = ward.incidents;
+  const ratio = incidents / cityAvg;
+  let score = Math.round(100 - (ratio * 35));
+  score = Math.max(10, Math.min(95, score));
+  return score;
+}
+
+function getSafetyTier(score){
+  if(score >= 80) return { label:'Peaceful', color:'#4ade80' };
+  if(score >= 65) return { label:'Good', color:'#86efac' };
+  if(score >= 50) return { label:'Fair', color:'#facc15' };
+  if(score >= 35) return { label:'Caution', color:'#fb923c' };
+  return { label:'High Risk', color:'#e63946' };
+}
+
+const heatmapPointsData = {
+  type:'FeatureCollection',
+  features:[
+    { type:'Feature', geometry:{ type:'Point', coordinates:[-74.0950, 40.7050] }, properties:{ weight: 1.0 } },
+    { type:'Feature', geometry:{ type:'Point', coordinates:[-74.0880, 40.7080] }, properties:{ weight: 0.9 } },
+    { type:'Feature', geometry:{ type:'Point', coordinates:[-74.1020, 40.7020] }, properties:{ weight: 0.85 } },
+    { type:'Feature', geometry:{ type:'Point', coordinates:[-74.0820, 40.7100] }, properties:{ weight: 0.8 } },
+    { type:'Feature', geometry:{ type:'Point', coordinates:[-74.0950, 40.7150] }, properties:{ weight: 0.75 } },
+    { type:'Feature', geometry:{ type:'Point', coordinates:[-74.1010, 40.7180] }, properties:{ weight: 0.7 } },
+    { type:'Feature', geometry:{ type:'Point', coordinates:[-74.0900, 40.7200] }, properties:{ weight: 0.65 } },
+    { type:'Feature', geometry:{ type:'Point', coordinates:[-74.0515, 40.7401] }, properties:{ weight: 0.6 } },
+    { type:'Feature', geometry:{ type:'Point', coordinates:[-74.0560, 40.7450] }, properties:{ weight: 0.55 } },
+    { type:'Feature', geometry:{ type:'Point', coordinates:[-74.0480, 40.7380] }, properties:{ weight: 0.5 } },
+    { type:'Feature', geometry:{ type:'Point', coordinates:[-74.0634, 40.7322] }, properties:{ weight: 0.5 } },
+    { type:'Feature', geometry:{ type:'Point', coordinates:[-74.0700, 40.7280] }, properties:{ weight: 0.45 } },
+    { type:'Feature', geometry:{ type:'Point', coordinates:[-74.0380, 40.7230] }, properties:{ weight: 0.35 } },
+    { type:'Feature', geometry:{ type:'Point', coordinates:[-74.0340, 40.7190] }, properties:{ weight: 0.3 } },
+    { type:'Feature', geometry:{ type:'Point', coordinates:[-74.0756, 40.6980] }, properties:{ weight: 0.25 } },
+    { type:'Feature', geometry:{ type:'Point', coordinates:[-74.0820, 40.7020] }, properties:{ weight: 0.2 } }
+  ]
 };
 
 const precincts = [
@@ -384,7 +544,15 @@ const map = new mapboxgl.Map({
 });
 map.addControl(new mapboxgl.NavigationControl(),'top-right');
 
-const layerState = { wards:false, districts:true, precincts:true, schools:false, libraries:false };
+const layerState = {
+  wardBoundaries:false,
+  wardDensity:false,
+  crimeHeatmap:false,
+  districts:true,
+  precincts:true,
+  schools:false,
+  libraries:false
+};
 const allMarkers = [];
 
 function updateCommunityLegend(){
@@ -398,12 +566,31 @@ function updateCommunityLegend(){
   legendEl.style.display = (layerState.schools || layerState.libraries) ? 'block' : 'none';
 }
 
+function updateHeatmapLegend(){
+  const heatmapLegend = document.getElementById('heatmapLegend');
+  if(!heatmapLegend) return;
+  heatmapLegend.style.display = layerState.crimeHeatmap ? 'block' : 'none';
+}
+
 /* ── SIDEBAR: WARDS ── */
 const wardList = document.getElementById('wardList');
 [...wardsGeoJSON.features].sort((a,b)=>a.properties.ward.localeCompare(b.properties.ward)).forEach(f=>{
-  const w=f.properties.ward.toUpperCase(), d=wardData[w]||{description:'',incidents:'N/A',dot:'#457b9d'};
+  const w=f.properties.ward.toUpperCase(), d=wardData[w]||{description:'',incidents:'N/A',dot:'#457b9d',safetyScore:50};
+  const score = d.safetyScore || calculateSafetyScore(d);
+  const tier = getSafetyTier(score);
   const el=document.createElement('div'); el.className='ward-item';
-  el.innerHTML=`<div class="ward-dot" style="background:${d.dot}"></div><div class="ward-content"><div class="ward-name">Ward ${w} — ${d.description}</div><div class="ward-top-crime">Top crime: ${d.topCrime}</div></div><div class="ward-score">${d.incidents}</div>`;
+  el.innerHTML=`
+    <div class="ward-dot" style="background:${d.dot}"></div>
+    <div class="ward-content">
+      <div class="ward-main-row">
+        <div class="ward-name">Ward ${w} — ${d.description}</div>
+        <div class="ward-score-pill" style="background:${tier.color};">${score} ${tier.label.toUpperCase()}</div>
+      </div>
+      <div class="ward-meta">
+        <div class="ward-top-crime">Top crime: ${d.topCrime}</div>
+        <div class="ward-incidents">${d.incidents} incidents</div>
+      </div>
+    </div>`;
   el.addEventListener('click',()=>zoomToFeature(f));
   wardList.appendChild(el);
 });
@@ -450,9 +637,33 @@ map.on('load',()=>{
   map.addLayer({id:'ward-labels',type:'symbol',source:'wards',
     layout:{'text-field':['concat','Ward ',['upcase',['get','ward']]],'text-font':['DIN Pro Bold','Arial Unicode MS Bold'],'text-size':13,'text-anchor':'center'},
     paint:{'text-color':'#ffffff','text-halo-color':'rgba(0,0,0,0.7)','text-halo-width':1.5}});
-  if(!layerState.wards){
-    ['wards-fill','wards-border','ward-labels'].forEach(l=>map.setLayoutProperty(l,'visibility','none'));
+  if(!layerState.wardDensity) map.setLayoutProperty('wards-fill','visibility','none');
+  if(!layerState.wardBoundaries){
+    ['wards-border','ward-labels'].forEach(l=>map.setLayoutProperty(l,'visibility','none'));
   }
+
+  map.addSource('crime-heatmap',{ type:'geojson', data:heatmapPointsData });
+  map.addLayer({
+    id:'crime-heatmap',
+    type:'heatmap',
+    source:'crime-heatmap',
+    paint:{
+      'heatmap-weight':['get','weight'],
+      'heatmap-intensity':1.5,
+      'heatmap-radius':40,
+      'heatmap-opacity':0.6,
+      'heatmap-color':[
+        'interpolate',['linear'],['heatmap-density'],
+        0,'rgba(74,222,128,0)',
+        0.2,'rgba(74,222,128,0.8)',
+        0.4,'rgba(250,204,21,0.8)',
+        0.6,'rgba(251,146,60,0.8)',
+        0.8,'rgba(239,68,68,0.8)',
+        1,'rgba(185,28,28,0.9)'
+      ]
+    },
+    layout:{ visibility:'none' }
+  },'ward-labels');
 
   // Community layers
   map.addSource('schools',{type:'geojson',data:schoolsData});
@@ -464,6 +675,7 @@ map.on('load',()=>{
     paint:{'circle-color':'#60a5fa','circle-radius':6,'circle-stroke-color':'#ffffff','circle-stroke-width':1.5},
     layout:{visibility:'none'}});
   updateCommunityLegend();
+  updateHeatmapLegend();
 
   // Precinct markers
   precincts.forEach(p=>{
@@ -495,13 +707,19 @@ map.on('load',()=>{
   map.on('mousemove','wards-fill',e=>{
     map.getCanvas().style.cursor='pointer';
     const props=e.features[0].properties, w=(props.ward||'').toUpperCase();
-    const d=wardData[w]||{description:'',incidents:'N/A',level:'N/A',topCrime:'N/A'};
+    const d=wardData[w]||{description:'',incidents:'N/A',level:'N/A',topCrime:'N/A',safetyScore:50};
+    const score = d.safetyScore || calculateSafetyScore(d);
+    const tier = getSafetyTier(score);
     wardPopup.setLngLat(e.lngLat).setHTML(`
       <div class="popup-title" style="color:#e63946">Ward ${w} · ${d.description}</div>
-      <div class="popup-stat"><span>Council Rep</span><span class="popup-stat-val">${props.council_pe}</span></div>
-      <div class="popup-stat"><span>Est. Incidents</span><span class="popup-stat-val">${d.incidents}</span></div>
-      <div class="popup-stat"><span>Density</span><span class="popup-stat-val">${d.level}</span></div>
-      <div class="popup-stat"><span>Top Crime Type</span><span class="popup-stat-val">${d.topCrime}</span></div>
+      <div class="score-card">
+        <div class="score-value" style="color:${tier.color}">${score}</div>
+        <div class="score-label" style="color:${tier.color}">${tier.label}</div>
+        <div class="score-caption">JC Safety Index</div>
+      </div>
+      <div class="popup-stat"><span>2024 Incidents</span><span class="popup-stat-val">${d.incidents}</span></div>
+      <div class="popup-stat"><span>Top Crime</span><span class="popup-stat-val">${d.topCrime}</span></div>
+      <div class="popup-stat"><span>Council</span><span class="popup-stat-val">${props.council_pe}</span></div>
     `).addTo(map);
   });
   map.on('mouseleave','wards-fill',()=>{ map.getCanvas().style.cursor=''; wardPopup.remove(); });
@@ -525,6 +743,16 @@ map.on('load',()=>{
     `).addTo(map);
   });
   map.on('mouseleave','libraries-points',()=>{ map.getCanvas().style.cursor=''; libraryPopup.remove(); });
+
+  const geocoder = new MapboxGeocoder({
+    accessToken: mapboxgl.accessToken,
+    mapboxgl: mapboxgl,
+    placeholder: 'Search address or zip code...',
+    bbox: [-74.1400, 40.6500, -74.0200, 40.7700],
+    proximity: { longitude: -74.0776, latitude: 40.7282 },
+    countries: 'us'
+  });
+  map.addControl(geocoder, 'top-right');
 });
 
 function zoomToFeature(f){
@@ -532,20 +760,25 @@ function zoomToFeature(f){
   map.fitBounds([[Math.min(...lngs),Math.min(...lats)],[Math.max(...lngs),Math.max(...lats)]],{padding:60,duration:800});
 }
 
-const wardLayers=['wards-fill','wards-border','ward-labels'];
+const wardBoundaryLayers=['wards-border','ward-labels'];
+const wardDensityLayers=['wards-fill'];
 const distLayers=['districts-fill','districts-border','district-labels'];
 const schoolLayers=['schools-points'];
 const libraryLayers=['libraries-points'];
+const heatmapLayers=['crime-heatmap'];
 
 function toggleLayer(group){
   layerState[group]=!layerState[group];
   const vis=layerState[group]?'visible':'none';
-  if(group==='wards') wardLayers.forEach(l=>map.setLayoutProperty(l,'visibility',vis));
+  if(group==='wardBoundaries') wardBoundaryLayers.forEach(l=>map.setLayoutProperty(l,'visibility',vis));
+  if(group==='wardDensity') wardDensityLayers.forEach(l=>map.setLayoutProperty(l,'visibility',vis));
+  if(group==='crimeHeatmap') heatmapLayers.forEach(l=>map.setLayoutProperty(l,'visibility',vis));
   if(group==='districts') distLayers.forEach(l=>map.setLayoutProperty(l,'visibility',vis));
   if(group==='precincts') allMarkers.forEach(m=>{ m.el.style.display=vis==='visible'?'flex':'none'; });
   if(group==='schools') schoolLayers.forEach(l=>map.setLayoutProperty(l,'visibility',vis));
   if(group==='libraries') libraryLayers.forEach(l=>map.setLayoutProperty(l,'visibility',vis));
   if(group==='schools' || group==='libraries') updateCommunityLegend();
+  if(group==='crimeHeatmap') updateHeatmapLegend();
 }
 
 // TODO: Time filter — allow filtering crime data by year (2022/2023/2024)
