@@ -170,18 +170,21 @@ nav {
   z-index: 1;
 }
 
-/* STREET NUMBER ACCENT */
-.street-accent {
+/* ZIP FIELD ACCENT */
+.zip-field {
   position: absolute;
-  top: 90px;
-  left: 48px;
-  font-family: 'Bebas Neue', sans-serif;
-  font-size: 8rem;
-  color: rgba(232,87,26,0.04);
-  letter-spacing: -5px;
-  line-height: 1;
-  user-select: none;
+  inset: 0;
   z-index: 1;
+  pointer-events: none;
+  user-select: none;
+  overflow: hidden;
+}
+.zip {
+  position: absolute;
+  font-family: 'Bebas Neue', sans-serif;
+  color: var(--white);
+  letter-spacing: 4px;
+  line-height: 1;
 }
 
 .hero-content {
@@ -777,7 +780,7 @@ footer {
   nav { padding: 14px 20px; }
   .nav-links { display: none; }
   #hero { padding: 100px 20px 50px; }
-  .street-accent { display: none; }
+  .zip-field { display: none; }
   .stat-item { padding: 22px 24px; }
   .sw { padding: 60px 20px; }
   .sw-full .inner { padding: 0 20px; }
@@ -808,7 +811,17 @@ footer {
 <section id="hero">
   <div class="brick-bg"></div>
   <div class="hero-glow"></div>
-  <div class="street-accent">07302</div>
+  <div class="zip-field">
+    <span class="zip" style="top:8%;left:2%;font-size:9rem;opacity:0.035;transform:rotate(-8deg)">07302</span>
+    <span class="zip" style="top:5%;right:4%;font-size:7rem;opacity:0.025;transform:rotate(5deg)">07310</span>
+    <span class="zip" style="top:25%;left:8%;font-size:6rem;opacity:0.02;transform:rotate(-3deg)">07304</span>
+    <span class="zip" style="top:30%;right:10%;font-size:8rem;opacity:0.03;transform:rotate(7deg)">07306</span>
+    <span class="zip" style="top:55%;left:1%;font-size:7rem;opacity:0.025;transform:rotate(-5deg)">07307</span>
+    <span class="zip" style="top:60%;right:5%;font-size:6rem;opacity:0.02;transform:rotate(4deg)">07305</span>
+    <span class="zip" style="top:70%;left:30%;font-size:5rem;opacity:0.018;transform:rotate(-6deg)">07308</span>
+    <span class="zip" style="top:15%;left:40%;font-size:5.5rem;opacity:0.018;transform:rotate(9deg)">07311</span>
+    <span class="zip" style="top:75%;right:20%;font-size:6.5rem;opacity:0.022;transform:rotate(-4deg)">07399</span>
+  </div>
 
   <!-- JC SKYLINE SVG -->
   <div class="skyline">
