@@ -536,6 +536,11 @@
   #mobileDrawerToggle {
     display: none;
   }
+  .mobile-header,
+  .mobile-filter-pills,
+  .mobile-bottom-sheet {
+    display: none;
+  }
   @media (max-width: 1024px) {
     #sidebar {
       width: 260px;
@@ -548,109 +553,108 @@
       overflow: hidden;
     }
     #map {
-      width: 100vw;
-      height: 100dvh;
-      min-height: 55vh;
-    }
-    #sidebar {
       position: fixed;
+      top: 0;
+      left: 0;
+      width: 100vw;
+      height: 100vh;
+      z-index: 1;
+    }
+    .mobile-header {
+      position: fixed;
+      top: 0;
       left: 0;
       right: 0;
-      bottom: 0;
-      top: auto;
-      width: 100%;
-      min-width: 0;
-      height: 65vh;
-      max-height: 65vh;
-      border-right: none;
-      border-top: 1px solid var(--border);
-      border-radius: 14px 14px 0 0;
-      box-shadow: 0 -10px 30px rgba(0, 0, 0, 0.45);
-      transform: translateY(100%);
-      transition: transform 0.25s ease;
-      z-index: 30;
-      pointer-events: none;
-    }
-    body.mobile-drawer-open #sidebar {
-      transform: translateY(0);
-      pointer-events: auto;
-    }
-    #mobileDrawerToggle {
-      display: inline-flex;
-      align-items: center;
-      justify-content: center;
-      position: fixed;
-      left: 50%;
-      bottom: 8px;
-      transform: translateX(-50%);
-      z-index: 40;
-      min-height: 44px;
-      padding: 8px 14px;
-      border: 1px solid rgba(232,87,26,0.28);
-      border-radius: 999px;
-      background: rgba(12,12,26,0.9);
-      color: var(--text);
-      font-family: 'DM Mono', monospace;
-      font-size: 0.76rem;
-      letter-spacing: 0.08em;
-      text-transform: uppercase;
-      cursor: pointer;
-      box-shadow: 0 6px 14px rgba(0,0,0,0.35);
-    }
-    #header {
-      padding: 12px 14px 10px;
+      z-index: 100;
+      background: rgba(8,8,8,0.85);
+      backdrop-filter: blur(10px);
+      padding: 12px 16px;
       display: flex;
       align-items: center;
-      flex-wrap: wrap;
+      justify-content: space-between;
+      border-bottom: 1px solid rgba(232,87,26,0.2);
+    }
+    .mobile-filter-pills {
+      position: fixed;
+      top: 60px;
+      left: 0;
+      right: 0;
+      z-index: 99;
+      display: flex;
       gap: 8px;
+      padding: 8px 16px;
+      overflow-x: auto;
+      scrollbar-width: none;
     }
-    .biq-nav-logo {
-      font-size: 1.25rem;
-      letter-spacing: 2px;
-      margin-bottom: 0;
-      line-height: 1;
-    }
-    .biq-eyebrow {
-      margin-bottom: 0;
-      padding: 3px 8px;
+    .pill {
+      background: rgba(8,8,8,0.85);
+      backdrop-filter: blur(10px);
+      border: 1px solid rgba(255,255,255,0.15);
+      color: #F2EDE4;
+      padding: 6px 14px;
+      border-radius: 20px;
       font-size: 0.75rem;
+      white-space: nowrap;
+      font-family: 'IBM Plex Mono', monospace;
       letter-spacing: 1px;
     }
-    .biq-back {
-      width: 100%;
-      margin-top: 0;
-      padding: 8px 0;
+    .pill.active {
+      background: #E8571A;
+      border-color: #E8571A;
     }
-    .biq-back-link {
-      font-size: 0.88rem;
-      min-height: 44px;
-      display: inline-flex;
-      align-items: center;
+    .mobile-bottom-sheet {
+      position: fixed;
+      bottom: 0;
+      left: 0;
+      right: 0;
+      z-index: 100;
+      background: #111;
+      border-radius: 16px 16px 0 0;
+      border-top: 1px solid rgba(232,87,26,0.3);
+      padding: 0 16px 32px;
+      height: 35vh;
+      overflow-y: auto;
+      transition: height 0.3s ease;
+      display: block;
     }
-    .section {
-      padding: 14px 16px;
+    .mobile-bottom-sheet.expanded {
+      height: 75vh;
     }
-    .section-label {
-      font-size: 0.85rem;
-      padding: 12px 0 8px;
+    .sheet-handle {
+      width: 40px;
+      height: 4px;
+      background: rgba(255,255,255,0.2);
+      border-radius: 2px;
+      margin: 12px auto;
+      cursor: pointer;
     }
-    .section-subtitle,
-    .score-explainer,
-    .stat-label,
-    .toggle-label,
-    .precinct-name,
-    .ward-name,
-    .biq-disclaimer {
+    .sidebar, #sidebar {
+      display: none !important;
+    }
+    #mobileDrawerToggle {
+      display: none !important;
+    }
+    .sheet-content {
+      color: var(--text);
       font-size: 0.9rem;
+      line-height: 1.5;
     }
-    .toggle-row {
-      min-height: 44px;
-      padding: 10px 0;
-    }
-    .toggle-label {
-      min-height: 44px;
-      display: inline-flex;
+    .mobile-header-left {
+      display: flex;
       align-items: center;
+      gap: 8px;
+    }
+    .mobile-header-title {
+      font-family: 'Bebas Neue', sans-serif;
+      letter-spacing: 2px;
+      font-size: 1.2rem;
+      color: var(--text);
+    }
+    .mobile-header a {
+      color: var(--text);
+      text-decoration: none;
+      font-family: 'DM Sans', sans-serif;
+      font-size: 0.85rem;
     }
     #legend {
       display: none;
@@ -687,6 +691,20 @@
 </script>
 </head>
 <body>
+
+<div class="mobile-header">
+  <div class="mobile-header-left">
+    <a href="index.html">← Back to Home</a>
+  </div>
+  <div class="mobile-header-title">BLOCKIQ JC</div>
+</div>
+<div class="mobile-filter-pills">
+  <button class="pill active">All</button>
+  <button class="pill">Theft</button>
+  <button class="pill">Assault</button>
+  <button class="pill">Vehicle</button>
+  <button class="pill">Other</button>
+</div>
 
 <div id="sidebar">
   <div id="header">
@@ -1668,6 +1686,14 @@ function initMobileDrawer(){
 
 initMobileDrawer();
 
+const sheet = document.getElementById('mobileSheet');
+const handle = document.querySelector('.sheet-handle');
+if (sheet && handle) {
+  handle.addEventListener('click', () => {
+    sheet.classList.toggle('expanded');
+  });
+}
+
 function updateCommunityLegend(){
   const legendEl = document.getElementById('communityLegend');
   const schoolsRow = document.getElementById('schoolsLegendRow');
@@ -2045,5 +2071,11 @@ async function toggleLayer(group){
 // TODO: Multi-city support — allow switching between JC, Newark, Paterson
 // TODO: Authentication layer — for paid B2B version
 </script>
+<div class="mobile-bottom-sheet" id="mobileSheet">
+  <div class="sheet-handle"></div>
+  <div class="sheet-content">
+    <!-- Move sidebar filters and stats here -->
+  </div>
+</div>
 </body>
 </html>
