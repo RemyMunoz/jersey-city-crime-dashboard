@@ -545,7 +545,19 @@ h1 {
   margin-bottom: 10px;
   color: var(--white);
 }
-.feature-icon { font-size: 1.6rem; margin-bottom: 12px; display: block; }
+.feature-img {
+  width: 100%;
+  height: 140px;
+  object-fit: cover;
+  border-radius: 2px;
+  margin-bottom: 20px;
+  display: block;
+  filter: brightness(0.85) saturate(0.9);
+  transition: filter 0.4s;
+}
+.feature-card:hover .feature-img {
+  filter: brightness(1) saturate(1.1);
+}
 .feature-card p { color: var(--gray); font-size: 0.875rem; line-height: 1.75; font-weight: 300; }
 
 /* AGENTS */
@@ -952,37 +964,37 @@ footer {
   <div class="features-grid">
     <div class="feature-card">
       <div class="feature-num">01</div>
-      <span class="feature-icon">🗺️</span>
+      <img class="feature-img" src="https://images.unsplash.com/photo-1569336415962-a4bd9f69cd83?w=600&q=80" alt="Crime map">
       <h3>Interactive Crime Map</h3>
       <p>Visualize crime heatmaps, police districts, and ward boundaries. Powered by 2025 JCPD NIBRS data updated quarterly.</p>
     </div>
     <div class="feature-card">
       <div class="feature-num">02</div>
-      <span class="feature-icon">📊</span>
+      <img class="feature-img" src="https://images.unsplash.com/photo-1449824913935-59a10b8d2000?w=600&q=80" alt="Jersey City neighborhood">
       <h3>Neighborhood Safety Scores</h3>
       <p>Every ward scored 0–100 based on verified crime data. See which neighborhoods are improving and how yours compares.</p>
     </div>
     <div class="feature-card">
       <div class="feature-num">03</div>
-      <span class="feature-icon">🏫</span>
+      <img class="feature-img" src="https://images.unsplash.com/photo-1580582932707-520aed937b7b?w=600&q=80" alt="School">
       <h3>Schools & Daycares</h3>
       <p>Every public school, private school, and daycare plotted on the map. Know what's near any address before you move.</p>
     </div>
     <div class="feature-card">
       <div class="feature-num">04</div>
-      <span class="feature-icon">🌳</span>
+      <img class="feature-img" src="https://images.unsplash.com/photo-1585320806297-9794b3e4eeae?w=600&q=80" alt="Park">
       <h3>Parks & Green Space</h3>
       <p>All 86 verified Jersey City parks mapped — from Lincoln Park to your neighborhood playground.</p>
     </div>
     <div class="feature-card">
       <div class="feature-num">05</div>
-      <span class="feature-icon">🚇</span>
+      <img class="feature-img" src="https://images.unsplash.com/photo-1555620572-17e8f2ee1e9c?w=600&q=80" alt="Subway transit">
       <h3>PATH Stations & Transit</h3>
       <p>All four JC PATH stations mapped with service info. See transit access for any neighborhood instantly.</p>
     </div>
     <div class="feature-card">
       <div class="feature-num">06</div>
-      <span class="feature-icon">📈</span>
+      <img class="feature-img" src="https://images.unsplash.com/photo-1551288049-bebda4e38f71?w=600&q=80" alt="Data charts">
       <h3>Crime Trend Charts</h3>
       <p>Monthly crime trends across 9 offense categories. Understand if a neighborhood is getting safer or not.</p>
     </div>
