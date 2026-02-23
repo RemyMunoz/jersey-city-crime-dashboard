@@ -532,6 +532,146 @@
     padding: 8px 16px 4px;
     opacity: 0.6;
   }
+  #mobileDrawerToggle {
+    display: none;
+  }
+  @media (max-width: 1024px) {
+    #sidebar {
+      width: 260px;
+      min-width: 260px;
+    }
+  }
+  @media (max-width: 768px) {
+    body {
+      display: block;
+      overflow: hidden;
+    }
+    #map {
+      width: 100vw;
+      height: 100vh;
+    }
+    #sidebar {
+      position: fixed;
+      left: 0;
+      right: 0;
+      bottom: 0;
+      top: auto;
+      width: 100%;
+      min-width: 0;
+      height: 60vh;
+      max-height: 60vh;
+      border-right: none;
+      border-top: 1px solid var(--border);
+      border-radius: 14px 14px 0 0;
+      box-shadow: 0 -10px 30px rgba(0, 0, 0, 0.45);
+      transform: translateY(100%);
+      transition: transform 0.25s ease;
+      z-index: 30;
+      pointer-events: none;
+    }
+    body.mobile-drawer-open #sidebar {
+      transform: translateY(0);
+      pointer-events: auto;
+    }
+    #mobileDrawerToggle {
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      position: fixed;
+      left: 50%;
+      bottom: 12px;
+      transform: translateX(-50%);
+      z-index: 40;
+      min-height: 44px;
+      padding: 10px 16px;
+      border: 1px solid rgba(0,194,255,0.35);
+      border-radius: 999px;
+      background: rgba(12,12,26,0.95);
+      color: var(--text);
+      font-family: 'DM Mono', monospace;
+      font-size: 0.85rem;
+      letter-spacing: 0.08em;
+      text-transform: uppercase;
+      cursor: pointer;
+      box-shadow: 0 8px 20px rgba(0,0,0,0.4);
+    }
+    body.mobile-drawer-open #mobileDrawerToggle {
+      bottom: calc(60vh + 10px);
+    }
+    #header {
+      padding: 12px 14px 10px;
+      display: flex;
+      align-items: center;
+      flex-wrap: wrap;
+      gap: 8px;
+    }
+    .biq-nav-logo {
+      font-size: 1.25rem;
+      letter-spacing: 2px;
+      margin-bottom: 0;
+      line-height: 1;
+    }
+    .biq-eyebrow {
+      margin-bottom: 0;
+      padding: 3px 8px;
+      font-size: 0.75rem;
+      letter-spacing: 1px;
+    }
+    .biq-back {
+      width: 100%;
+      margin-top: 2px;
+    }
+    .biq-back-link {
+      font-size: 0.88rem;
+      min-height: 44px;
+      display: inline-flex;
+      align-items: center;
+    }
+    .section {
+      padding: 14px 16px;
+    }
+    .section-label {
+      font-size: 0.85rem;
+      padding: 12px 0 8px;
+    }
+    .section-subtitle,
+    .score-explainer,
+    .stat-label,
+    .toggle-label,
+    .precinct-name,
+    .ward-name,
+    .biq-disclaimer {
+      font-size: 0.9rem;
+    }
+    .toggle-row {
+      min-height: 44px;
+      padding: 10px 0;
+    }
+    .toggle-label {
+      min-height: 44px;
+      display: inline-flex;
+      align-items: center;
+    }
+    #legend {
+      display: none;
+    }
+    .mapboxgl-ctrl-geocoder {
+      min-width: 80vw !important;
+      max-width: 92vw !important;
+      width: 80vw !important;
+    }
+    .mapboxgl-ctrl-top-right {
+      right: 8px !important;
+      top: 8px !important;
+      left: 8px !important;
+      display: flex;
+      justify-content: flex-end;
+      pointer-events: none;
+    }
+    .mapboxgl-ctrl-top-right .mapboxgl-ctrl {
+      pointer-events: auto;
+    }
+  }
 </style>
 </head>
 <body>
@@ -770,6 +910,7 @@
 
   <div class="data-note">Source: FBI UCR 2024 · jerseycitynj.gov<br>Hover wards &amp; precincts for details<br>Click any item to zoom map</div>
 </div>
+<button id="mobileDrawerToggle" type="button" aria-controls="sidebar" aria-expanded="false">Layers</button>
 
 <div id="map">
   <div id="legend">
@@ -1486,6 +1627,34 @@ const layerState = {
   poiParks:false
 };
 const allMarkers = [];
+
+function initMobileDrawer(){
+  const toggleBtn = document.getElementById('mobileDrawerToggle');
+  if(!toggleBtn) return;
+
+  const mobileQuery = window.matchMedia('(max-width: 768px)');
+
+  function setDrawerState(open){
+    document.body.classList.toggle('mobile-drawer-open', open);
+    toggleBtn.setAttribute('aria-expanded', open ? 'true' : 'false');
+    toggleBtn.textContent = open ? 'Close Layers' : 'Layers';
+  }
+
+  toggleBtn.addEventListener('click', ()=>{
+    const isOpen = document.body.classList.contains('mobile-drawer-open');
+    setDrawerState(!isOpen);
+  });
+
+  mobileQuery.addEventListener('change', (event)=>{
+    if(!event.matches){
+      setDrawerState(false);
+    }
+  });
+
+  setDrawerState(false);
+}
+
+initMobileDrawer();
 
 function updateCommunityLegend(){
   const legendEl = document.getElementById('communityLegend');
