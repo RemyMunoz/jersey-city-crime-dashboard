@@ -1998,7 +1998,16 @@ const districtGeoJSON = {
   features: districtBaseGeoJSON.features
     .map((feature)=>{
       const rawName = (feature.properties && feature.properties.name ? feature.properties.name : '').trim();
-      const id = rawName.toLowerCase();
+      const normalizedName = rawName.toLowerCase();
+      const id = normalizedName.includes('north')
+        ? 'north'
+        : normalizedName.includes('south')
+        ? 'south'
+        : normalizedName.includes('east')
+        ? 'east'
+        : normalizedName.includes('west')
+        ? 'west'
+        : normalizedName;
       const style = districtStyle[id] || { name: rawName || 'District', color:'#4CC9F0' };
       return {
         ...feature,
@@ -2239,12 +2248,12 @@ map.on('load',()=>{
   // District polygons (behind wards)
   map.addSource('districts',{type:'geojson',data:districtGeoJSON});
   map.addLayer({id:'districts-fill',type:'fill',source:'districts',
-    paint:{'fill-color':['match',['get','name'],'North','#4CC9F0','South','#F72585','East','#7B61FF','West','#FF9F1C','#ffffff'],'fill-opacity':0.25,'fill-emissive-strength':1}});
+    paint:{'fill-color':['coalesce',['get','color'],'#ffffff'],'fill-opacity':0.25,'fill-emissive-strength':1}});
   map.addLayer({id:'districts-border',type:'line',source:'districts',
-    paint:{'line-color':['match',['get','name'],'North','#4CC9F0','South','#F72585','East','#7B61FF','West','#FF9F1C','#ffffff'],'line-width':3,'line-opacity':1,'line-dasharray':[5,3],'line-emissive-strength':1}});
+    paint:{'line-color':['coalesce',['get','color'],'#ffffff'],'line-width':3,'line-opacity':1,'line-dasharray':[5,3],'line-emissive-strength':1}});
   map.addLayer({id:'district-labels',type:'symbol',source:'districts',
     layout:{'text-field':['get','name'],'text-font':['DIN Pro Italic','Arial Unicode MS Regular'],'text-size':11,'text-anchor':'center'},
-    paint:{'text-color':['match',['get','name'],'North','#4CC9F0','South','#F72585','East','#7B61FF','West','#FF9F1C','#ffffff'],'text-halo-color':'rgba(0,0,0,0.85)','text-halo-width':1.5,'text-opacity':0.9}});
+    paint:{'text-color':['coalesce',['get','color'],'#ffffff'],'text-halo-color':'rgba(0,0,0,0.85)','text-halo-width':1.5,'text-opacity':0.9}});
 
   // Ward polygons (on top)
   map.addSource('wards',{type:'geojson',data:wardsGeoJSON});
@@ -2550,48 +2559,56 @@ async function toggleLayer(group){
 // TODO: Authentication layer — for paid B2B version
 
 (function() {
-  // ── Mobile sheet + toggle button behavior ──
-  const mobileSheet    = document.getElementById('mobileSheet');
-  const toggleBtn      = document.getElementById('mobile-sidebar-toggle');
-  const overlay        = document.getElementById('mobileSidebarOverlay');
-  const sheetHandle    = document.getElementById('sheetHandle');
+  function initMobileUi() {
+    // ── Mobile sheet + toggle button behavior ──
+    const mobileSheet = document.getElementById('mobileSheet');
+    const toggleBtn = document.getElementById('mobile-sidebar-toggle');
+    const overlay = document.getElementById('mobileSidebarOverlay');
+    const sheetHandle = document.getElementById('sheetHandle');
 
-  if (!mobileSheet || !toggleBtn) return; // desktop — do nothing
+    if (!mobileSheet || !toggleBtn || !overlay) return; // desktop — do nothing
 
-  function openSheet() {
-    mobileSheet.classList.add('expanded');
-    toggleBtn.classList.add('sheet-open');
-    overlay.classList.add('active');
-  }
-
-  function closeSheet() {
-    mobileSheet.classList.remove('expanded');
-    toggleBtn.classList.remove('sheet-open');
-    overlay.classList.remove('active');
-  }
-
-  function toggleSheet() {
-    if (mobileSheet.classList.contains('expanded')) {
-      closeSheet();
-    } else {
-      openSheet();
+    function openSheet() {
+      mobileSheet.classList.add('expanded');
+      toggleBtn.classList.add('sheet-open');
+      overlay.classList.add('active');
     }
+
+    function closeSheet() {
+      mobileSheet.classList.remove('expanded');
+      toggleBtn.classList.remove('sheet-open');
+      overlay.classList.remove('active');
+    }
+
+    function toggleSheet() {
+      if (mobileSheet.classList.contains('expanded')) {
+        closeSheet();
+      } else {
+        openSheet();
+      }
+    }
+
+    toggleBtn.addEventListener('click', toggleSheet);
+    overlay.addEventListener('click', closeSheet);
+    if (sheetHandle) sheetHandle.addEventListener('click', toggleSheet);
+
+    // ── Filter pills functionality ──
+    document.querySelectorAll('.mobile-filter-pills .pill').forEach(function(pill) {
+      pill.addEventListener('click', function() {
+        document.querySelectorAll('.mobile-filter-pills .pill').forEach(function(p) {
+          p.classList.remove('active');
+        });
+        pill.classList.add('active');
+        // TODO: wire up actual crime type filtering here
+      });
+    });
   }
 
-  toggleBtn.addEventListener('click', toggleSheet);
-  overlay.addEventListener('click', closeSheet);
-  if (sheetHandle) sheetHandle.addEventListener('click', toggleSheet);
-
-  // ── Filter pills functionality ──
-  document.querySelectorAll('.mobile-filter-pills .pill').forEach(function(pill) {
-    pill.addEventListener('click', function() {
-      document.querySelectorAll('.mobile-filter-pills .pill').forEach(function(p) {
-        p.classList.remove('active');
-      });
-      pill.classList.add('active');
-      // TODO: wire up actual crime type filtering here
-    });
-  });
+  if (document.readyState === 'loading') {
+    document.addEventListener('DOMContentLoaded', initMobileUi);
+  } else {
+    initMobileUi();
+  }
 })();
 
 </script>
