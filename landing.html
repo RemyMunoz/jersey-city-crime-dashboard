@@ -486,13 +486,43 @@ window.addEventListener('scroll', () => {
 function submitForm() {
   const name = document.getElementById('fname').value.trim();
   const email = document.getElementById('femail').value.trim();
-  if (!name || !email) { alert('Please enter your name and email.'); return; }
-  if (!email.includes('@')) { alert('Please enter a valid email.'); return; }
-  const leads = JSON.parse(localStorage.getItem('blockiq_leads') || '[]');
-  leads.push({ name, email, interest: document.getElementById('finterest').value, message: document.getElementById('fmessage').value, timestamp: new Date().toISOString() });
-  localStorage.setItem('blockiq_leads', JSON.stringify(leads));
-  document.getElementById('formContent').style.display = 'none';
-  document.getElementById('formSuccess').classList.add('show');
+  const interest = document.getElementById('finterest').value;
+  const message = document.getElementById('fmessage').value.trim();
+
+  if (!name || !email) {
+    alert('Please enter your name and email.');
+    return;
+  }
+  if (!email.includes('@')) {
+    alert('Please enter a valid email.');
+    return;
+  }
+
+  const btn = document.querySelector('.form-submit');
+  btn.textContent = 'SENDING...';
+  btn.disabled = true;
+
+  fetch('https://formspree.io/f/xbdaplzd', {
+    method: 'POST',
+    headers: { 'Content-Type': 'application/json', 'Accept': 'application/json' },
+    body: JSON.stringify({ name, email, interest, message })
+  })
+  .then(res => res.json())
+  .then(data => {
+    if (data.ok) {
+      document.getElementById('formContent').style.display = 'none';
+      document.getElementById('formSuccess').classList.add('show');
+    } else {
+      alert('Something went wrong. Please try again.');
+      btn.textContent = 'SEND MESSAGE →';
+      btn.disabled = false;
+    }
+  })
+  .catch(() => {
+    alert('Network error. Please try again.');
+    btn.textContent = 'SEND MESSAGE →';
+    btn.disabled = false;
+  });
 }
 </script>
 </body>
