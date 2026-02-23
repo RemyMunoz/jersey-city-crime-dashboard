@@ -456,7 +456,8 @@ setTimeout(() => {
     function update(t) {
       const p = Math.min((t - start) / dur, 1);
       const e = 1 - Math.pow(1 - p, 3);
-      el.textContent = Math.round(target * e).toLocaleString();
+      const val = Math.round(target * e);
+      el.textContent = target === 2025 ? val.toString() : val.toLocaleString();
       if (p < 1) requestAnimationFrame(update);
     }
     requestAnimationFrame(update);
