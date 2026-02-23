@@ -539,9 +539,6 @@
     padding: 8px 16px 4px;
     opacity: 0.6;
   }
-  #mobileDrawerToggle {
-    display: none;
-  }
   .mobile-header,
   .mobile-filter-pills,
   .mobile-bottom-sheet {
@@ -625,9 +622,6 @@
       cursor: pointer;
     }
     .sidebar, #sidebar {
-      display: none !important;
-    }
-    #mobileDrawerToggle {
       display: none !important;
     }
     .sheet-content {
@@ -967,7 +961,6 @@
 
   <div class="data-note">Source: FBI UCR 2024 · jerseycitynj.gov<br>Hover wards &amp; precincts for details<br>Click any item to zoom map</div>
 </div>
-<button id="mobileDrawerToggle" type="button" aria-controls="sidebar" aria-expanded="false">Layers</button>
 
 <div id="map">
   <div id="legend">
@@ -1462,12 +1455,14 @@ async function loadLiquorLayer() {
     map.on('click', 'liquor-stores-layer', (e) => {
       const p = e.features[0].properties;
       const typeLabel = p.amenity === 'bar' ? 'Bar' : p.amenity === 'nightclub' ? 'Nightclub' : p.amenity === 'pub' ? 'Pub' : 'Liquor Store';
+      const safeTypeLabel = escapeHTML(typeLabel);
+      const safeName = escapeHTML(p.name);
       new mapboxgl.Popup({ closeButton: false })
         .setLngLat(e.features[0].geometry.coordinates)
         .setHTML(`
         <div style="font-family:'DM Sans',sans-serif;padding:4px">
-          <div style="font-family:'Space Mono',monospace;font-size:10px;color:#f43f5e;text-transform:uppercase;letter-spacing:0.1em;margin-bottom:4px">${typeLabel}</div>
-          <div style="font-size:13px;font-weight:600;color:#e8eaed">${p.name}</div>
+          <div style="font-family:'Space Mono',monospace;font-size:10px;color:#f43f5e;text-transform:uppercase;letter-spacing:0.1em;margin-bottom:4px">${safeTypeLabel}</div>
+          <div style="font-size:13px;font-weight:600;color:#e8eaed">${safeName}</div>
         </div>
       `)
         .addTo(map);
@@ -1537,13 +1532,16 @@ async function loadParksLayer() {
     map.on('click', 'parks-layer', (e) => {
       const p = e.features[0].properties;
       const typeLabel = p.leisure === 'playground' ? 'Playground' : p.leisure === 'sports_centre' ? 'Sports Center' : 'Park';
+      const safeTypeLabel = escapeHTML(typeLabel);
+      const safeName = escapeHTML(p.name || 'Unnamed');
+      const safeSource = escapeHTML(p.source);
       new mapboxgl.Popup({ closeButton: false })
         .setLngLat(e.features[0].geometry.coordinates)
         .setHTML(`
         <div style="font-family:'DM Sans',sans-serif;padding:4px">
-          <div style="font-family:'Space Mono',monospace;font-size:10px;color:#22c55e;text-transform:uppercase;letter-spacing:0.1em;margin-bottom:4px">${typeLabel}</div>
-          <div style="font-size:13px;font-weight:600;color:#e8eaed">${p.name || 'Unnamed'}</div>
-          ${p.source ? `<div style="font-size:10px;color:#6b7280;margin-top:4px;font-family:'Space Mono',monospace;">Source: ${p.source}</div>` : ''}
+          <div style="font-family:'Space Mono',monospace;font-size:10px;color:#22c55e;text-transform:uppercase;letter-spacing:0.1em;margin-bottom:4px">${safeTypeLabel}</div>
+          <div style="font-size:13px;font-weight:600;color:#e8eaed">${safeName}</div>
+          ${p.source ? `<div style="font-size:10px;color:#6b7280;margin-top:4px;font-family:'Space Mono',monospace;">Source: ${safeSource}</div>` : ''}
         </div>
       `)
         .addTo(map);
@@ -1685,34 +1683,6 @@ const layerState = {
 };
 const allMarkers = [];
 
-function initMobileDrawer(){
-  const toggleBtn = document.getElementById('mobileDrawerToggle');
-  if(!toggleBtn) return;
-
-  const mobileQuery = window.matchMedia('(max-width: 768px)');
-
-  function setDrawerState(open){
-    document.body.classList.toggle('mobile-drawer-open', open);
-    toggleBtn.setAttribute('aria-expanded', open ? 'true' : 'false');
-    toggleBtn.textContent = open ? '↓ CLOSE' : 'LAYERS ↑';
-  }
-
-  toggleBtn.addEventListener('click', ()=>{
-    const isOpen = document.body.classList.contains('mobile-drawer-open');
-    setDrawerState(!isOpen);
-  });
-
-  mobileQuery.addEventListener('change', (event)=>{
-    if(!event.matches){
-      setDrawerState(false);
-    }
-  });
-
-  setDrawerState(false);
-}
-
-initMobileDrawer();
-
 const sheet = document.getElementById('mobileSheet');
 const handle = document.querySelector('.sheet-handle');
 if (sheet && handle) {
@@ -1761,23 +1731,44 @@ function updateHeatmapLegend(){
   heatmapLegend.style.display = layerState.crimeHeatmap ? 'block' : 'none';
 }
 
+function escapeHTML(value){
+  return String(value ?? '')
+    .replace(/&/g, '&amp;')
+    .replace(/</g, '&lt;')
+    .replace(/>/g, '&gt;')
+    .replace(/"/g, '&quot;')
+    .replace(/'/g, '&#39;');
+}
+
+function safeColor(value, fallback = '#457b9d'){
+  const v = String(value || '').trim();
+  return /^#([0-9a-fA-F]{3,8})$/.test(v) ? v : fallback;
+}
+
 /* ── SIDEBAR: WARDS ── */
 const wardList = document.getElementById('wardList');
 [...wardsGeoJSON.features].sort((a,b)=>a.properties.ward.localeCompare(b.properties.ward)).forEach(f=>{
   const w=f.properties.ward.toUpperCase(), d=wardData[w]||{description:'',incidents:'N/A',dot:'#457b9d',safetyScore:50};
   const score = d.safetyScore || calculateSafetyScore(d);
   const tier = getSafetyTier(score);
+  const wardCode = escapeHTML(w);
+  const wardDescription = escapeHTML(d.description);
+  const topCrime = escapeHTML(d.topCrime);
+  const incidents = escapeHTML(d.incidents);
+  const dotColor = safeColor(d.dot);
+  const tierColor = safeColor(tier.color, '#6b7280');
+  const tierLabel = escapeHTML(tier.label.toUpperCase());
   const el=document.createElement('div'); el.className='ward-item';
   el.innerHTML=`
-    <div class="ward-dot" style="background:${d.dot}"></div>
+    <div class="ward-dot" style="background:${dotColor}"></div>
     <div class="ward-content">
       <div class="ward-main-row">
-        <div class="ward-name">Ward ${w} — ${d.description}</div>
-        <div class="ward-score-pill" style="background:${tier.color};">${score} ${tier.label.toUpperCase()}</div>
+        <div class="ward-name">Ward ${wardCode} — ${wardDescription}</div>
+        <div class="ward-score-pill" style="background:${tierColor};">${score} ${tierLabel}</div>
       </div>
       <div class="ward-meta">
-        <div class="ward-top-crime">Top crime: ${d.topCrime}</div>
-        <div class="ward-incidents">${d.incidents} incidents</div>
+        <div class="ward-top-crime">Top crime: ${topCrime}</div>
+        <div class="ward-incidents">${incidents} incidents</div>
       </div>
     </div>`;
   el.addEventListener('click',()=>zoomToFeature(f));
@@ -1790,15 +1781,21 @@ precincts.forEach(p=>{
   const el=document.createElement('div'); el.className='precinct-item';
   const initials=p.name.split(' ').map(w=>w[0]).join('').slice(0,2);
   const districtCenter = getDistrictCenter(p.id, p.coords);
+  const color = safeColor(p.color, '#457b9d');
+  const safeInitials = escapeHTML(initials);
+  const safeName = escapeHTML(p.name);
+  const safeAddress = escapeHTML(p.address);
+  const safePhone = escapeHTML(p.phone);
+  const safeWards = escapeHTML(p.wards);
   el.innerHTML=`
-    <div class="precinct-badge" style="background:${p.color}25;border:2px solid ${p.color}">
-      <span style="color:${p.color};font-size:9px;font-weight:700;font-family:monospace">${initials}</span>
+    <div class="precinct-badge" style="background:${color}25;border:2px solid ${color}">
+      <span style="color:${color};font-size:9px;font-weight:700;font-family:monospace">${safeInitials}</span>
     </div>
     <div class="precinct-info">
-      <div class="precinct-name" style="color:${p.color}">${p.name}</div>
-      <div class="precinct-addr">${p.address}</div>
-      <div class="precinct-addr">${p.phone}</div>
-      <div class="precinct-wards">${p.wards}</div>
+      <div class="precinct-name" style="color:${color}">${safeName}</div>
+      <div class="precinct-addr">${safeAddress}</div>
+      <div class="precinct-addr">${safePhone}</div>
+      <div class="precinct-wards">${safeWards}</div>
     </div>`;
   el.addEventListener('click',()=>map.flyTo({center:districtCenter,zoom:13.9,duration:800}));
   precinctList.appendChild(el);
@@ -1920,18 +1917,25 @@ map.on('load',()=>{
   precincts.forEach(p=>{
     const districtCenter = getDistrictCenter(p.id, p.coords);
     const el=document.createElement('div'); el.className='precinct-marker';
-    el.style.cssText=`background:${p.color}30;border-color:${p.color};`;
+    const color = safeColor(p.color, '#457b9d');
+    const safeName = escapeHTML(p.name);
+    const safeAddress = escapeHTML(p.address);
+    const safePhone = escapeHTML(p.phone);
+    const safeWards = escapeHTML(p.wards);
+    const safeNeighborhoods = escapeHTML(p.neighborhoods);
+    const safeInitial = escapeHTML(String(p.id || '').charAt(0).toUpperCase());
+    el.style.cssText=`background:${color}30;border-color:${color};`;
     el.innerHTML=`<svg width="18" height="18" viewBox="0 0 24 24">
-      <path d="M12 2L3 6v6c0 5.5 3.8 10.7 9 12 5.2-1.3 9-6.5 9-12V6L12 2z" fill="${p.color}" opacity="0.9"/>
-      <text x="12" y="16" text-anchor="middle" font-family="monospace" font-size="9" fill="white" font-weight="bold">${p.id[0].toUpperCase()}</text>
+      <path d="M12 2L3 6v6c0 5.5 3.8 10.7 9 12 5.2-1.3 9-6.5 9-12V6L12 2z" fill="${color}" opacity="0.9"/>
+      <text x="12" y="16" text-anchor="middle" font-family="monospace" font-size="9" fill="white" font-weight="bold">${safeInitial}</text>
     </svg>`;
 
     const popup=new mapboxgl.Popup({offset:18,closeButton:false,closeOnClick:false}).setHTML(`
-      <div class="popup-title" style="color:${p.color}">⚑ ${p.name}</div>
-      <div class="popup-stat"><span>Address</span><span class="popup-stat-val">${p.address}</span></div>
-      <div class="popup-stat"><span>Non-Emergency</span><span class="popup-stat-val">${p.phone}</span></div>
-      <div class="popup-stat"><span>Covers</span><span class="popup-stat-val">${p.wards}</span></div>
-      <div class="popup-stat"><span>Neighborhoods</span><span class="popup-stat-val" style="max-width:130px;white-space:normal;line-height:1.4">${p.neighborhoods}</span></div>
+      <div class="popup-title" style="color:${color}">⚑ ${safeName}</div>
+      <div class="popup-stat"><span>Address</span><span class="popup-stat-val">${safeAddress}</span></div>
+      <div class="popup-stat"><span>Non-Emergency</span><span class="popup-stat-val">${safePhone}</span></div>
+      <div class="popup-stat"><span>Covers</span><span class="popup-stat-val">${safeWards}</span></div>
+      <div class="popup-stat"><span>Neighborhoods</span><span class="popup-stat-val" style="max-width:130px;white-space:normal;line-height:1.4">${safeNeighborhoods}</span></div>
     `);
 
     const marker=new mapboxgl.Marker(el).setLngLat(districtCenter).addTo(map);
@@ -1949,16 +1953,23 @@ map.on('load',()=>{
     const d=wardData[w]||{description:'',incidents:'N/A',level:'N/A',topCrime:'N/A',safetyScore:50};
     const score = d.safetyScore || calculateSafetyScore(d);
     const tier = getSafetyTier(score);
+    const wardCode = escapeHTML(w);
+    const wardDescription = escapeHTML(d.description);
+    const incidents = escapeHTML(d.incidents);
+    const topCrime = escapeHTML(d.topCrime);
+    const council = escapeHTML(props.council_pe);
+    const tierLabel = escapeHTML(tier.label);
+    const tierColor = safeColor(tier.color, '#6b7280');
     wardPopup.setLngLat(e.lngLat).setHTML(`
-      <div class="popup-title" style="color:#e63946">Ward ${w} · ${d.description}</div>
+      <div class="popup-title" style="color:#e63946">Ward ${wardCode} · ${wardDescription}</div>
       <div class="score-card">
-        <div class="score-value" style="color:${tier.color}">${score}</div>
-        <div class="score-label" style="color:${tier.color}">${tier.label}</div>
+        <div class="score-value" style="color:${tierColor}">${score}</div>
+        <div class="score-label" style="color:${tierColor}">${tierLabel}</div>
         <div class="score-caption">JC Safety Index</div>
       </div>
-      <div class="popup-stat"><span>2024 Incidents</span><span class="popup-stat-val">${d.incidents}</span></div>
-      <div class="popup-stat"><span>Top Crime</span><span class="popup-stat-val">${d.topCrime}</span></div>
-      <div class="popup-stat"><span>Council</span><span class="popup-stat-val">${props.council_pe}</span></div>
+      <div class="popup-stat"><span>2024 Incidents</span><span class="popup-stat-val">${incidents}</span></div>
+      <div class="popup-stat"><span>Top Crime</span><span class="popup-stat-val">${topCrime}</span></div>
+      <div class="popup-stat"><span>Council</span><span class="popup-stat-val">${council}</span></div>
     `).addTo(map);
   });
   map.on('mouseleave','wards-fill',()=>{ map.getCanvas().style.cursor=''; wardPopup.remove(); });
@@ -1967,8 +1978,9 @@ map.on('load',()=>{
   map.on('mousemove','schools-points',e=>{
     map.getCanvas().style.cursor='pointer';
     const p=e.features[0].properties;
+    const name = escapeHTML(p.name);
     schoolPopup.setLngLat(e.lngLat).setHTML(`
-      <div class="popup-title" style="color:#4ade80">🎓 ${p.name}</div>
+      <div class="popup-title" style="color:#4ade80">🎓 ${name}</div>
     `).addTo(map);
   });
   map.on('mouseleave','schools-points',()=>{ map.getCanvas().style.cursor=''; schoolPopup.remove(); });
@@ -1977,23 +1989,30 @@ map.on('load',()=>{
   map.on('mousemove','libraries-points',e=>{
     map.getCanvas().style.cursor='pointer';
     const p=e.features[0].properties;
+    const name = escapeHTML(p.name);
     libraryPopup.setLngLat(e.lngLat).setHTML(`
-      <div class="popup-title" style="color:#60a5fa">📚 ${p.name}</div>
+      <div class="popup-title" style="color:#60a5fa">📚 ${name}</div>
     `).addTo(map);
   });
   map.on('mouseleave','libraries-points',()=>{ map.getCanvas().style.cursor=''; libraryPopup.remove(); });
 
   map.on('click','affordable-housing-circles',(e)=>{
     const props = e.features[0].properties;
+    const category = escapeHTML(props.category);
+    const name = escapeHTML(props.name);
+    const address = escapeHTML(props.address);
+    const units = escapeHTML(props.units);
+    const ami = escapeHTML(props.ami_level);
+    const ward = escapeHTML(props.ward);
     new mapboxgl.Popup({ closeButton:false, maxWidth:'260px' })
       .setLngLat(e.features[0].geometry.coordinates)
       .setHTML(`
         <div style="font-family:'DM Sans',sans-serif; padding:4px">
-          <div style="font-family:'Space Mono',monospace; font-size:10px; color:#6b7280; text-transform:uppercase; letter-spacing:0.1em; margin-bottom:4px">${props.category}</div>
-          <div style="font-size:14px; font-weight:600; color:#e8eaed; margin-bottom:6px">${props.name}</div>
-          <div style="font-size:12px; color:#9ca3af; margin-bottom:2px">📍 ${props.address}</div>
-          <div style="font-size:12px; color:#9ca3af; margin-bottom:2px">🏠 ${props.units} units · ${props.ami_level}</div>
-          <div style="font-size:12px; color:#9ca3af">🗺 Ward ${props.ward}</div>
+          <div style="font-family:'Space Mono',monospace; font-size:10px; color:#6b7280; text-transform:uppercase; letter-spacing:0.1em; margin-bottom:4px">${category}</div>
+          <div style="font-size:14px; font-weight:600; color:#e8eaed; margin-bottom:6px">${name}</div>
+          <div style="font-size:12px; color:#9ca3af; margin-bottom:2px">📍 ${address}</div>
+          <div style="font-size:12px; color:#9ca3af; margin-bottom:2px">🏠 ${units} units · ${ami}</div>
+          <div style="font-size:12px; color:#9ca3af">🗺 Ward ${ward}</div>
         </div>
       `)
       .addTo(map);
@@ -2014,13 +2033,15 @@ map.on('load',()=>{
         lines = String(props.lines || '');
       }
     }
+    const name = escapeHTML(props.name);
+    const safeLines = escapeHTML(lines);
     new mapboxgl.Popup({ closeButton:false })
       .setLngLat(e.features[0].geometry.coordinates)
       .setHTML(`
         <div style="font-family:'DM Sans',sans-serif; padding:4px">
           <div style="font-family:'Space Mono',monospace; font-size:10px; color:#93c5fd; text-transform:uppercase; letter-spacing:0.1em; margin-bottom:4px">PATH Station</div>
-          <div style="font-size:14px; font-weight:600; color:#e8eaed; margin-bottom:6px">${props.name}</div>
-          <div style="font-size:12px; color:#9ca3af">Lines: ${lines}</div>
+          <div style="font-size:14px; font-weight:600; color:#e8eaed; margin-bottom:6px">${name}</div>
+          <div style="font-size:12px; color:#9ca3af">Lines: ${safeLines}</div>
         </div>
       `)
       .addTo(map);
