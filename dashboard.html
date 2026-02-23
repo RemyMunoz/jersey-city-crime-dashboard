@@ -539,167 +539,591 @@
     padding: 8px 16px 4px;
     opacity: 0.6;
   }
-  .mobile-header,
+  /* ── Hide mobile elements on desktop ── */
   .mobile-filter-pills,
-  .mobile-bottom-sheet {
+  .mobile-bottom-sheet,
+  #mobile-sidebar-toggle,
+  .mobile-sidebar-overlay {
     display: none;
   }
-  @media (max-width: 1024px) {
-    #sidebar {
-      width: 260px;
-      min-width: 260px;
-    }
-  }
+
+  /* ── MOBILE OVERHAUL ── */
   @media (max-width: 768px) {
-    body {
-      position: relative;
-      height: 100dvh;
-      display: block;
+
+    html, body {
       overflow: hidden;
+      height: 100dvh;
+      position: fixed;
+      width: 100%;
     }
+
+    body {
+      display: block;
+      position: relative;
+    }
+
+    /* Full-screen map background */
     #map {
-      position: absolute;
-      top: 0;
-      left: 0;
+      position: fixed;
+      top: 0; left: 0;
       width: 100%;
       height: 100dvh;
       z-index: 1;
     }
-    .mobile-header {
+
+    /* Hide desktop sidebar */
+    #sidebar {
       display: none !important;
     }
-    .mobile-filter-pills {
-      position: absolute;
-      top: 16px;
-      left: 16px;
-      right: 16px;
-      z-index: 1000;
-      display: flex;
-      gap: 8px;
-      flex-wrap: wrap;
-      pointer-events: auto;
+
+    /* Hide desktop legend */
+    #legend {
+      display: none !important;
     }
+
+    /* ── FILTER PILLS: horizontal scroll row at top ── */
+    .mobile-filter-pills {
+      display: flex;
+      position: fixed;
+      top: 12px;
+      left: 12px;
+      right: 12px;
+      z-index: 100;
+      gap: 6px;
+      flex-wrap: nowrap;
+      overflow-x: auto;
+      scrollbar-width: none;
+      -webkit-overflow-scrolling: touch;
+      padding-bottom: 2px;
+    }
+    .mobile-filter-pills::-webkit-scrollbar { display: none; }
+
     .pill {
-      background: rgba(8,8,8,0.85);
-      backdrop-filter: blur(10px);
-      border: 1px solid rgba(255,255,255,0.15);
-      color: #F2EDE4;
-      padding: 6px 14px;
+      background: rgba(6, 6, 14, 0.9);
+      backdrop-filter: blur(12px);
+      -webkit-backdrop-filter: blur(12px);
+      border: 1px solid rgba(255, 255, 255, 0.15);
+      color: #e0ddd8;
+      padding: 8px 14px;
       border-radius: 20px;
-      font-size: 0.75rem;
+      font-size: 0.73rem;
       white-space: nowrap;
-      font-family: 'IBM Plex Mono', monospace;
-      letter-spacing: 1px;
+      font-family: 'DM Mono', monospace;
+      letter-spacing: 0.8px;
+      cursor: pointer;
+      flex-shrink: 0;
+      transition: background 0.2s, border-color 0.2s;
+      -webkit-tap-highlight-color: transparent;
+      min-height: 36px;
     }
     .pill.active {
       background: #E8571A;
       border-color: #E8571A;
+      color: #fff;
     }
+
+    /* ── GEOCODER: below pills ── */
+    .mapboxgl-ctrl-top-right {
+      position: fixed !important;
+      top: 58px !important;
+      left: 12px !important;
+      right: 12px !important;
+      width: auto !important;
+      display: flex;
+      flex-direction: column;
+      align-items: stretch;
+      z-index: 99;
+    }
+    .mapboxgl-ctrl-geocoder {
+      width: 100% !important;
+      min-width: unset !important;
+      max-width: unset !important;
+      box-shadow: 0 2px 12px rgba(0,0,0,0.5) !important;
+    }
+    .mapboxgl-ctrl-geocoder input {
+      font-size: 14px !important;
+      height: 42px !important;
+    }
+
+    /* Hide zoom controls — too small, use pinch */
+    .mapboxgl-ctrl-group {
+      display: none !important;
+    }
+
+    /* ── SIDEBAR TOGGLE FAB ── */
+    #mobile-sidebar-toggle {
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      position: fixed;
+      bottom: calc(env(safe-area-inset-bottom, 0px) + 26vh + 20px);
+      right: 16px;
+      width: 52px;
+      height: 52px;
+      border-radius: 50%;
+      background: #E8571A;
+      border: none;
+      color: #fff;
+      font-size: 1.3rem;
+      z-index: 300;
+      box-shadow: 0 4px 20px rgba(232, 87, 26, 0.55);
+      cursor: pointer;
+      transition: bottom 0.35s ease, transform 0.2s;
+      -webkit-tap-highlight-color: transparent;
+    }
+    #mobile-sidebar-toggle.sheet-open {
+      bottom: calc(env(safe-area-inset-bottom, 0px) + 78vh + 12px);
+    }
+    #mobile-sidebar-toggle:active {
+      transform: scale(0.92);
+    }
+
+    /* ── OVERLAY dims map when sheet is expanded ── */
+    .mobile-sidebar-overlay {
+      display: block;
+      position: fixed;
+      inset: 0;
+      background: rgba(0, 0, 0, 0);
+      z-index: 150;
+      pointer-events: none;
+      transition: background 0.3s;
+    }
+    .mobile-sidebar-overlay.active {
+      background: rgba(0, 0, 0, 0.45);
+      pointer-events: auto;
+    }
+
+    /* ── BOTTOM SHEET (the collapsible sidebar) ── */
     .mobile-bottom-sheet {
+      display: flex;
+      flex-direction: column;
       position: fixed;
       bottom: 0;
       left: 0;
       right: 0;
-      background: rgba(8,8,8,0.95);
-      border-radius: 16px 16px 0 0;
-      z-index: 2000;
-      padding: 12px 20px;
-      height: 35vh;
-      max-height: 75vh;
-      overflow-y: auto;
-      transition: height 0.3s ease;
-      display: block;
+      background: rgba(10, 10, 20, 0.97);
+      backdrop-filter: blur(16px);
+      -webkit-backdrop-filter: blur(16px);
+      border-radius: 18px 18px 0 0;
+      border-top: 1px solid rgba(232, 87, 26, 0.25);
+      z-index: 200;
+      height: 26vh;
+      max-height: 90vh;
+      transition: height 0.35s cubic-bezier(0.4, 0, 0.2, 1);
+      overflow: hidden;
+      padding-bottom: env(safe-area-inset-bottom, 0px);
     }
     .mobile-bottom-sheet.expanded {
-      height: 75vh;
+      height: 78vh;
     }
+
+    /* Drag handle */
     .sheet-handle {
       width: 40px;
       height: 4px;
-      background: rgba(255,255,255,0.2);
+      background: rgba(255, 255, 255, 0.25);
       border-radius: 2px;
-      margin: 0 auto 12px;
+      margin: 10px auto 0;
       cursor: pointer;
+      flex-shrink: 0;
     }
-    .sidebar, #sidebar {
-      display: none !important;
+
+    /* Header row inside sheet */
+    .sheet-header-row {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      padding: 6px 16px 4px;
+      flex-shrink: 0;
     }
-    .sheet-content {
-      color: var(--text);
-      font-size: 0.9rem;
-      line-height: 1.5;
+
+    .sheet-logo {
+      font-family: 'Bebas Neue', sans-serif;
+      font-size: 1.2rem;
+      letter-spacing: 2px;
+      color: #f0f4ff;
+      line-height: 1;
     }
-    .mobile-sheet-link {
-      display: inline-block;
-      margin-bottom: 10px;
-      color: #F2EDE4;
-      text-decoration: none;
-      font-size: 0.85rem;
-    }
-    .sheet-section-title {
-      font-family: 'Space Mono', monospace;
+    .sheet-logo span { color: #E8571A; }
+
+    .sheet-back-link {
       font-size: 0.72rem;
-      letter-spacing: 0.08em;
-      text-transform: uppercase;
-      color: #8A8278;
-      margin: 10px 0 8px;
+      color: var(--muted);
+      text-decoration: none;
+      font-family: 'DM Mono', monospace;
     }
-    .sheet-ward-grid,
+    .sheet-back-link:active { opacity: 0.6; }
+
+    /* Scrollable inner content */
+    .sheet-content {
+      flex: 1;
+      overflow-y: auto;
+      -webkit-overflow-scrolling: touch;
+      padding: 0 14px 20px;
+      scrollbar-width: thin;
+      scrollbar-color: rgba(232,87,26,0.3) transparent;
+    }
+    .sheet-content::-webkit-scrollbar { width: 3px; }
+    .sheet-content::-webkit-scrollbar-thumb {
+      background: rgba(232,87,26,0.3);
+      border-radius: 2px;
+    }
+
+    /* Section labels */
+    .sheet-section-title {
+      font-family: 'DM Mono', monospace;
+      font-size: 0.62rem;
+      letter-spacing: 2px;
+      text-transform: uppercase;
+      color: #E8571A;
+      margin: 12px 0 8px;
+      border-top: 1px solid rgba(232,87,26,0.15);
+      padding-top: 10px;
+    }
+    .sheet-section-title:first-of-type {
+      border-top: none;
+      padding-top: 4px;
+      margin-top: 6px;
+    }
+
+    /* Ward score grid: 3 columns */
+    .sheet-ward-grid {
+      display: grid;
+      grid-template-columns: 1fr 1fr 1fr;
+      gap: 6px;
+    }
+
+    .sheet-pill {
+      border-radius: 8px;
+      padding: 8px 6px;
+      font-size: 0.7rem;
+      color: #fff;
+      text-align: center;
+      font-family: 'DM Mono', monospace;
+      line-height: 1.4;
+      cursor: pointer;
+      -webkit-tap-highlight-color: transparent;
+      border: 1px solid transparent;
+    }
+    .sheet-pill:active { opacity: 0.7; }
+    .sheet-pill.tier-caution {
+      background: rgba(220, 38, 38, 0.25);
+      border-color: rgba(220, 38, 38, 0.6);
+    }
+    .sheet-pill.tier-fair {
+      background: rgba(234, 88, 12, 0.25);
+      border-color: rgba(234, 88, 12, 0.6);
+    }
+    .sheet-pill.tier-good {
+      background: rgba(202, 138, 4, 0.25);
+      border-color: rgba(202, 138, 4, 0.6);
+    }
+    .sheet-pill.tier-great {
+      background: rgba(22, 163, 74, 0.25);
+      border-color: rgba(22, 163, 74, 0.6);
+    }
+    .sheet-pill.tier-caution strong { color: #fca5a5; }
+    .sheet-pill.tier-fair strong    { color: #fdba74; }
+    .sheet-pill.tier-good strong    { color: #fde047; }
+    .sheet-pill.tier-great strong   { color: #86efac; }
+
+    /* Stats grid: 2 columns */
     .sheet-stat-grid {
       display: grid;
       grid-template-columns: 1fr 1fr;
       gap: 8px;
     }
-    .sheet-pill {
-      border: 1px solid rgba(232,87,26,0.25);
-      background: rgba(232,87,26,0.08);
-      border-radius: 8px;
-      padding: 8px 10px;
-      font-size: 0.8rem;
-      color: #F2EDE4;
-    }
+
     .sheet-stat {
-      border: 1px solid rgba(255,255,255,0.12);
-      background: rgba(255,255,255,0.03);
-      border-radius: 8px;
-      padding: 8px 10px;
+      border: 1px solid rgba(255, 255, 255, 0.1);
+      background: rgba(255, 255, 255, 0.04);
+      border-radius: 10px;
+      padding: 10px 12px;
+      position: relative;
+      overflow: hidden;
     }
+    .sheet-stat::before {
+      content: '';
+      position: absolute;
+      top: 0; left: 0; right: 0;
+      height: 2px;
+    }
+    .sheet-stat.red::before { background: #e63946; }
+    .sheet-stat.orange::before { background: #e9c46a; }
+    .sheet-stat.blue::before { background: #457b9d; }
+
     .sheet-stat-label {
-      font-size: 0.7rem;
-      color: #8A8278;
-      letter-spacing: 0.04em;
+      font-size: 0.62rem;
+      color: #8892a4;
+      letter-spacing: 0.08em;
       text-transform: uppercase;
-      font-family: 'Space Mono', monospace;
+      font-family: 'DM Mono', monospace;
+      margin-bottom: 4px;
     }
     .sheet-stat-value {
-      font-size: 1.1rem;
-      color: #F2EDE4;
+      font-size: 1.6rem;
+      color: #f0f4ff;
       font-family: 'Bebas Neue', sans-serif;
       letter-spacing: 1px;
       line-height: 1;
+    }
+    .sheet-stat-sub {
+      font-size: 0.58rem;
+      color: #6b7280;
+      font-family: 'Space Mono', monospace;
       margin-top: 2px;
     }
-    #legend {
-      display: none;
+
+    /* Layer toggle rows in sheet */
+    .sheet-layer-row {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      padding: 9px 0;
+      border-bottom: 1px solid rgba(255,255,255,0.06);
     }
-    .mapboxgl-ctrl-geocoder {
-      min-width: 100% !important;
-      max-width: 100% !important;
-      width: 100% !important;
+    .sheet-layer-row:last-child { border-bottom: none; }
+
+    .sheet-layer-label {
+      font-size: 0.78rem;
+      color: #d0d8e8;
+      display: flex;
+      align-items: center;
+      gap: 8px;
     }
-    .mapboxgl-ctrl-top-right {
-      position: absolute !important;
-      top: 60px !important;
-      left: 16px !important;
-      right: 16px !important;
-      transform: none;
-      width: auto;
+
+    .sheet-layer-swatch {
+      width: 12px;
+      height: 12px;
+      border-radius: 3px;
+      flex-shrink: 0;
+    }
+    .sheet-layer-swatch.round { border-radius: 50%; }
+
+    .sheet-layer-category {
+      font-family: 'DM Mono', monospace;
+      font-size: 0.58rem;
+      letter-spacing: 2px;
+      text-transform: uppercase;
+      color: #E8571A;
+      padding: 8px 0 2px;
+      opacity: 0.75;
+    }
+
+    .sheet-locked-label {
+      font-family: 'Space Mono', monospace;
+      font-size: 0.58rem;
+      color: #6b7280;
+      border: 1px solid #2a2d35;
+      border-radius: 99px;
+      padding: 2px 7px;
+      letter-spacing: 0.06em;
+    }
+
+    .sheet-layer-row.locked { opacity: 0.4; }
+
+    /* Freshness badge */
+    .sheet-freshness {
+      display: flex;
+      align-items: center;
+      gap: 6px;
+      padding: 6px 8px;
+      border: 1px solid rgba(255,255,255,0.08);
+      border-radius: 6px;
+      background: rgba(255,255,255,0.03);
+      margin-top: 8px;
+    }
+    .sheet-freshness-dot {
+      width: 7px;
+      height: 7px;
+      border-radius: 50%;
+      background: #4ade80;
+      box-shadow: 0 0 0 2px rgba(74,222,128,0.2);
+      flex-shrink: 0;
+    }
+    .sheet-freshness-text {
+      font-size: 0.6rem;
+      font-family: 'Space Mono', monospace;
+      color: #6b7280;
+      letter-spacing: 0.06em;
+    }
+
+    /* Source note */
+    .sheet-source-note {
+      font-size: 0.6rem;
+      color: #4a5568;
+      font-family: 'Space Mono', monospace;
+      line-height: 1.6;
+      margin-top: 12px;
+      padding-top: 10px;
+      border-top: 1px solid rgba(255,255,255,0.06);
+    }
+
+    /* ── Precinct Cards ── */
+    .sheet-precinct-list {
       display: flex;
       flex-direction: column;
-      align-items: stretch;
+      gap: 8px;
+      margin-bottom: 16px;
+    }
+    .sheet-precinct-card {
+      display: flex;
+      align-items: flex-start;
+      gap: 10px;
+      background: rgba(255,255,255,0.04);
+      border: 1px solid rgba(255,255,255,0.08);
+      border-radius: 8px;
+      padding: 10px 12px;
+    }
+    .sheet-precinct-badge {
+      width: 32px;
+      height: 32px;
+      border-radius: 50%;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 0.6rem;
+      font-weight: 700;
+      font-family: 'Space Mono', monospace;
+      flex-shrink: 0;
+      color: #fff;
+    }
+    .sheet-precinct-badge.nd { background: #22d3ee; }
+    .sheet-precinct-badge.sd { background: #f472b6; }
+    .sheet-precinct-badge.ed { background: #a78bfa; }
+    .sheet-precinct-badge.wd { background: #fb923c; }
+    .sheet-precinct-name {
+      font-size: 0.75rem;
+      font-weight: 700;
+      color: #f0a500;
+      font-family: 'Space Mono', monospace;
+    }
+    .sheet-precinct-addr,
+    .sheet-precinct-phone {
+      font-size: 0.65rem;
+      color: #cbd5e0;
+      font-family: 'Space Mono', monospace;
+      line-height: 1.5;
+    }
+    .sheet-precinct-wards {
+      font-size: 0.6rem;
+      color: #f0a500;
+      font-family: 'Space Mono', monospace;
+      margin-top: 2px;
+    }
+
+    /* ── Accordions ── */
+    .sheet-accordion {
+      margin-bottom: 6px;
+      border: 1px solid rgba(255,255,255,0.08);
+      border-radius: 8px;
+      overflow: hidden;
+    }
+    .sheet-accordion-header {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      padding: 10px 12px;
+      background: rgba(255,255,255,0.04);
+      font-size: 0.65rem;
+      font-family: 'Space Mono', monospace;
+      font-weight: 700;
+      color: #e2e8f0;
+      text-transform: uppercase;
+      letter-spacing: 0.05em;
+      cursor: pointer;
+    }
+    .sheet-accordion-arrow {
+      font-size: 1rem;
+      color: #f0a500;
+      transition: transform 0.2s;
+    }
+    .sheet-accordion.open .sheet-accordion-arrow {
+      transform: rotate(45deg);
+    }
+    .sheet-accordion-body {
+      display: none;
+      padding: 8px 12px 10px;
+      background: rgba(0,0,0,0.2);
+    }
+    .sheet-accordion.open .sheet-accordion-body {
+      display: block;
+    }
+    .sheet-crime-row {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      padding: 5px 0;
+      border-bottom: 1px solid rgba(255,255,255,0.05);
+      font-size: 0.65rem;
+      font-family: 'Space Mono', monospace;
+      color: #cbd5e0;
+    }
+    .sheet-crime-row:last-child { border-bottom: none; }
+    .sheet-crime-row strong {
+      color: #f0a500;
+      font-weight: 700;
+    }
+
+    /* ── Ad Banner ── */
+    .sheet-ad-banner {
+      background: linear-gradient(135deg, #1a0a00, #2d1500);
+      border: 1px solid #f0a500;
+      border-radius: 8px;
+      padding: 12px 14px;
+      margin: 14px 0;
+      text-align: left;
+    }
+    .sheet-ad-label {
+      font-size: 0.55rem;
+      font-family: 'Space Mono', monospace;
+      color: #f0a500;
+      letter-spacing: 0.1em;
+      text-transform: uppercase;
+      margin-bottom: 2px;
+    }
+    .sheet-ad-headline {
+      font-size: 1rem;
+      font-weight: 900;
+      color: #fff;
+      font-family: 'Space Mono', monospace;
+      letter-spacing: 0.05em;
+    }
+    .sheet-ad-sub {
+      font-size: 0.62rem;
+      color: #cbd5e0;
+      font-family: 'Space Mono', monospace;
+      margin: 4px 0 8px;
+    }
+    .sheet-ad-cta {
+      display: inline-block;
+      font-size: 0.65rem;
+      font-family: 'Space Mono', monospace;
+      color: #f0a500;
+      text-decoration: none;
+      font-weight: 700;
+    }
+    .sheet-ad-cta:hover { text-decoration: underline; }
+
+    /* ── Source Links ── */
+    .sheet-source-links {
+      display: flex;
+      flex-direction: column;
       gap: 6px;
-      z-index: 1000;
-      pointer-events: auto;
+    }
+    .sheet-source-links a {
+      font-size: 0.65rem;
+      font-family: 'Space Mono', monospace;
+      color: #60a5fa;
+      text-decoration: none;
+    }
+    .sheet-source-links a:hover { text-decoration: underline; }
+  }
+
+  @media (max-width: 1024px) {
+    #sidebar {
+      width: 260px;
+      min-width: 260px;
     }
   }
 </style>
@@ -713,12 +1137,18 @@
 </head>
 <body>
 
-<div class="mobile-header">
-  <div class="mobile-header-left">
-    <a href="index.html">← Back to Home</a>
-  </div>
-  <div class="mobile-header-title">BLOCKIQ JC</div>
-</div>
+<div class="mobile-sidebar-overlay" id="mobileSidebarOverlay"></div>
+
+<button id="mobile-sidebar-toggle" aria-label="Open map layers and data">
+  <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round">
+    <line x1="3" y1="6" x2="21" y2="6"/>
+    <line x1="3" y1="12" x2="21" y2="12"/>
+    <line x1="3" y1="18" x2="21" y2="18"/>
+  </svg>
+</button>
+
+<!-- the old mobile-header was display:none anyway — just remove it entirely -->
+
 <div class="mobile-filter-pills">
   <button class="pill active">All</button>
   <button class="pill">Theft</button>
@@ -1807,7 +2237,7 @@ map.on('load',()=>{
   map.setConfigProperty('basemap', 'showPointOfInterestLabels', false);
 
   // District polygons (behind wards)
-  map.addSource('districts',{type:'geojson',data:'police-districts.geojson'});
+  map.addSource('districts',{type:'geojson',data:districtGeoJSON});
   map.addLayer({id:'districts-fill',type:'fill',source:'districts',
     paint:{'fill-color':['match',['get','name'],'North','#4CC9F0','South','#F72585','East','#7B61FF','West','#FF9F1C','#ffffff'],'fill-opacity':0.25,'fill-emissive-strength':1}});
   map.addLayer({id:'districts-border',type:'line',source:'districts',
@@ -2118,40 +2548,319 @@ async function toggleLayer(group){
 // TODO: Live data feed — connect to JC Open Data Portal calls-for-service API
 // TODO: Multi-city support — allow switching between JC, Newark, Paterson
 // TODO: Authentication layer — for paid B2B version
+
+(function() {
+  // ── Mobile sheet + toggle button behavior ──
+  const mobileSheet    = document.getElementById('mobileSheet');
+  const toggleBtn      = document.getElementById('mobile-sidebar-toggle');
+  const overlay        = document.getElementById('mobileSidebarOverlay');
+  const sheetHandle    = document.getElementById('sheetHandle');
+
+  if (!mobileSheet || !toggleBtn) return; // desktop — do nothing
+
+  function openSheet() {
+    mobileSheet.classList.add('expanded');
+    toggleBtn.classList.add('sheet-open');
+    overlay.classList.add('active');
+  }
+
+  function closeSheet() {
+    mobileSheet.classList.remove('expanded');
+    toggleBtn.classList.remove('sheet-open');
+    overlay.classList.remove('active');
+  }
+
+  function toggleSheet() {
+    if (mobileSheet.classList.contains('expanded')) {
+      closeSheet();
+    } else {
+      openSheet();
+    }
+  }
+
+  toggleBtn.addEventListener('click', toggleSheet);
+  overlay.addEventListener('click', closeSheet);
+  if (sheetHandle) sheetHandle.addEventListener('click', toggleSheet);
+
+  // ── Filter pills functionality ──
+  document.querySelectorAll('.mobile-filter-pills .pill').forEach(function(pill) {
+    pill.addEventListener('click', function() {
+      document.querySelectorAll('.mobile-filter-pills .pill').forEach(function(p) {
+        p.classList.remove('active');
+      });
+      pill.classList.add('active');
+      // TODO: wire up actual crime type filtering here
+    });
+  });
+})();
+
 </script>
 <div class="mobile-bottom-sheet" id="mobileSheet">
-  <div class="sheet-handle"></div>
+  <div class="sheet-handle" id="sheetHandle"></div>
+
+  <div class="sheet-header-row">
+    <div class="sheet-logo">BLOCK<span>IQ</span> JC</div>
+    <a href="index.html" class="sheet-back-link">← Home</a>
+  </div>
+
   <div class="sheet-content">
-    <a class="mobile-sheet-link" href="index.html">← Back to Home</a>
-    <div class="sheet-section-title">Ward Safety Scores</div>
+
+    <!-- Ward Safety Scores -->
+    <div class="sheet-section-title">Neighborhood Safety Scores</div>
     <div class="sheet-ward-grid">
-      <div class="sheet-pill">Ward A: 45</div>
-      <div class="sheet-pill">Ward B: 57</div>
-      <div class="sheet-pill">Ward C: 62</div>
-      <div class="sheet-pill">Ward D: 70</div>
-      <div class="sheet-pill">Ward E: 77</div>
-      <div class="sheet-pill">Ward F: 79</div>
+      <div class="sheet-pill tier-caution">Ward A<br><strong>45</strong> Caution</div>
+      <div class="sheet-pill tier-fair">Ward B<br><strong>57</strong> Fair</div>
+      <div class="sheet-pill tier-good">Ward C<br><strong>65</strong> Good</div>
+      <div class="sheet-pill tier-good">Ward D<br><strong>69</strong> Good</div>
+      <div class="sheet-pill tier-good">Ward E<br><strong>75</strong> Good</div>
+      <div class="sheet-pill tier-good">Ward F<br><strong>79</strong> Good</div>
     </div>
-    <div class="sheet-section-title">Incident Stats (2025 YTD)</div>
+
+    <!-- YTD Crime Stats -->
+    <div class="sheet-section-title">2025 Crime Stats (Jan–Sep)</div>
     <div class="sheet-stat-grid">
-      <div class="sheet-stat">
+      <div class="sheet-stat red">
         <div class="sheet-stat-label">Homicides</div>
         <div class="sheet-stat-value">10</div>
+        <div class="sheet-stat-sub">2025 YTD</div>
       </div>
-      <div class="sheet-stat">
+      <div class="sheet-stat orange">
         <div class="sheet-stat-label">Shootings</div>
         <div class="sheet-stat-value">31</div>
+        <div class="sheet-stat-sub">2025 YTD</div>
       </div>
-      <div class="sheet-stat">
+      <div class="sheet-stat blue">
         <div class="sheet-stat-label">Theft</div>
         <div class="sheet-stat-value">3,019</div>
+        <div class="sheet-stat-sub">2025 YTD</div>
       </div>
-      <div class="sheet-stat">
+      <div class="sheet-stat orange">
         <div class="sheet-stat-label">Stolen Vehicles</div>
         <div class="sheet-stat-value">648</div>
+        <div class="sheet-stat-sub">2025 YTD</div>
       </div>
     </div>
+    <div class="sheet-freshness">
+      <span class="sheet-freshness-dot"></span>
+      <span class="sheet-freshness-text">NIBRS · Jan–Sep 2025 · Updated Quarterly</span>
+    </div>
+
+    <!-- Map Layer Toggles -->
+    <div class="sheet-section-title">Map Layers</div>
+
+    <div class="sheet-layer-category">Boundaries</div>
+    <div class="sheet-layer-row">
+      <div class="sheet-layer-label">
+        <div class="sheet-layer-swatch" style="background:linear-gradient(90deg,#e63946,#f4a261);opacity:.8;"></div>
+        Ward Boundaries
+      </div>
+      <label class="toggle"><input type="checkbox" onchange="toggleLayer('wardBoundaries')"><span class="slider"></span></label>
+    </div>
+    <div class="sheet-layer-row">
+      <div class="sheet-layer-label">
+        <div class="sheet-layer-swatch" style="background:#4CC9F0;opacity:.6;"></div>
+        Police Districts
+      </div>
+      <label class="toggle"><input type="checkbox" checked onchange="toggleLayer('districts')"><span class="slider"></span></label>
+    </div>
+    <div class="sheet-layer-row">
+      <div class="sheet-layer-label">
+        <div class="sheet-layer-swatch round" style="background:#7B61FF;"></div>
+        Precinct Stations
+      </div>
+      <label class="toggle"><input type="checkbox" checked onchange="toggleLayer('precincts')"><span class="slider"></span></label>
+    </div>
+
+    <div class="sheet-layer-category">Crime Data</div>
+    <div class="sheet-layer-row">
+      <div class="sheet-layer-label">
+        <div class="sheet-layer-swatch" style="background:linear-gradient(90deg,#4ade80,#facc15,#fb923c,#ef4444);"></div>
+        Crime Heatmap
+      </div>
+      <label class="toggle"><input type="checkbox" onchange="toggleLayer('crimeHeatmap')"><span class="slider"></span></label>
+    </div>
+
+    <div class="sheet-layer-category">Transit</div>
+    <div class="sheet-layer-row">
+      <div class="sheet-layer-label">
+        <div class="sheet-layer-swatch round" style="background:#1d4ed8;"></div>
+        PATH Stations
+      </div>
+      <label class="toggle"><input type="checkbox" onchange="toggleLayer('pathStations')"><span class="slider"></span></label>
+    </div>
+
+    <div class="sheet-layer-category">Community</div>
+    <div class="sheet-layer-row">
+      <div class="sheet-layer-label">
+        <div class="sheet-layer-swatch round" style="background:#4ade80;"></div>
+        Schools &amp; Daycares
+      </div>
+      <label class="toggle"><input type="checkbox" onchange="toggleLayer('schools')"><span class="slider"></span></label>
+    </div>
+    <div class="sheet-layer-row">
+      <div class="sheet-layer-label">
+        <div class="sheet-layer-swatch round" style="background:#60a5fa;"></div>
+        Libraries
+      </div>
+      <label class="toggle"><input type="checkbox" onchange="toggleLayer('libraries')"><span class="slider"></span></label>
+    </div>
+    <div class="sheet-layer-row">
+      <div class="sheet-layer-label">
+        <div class="sheet-layer-swatch round" style="background:#f97316;"></div>
+        Affordable Housing
+      </div>
+      <label class="toggle"><input type="checkbox" onchange="toggleLayer('affordableHousing')"><span class="slider"></span></label>
+    </div>
+
+    <div class="sheet-layer-category">Points of Interest</div>
+    <div class="sheet-layer-row">
+      <div class="sheet-layer-label">
+        <div class="sheet-layer-swatch round" style="background:#f43f5e;"></div>
+        Liquor Stores &amp; Bars
+      </div>
+      <label class="toggle"><input type="checkbox" onchange="toggleLayer('poiLiquor')"><span class="slider"></span></label>
+    </div>
+    <div class="sheet-layer-row">
+      <div class="sheet-layer-label">
+        <div class="sheet-layer-swatch round" style="background:#22c55e;"></div>
+        Parks &amp; Green Space
+      </div>
+      <label class="toggle"><input type="checkbox" onchange="toggleLayer('poiParks')"><span class="slider"></span></label>
+    </div>
+
+    <div class="sheet-layer-category">Coming Soon</div>
+    <div class="sheet-layer-row locked">
+      <div class="sheet-layer-label">
+        <div class="sheet-layer-swatch round" style="background:#6b7280;opacity:.5;"></div>
+        CCTV Coverage
+      </div>
+      <span class="sheet-locked-label">Locked 🔒</span>
+    </div>
+    <div class="sheet-layer-row locked">
+      <div class="sheet-layer-label">
+        <div class="sheet-layer-swatch round" style="background:#6b7280;opacity:.5;"></div>
+        Street Lighting
+      </div>
+      <span class="sheet-locked-label">Locked 🔒</span>
+    </div>
+
+    <!-- Police Districts -->
+    <div class="sheet-section-title">Police Districts</div>
+    <div class="sheet-precinct-list">
+      <div class="sheet-precinct-card">
+        <div class="sheet-precinct-badge nd">ND</div>
+        <div class="sheet-precinct-info">
+          <div class="sheet-precinct-name">North District</div>
+          <div class="sheet-precinct-addr">282 Central Ave, JC 07307</div>
+          <div class="sheet-precinct-phone">(201) 547-5350</div>
+          <div class="sheet-precinct-wards">Wards C, D (Journal Square / The Heights)</div>
+        </div>
+      </div>
+      <div class="sheet-precinct-card">
+        <div class="sheet-precinct-badge sd">SD</div>
+        <div class="sheet-precinct-info">
+          <div class="sheet-precinct-name">South District</div>
+          <div class="sheet-precinct-addr">191 Bergen Ave, JC 07305</div>
+          <div class="sheet-precinct-phone">(201) 547-5456</div>
+          <div class="sheet-precinct-wards">Wards A, B (Greenville / West Side)</div>
+        </div>
+      </div>
+      <div class="sheet-precinct-card">
+        <div class="sheet-precinct-badge ed">ED</div>
+        <div class="sheet-precinct-info">
+          <div class="sheet-precinct-name">East District</div>
+          <div class="sheet-precinct-addr">207 7th Street, JC 07302</div>
+          <div class="sheet-precinct-phone">(201) 547-5408</div>
+          <div class="sheet-precinct-wards">Ward E (Historic Downtown)</div>
+        </div>
+      </div>
+      <div class="sheet-precinct-card">
+        <div class="sheet-precinct-badge wd">WD</div>
+        <div class="sheet-precinct-info">
+          <div class="sheet-precinct-name">West District</div>
+          <div class="sheet-precinct-addr">1 Jackson St, JC 07304</div>
+          <div class="sheet-precinct-phone">(201) 547-5450</div>
+          <div class="sheet-precinct-wards">Ward F (Bergen-Lafayette)</div>
+        </div>
+      </div>
+    </div>
+
+    <!-- Crime Data Accordions -->
+    <div class="sheet-accordion">
+      <div class="sheet-accordion-header" onclick="this.parentElement.classList.toggle('open')">
+        <span>2025 Crime Numbers (Jan–Sep)</span><span class="sheet-accordion-arrow">+</span>
+      </div>
+      <div class="sheet-accordion-body">
+        <div class="sheet-crime-row"><span>Homicide</span><strong>10</strong></div>
+        <div class="sheet-crime-row"><span>Rape</span><strong>44</strong></div>
+        <div class="sheet-crime-row"><span>Robbery</span><strong>313</strong></div>
+        <div class="sheet-crime-row"><span>Aggravated Assault</span><strong>399</strong></div>
+        <div class="sheet-crime-row"><span>Burglary</span><strong>222</strong></div>
+        <div class="sheet-crime-row"><span>Larceny/Theft</span><strong>3,019</strong></div>
+        <div class="sheet-crime-row"><span>Motor Vehicle Theft</span><strong>648</strong></div>
+        <div class="sheet-crime-row"><span>Arson</span><strong>12</strong></div>
+      </div>
+    </div>
+
+    <div class="sheet-accordion">
+      <div class="sheet-accordion-header" onclick="this.parentElement.classList.toggle('open')">
+        <span>Monthly Crime Trends</span><span class="sheet-accordion-arrow">+</span>
+      </div>
+      <div class="sheet-accordion-body">
+        <div class="sheet-crime-row"><span>Jan 2025</span><strong>512</strong></div>
+        <div class="sheet-crime-row"><span>Feb 2025</span><strong>487</strong></div>
+        <div class="sheet-crime-row"><span>Mar 2025</span><strong>531</strong></div>
+        <div class="sheet-crime-row"><span>Apr 2025</span><strong>558</strong></div>
+        <div class="sheet-crime-row"><span>May 2025</span><strong>601</strong></div>
+        <div class="sheet-crime-row"><span>Jun 2025</span><strong>623</strong></div>
+        <div class="sheet-crime-row"><span>Jul 2025</span><strong>644</strong></div>
+        <div class="sheet-crime-row"><span>Aug 2025</span><strong>618</strong></div>
+        <div class="sheet-crime-row"><span>Sep 2025</span><strong>567</strong></div>
+      </div>
+    </div>
+
+    <div class="sheet-accordion">
+      <div class="sheet-accordion-header" onclick="this.parentElement.classList.toggle('open')">
+        <span>2024 Annual Data</span><span class="sheet-accordion-arrow">+</span>
+      </div>
+      <div class="sheet-accordion-body">
+        <div class="sheet-crime-row"><span>Total Incidents</span><strong>7,841</strong></div>
+        <div class="sheet-crime-row"><span>Homicide</span><strong>17</strong></div>
+        <div class="sheet-crime-row"><span>Robbery</span><strong>498</strong></div>
+        <div class="sheet-crime-row"><span>Aggravated Assault</span><strong>612</strong></div>
+        <div class="sheet-crime-row"><span>Burglary</span><strong>334</strong></div>
+        <div class="sheet-crime-row"><span>Larceny/Theft</span><strong>4,102</strong></div>
+        <div class="sheet-crime-row"><span>Motor Vehicle Theft</span><strong>901</strong></div>
+      </div>
+    </div>
+
+    <!-- Featured Agent Ad -->
+    <div class="sheet-ad-banner">
+      <div class="sheet-ad-label">FEATURED AGENT</div>
+      <div class="sheet-ad-headline">ADVERTISE HERE</div>
+      <div class="sheet-ad-sub">Reach JC home buyers · $100/mo</div>
+      <a href="mailto:ads@blockiqjc.com" class="sheet-ad-cta">Learn More →</a>
+    </div>
+
+    <!-- Data Sources -->
+    <div class="sheet-accordion">
+      <div class="sheet-accordion-header" onclick="this.parentElement.classList.toggle('open')">
+        <span>Data Sources</span><span class="sheet-accordion-arrow">+</span>
+      </div>
+      <div class="sheet-accordion-body sheet-source-links">
+        <a href="https://data.jerseycitynj.gov" target="_blank">JC Open Data Portal</a>
+        <a href="https://ucr.fbi.gov" target="_blank">FBI UCR 2024</a>
+        <a href="https://www.jerseycitynj.gov/cityservices/publicsafety/policeindex" target="_blank">JCPD Official Site</a>
+      </div>
+    </div>
+
+    <div class="sheet-source-note">
+      Source: JCPD NIBRS · FBI UCR 2024 · JC Open Data Portal<br>
+      For informational purposes only. Not legal or financial advice.
+    </div>
+
   </div>
 </div>
+
 </body>
 </html>
