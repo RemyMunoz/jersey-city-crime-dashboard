@@ -780,13 +780,55 @@ footer {
   nav { padding: 14px 20px; }
   .nav-links { display: none; }
   #hero { padding: 100px 20px 50px; }
-  .zip-field { display: none; }
-  .stat-item { padding: 22px 24px; }
+  h1 {
+    font-size: clamp(2.8rem, 14vw, 4.5rem);
+    letter-spacing: 1px;
+    overflow: hidden;
+    word-break: break-word;
+  }
+  .hero-content {
+    width: 100%;
+    padding: 0 16px;
+    text-align: center;
+  }
+  .ward-strip {
+    flex-wrap: wrap;
+    justify-content: center;
+    gap: 6px;
+  }
+  .ward-tag {
+    border: 1px solid var(--gray-dim);
+    border-right: 1px solid var(--gray-dim);
+  }
+  .stats-bar {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 0;
+    width: 100%;
+  }
+  .stat-item {
+    padding: 20px 16px;
+    border-right: 1px solid var(--gray-dim);
+    border-bottom: 1px solid var(--gray-dim);
+  }
+  .zip {
+    font-size: 3.5rem !important;
+  }
+  .hero-actions {
+    flex-direction: column;
+    align-items: center;
+    width: 100%;
+  }
+  .btn-primary, .btn-secondary {
+    width: 100%;
+    justify-content: center;
+  }
   .sw { padding: 60px 20px; }
   .sw-full .inner { padding: 0 20px; }
   .contact-grid { grid-template-columns: 1fr; gap: 40px; }
   .advertise-grid { grid-template-columns: 1fr; }
   .features-grid { grid-template-columns: 1fr; }
+  .sources-grid { grid-template-columns: 1fr 1fr; }
   footer { padding: 28px 20px; flex-direction: column; text-align: center; }
   .footer-links { justify-content: center; }
   .neighborhood-banner { display: none; }
