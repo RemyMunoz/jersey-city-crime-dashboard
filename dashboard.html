@@ -8,6 +8,7 @@
 <script src="https://api.mapbox.com/mapbox-gl-js/v3.1.2/mapbox-gl.js"></script>
 <link rel="stylesheet" href="https://api.mapbox.com/mapbox-gl-js/plugins/mapbox-gl-geocoder/v5.0.0/mapbox-gl-geocoder.css">
 <script src="https://api.mapbox.com/mapbox-gl-js/plugins/mapbox-gl-geocoder/v5.0.0/mapbox-gl-geocoder.min.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/@turf/turf@6/turf.min.js"></script>
 <script src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/4.4.0/chart.umd.min.js"></script>
 <link href="https://fonts.googleapis.com/css2?family=Bebas+Neue&family=DM+Sans:opsz,wght@9..40,300;9..40,400;9..40,500;9..40,600&family=DM+Mono:wght@400;500&family=Space+Mono&display=swap" rel="stylesheet">
 <style>
@@ -2085,6 +2086,22 @@ const districtGeoJSON = {
 
 function getFeatureCenter(feature){
   if(!feature || !feature.geometry) return null;
+
+  // Placement source type B: district markers are derived from district polygon geometry.
+  // Use a geometric center (turf centerOfMass/centroid), not a bbox midpoint.
+  if(typeof turf !== 'undefined'){
+    try {
+      const centerOfMass = turf.centerOfMass(feature);
+      const coords = normalizeLngLat(centerOfMass && centerOfMass.geometry && centerOfMass.geometry.coordinates);
+      if(coords) return coords;
+    } catch (_) {}
+    try {
+      const centroid = turf.centroid(feature);
+      const coords = normalizeLngLat(centroid && centroid.geometry && centroid.geometry.coordinates);
+      if(coords) return coords;
+    } catch (_) {}
+  }
+
   const { type, coordinates } = feature.geometry;
   let points = [];
   if(type === 'Polygon'){
@@ -2096,9 +2113,9 @@ function getFeatureCenter(feature){
 
   let minLng = Infinity, maxLng = -Infinity, minLat = Infinity, maxLat = -Infinity;
   points.forEach((point)=>{
-    const lng = Number(point[0]);
-    const lat = Number(point[1]);
-    if(!Number.isFinite(lng) || !Number.isFinite(lat)) return;
+    const normalized = normalizeLngLat(point);
+    if(!normalized) return;
+    const [lng, lat] = normalized;
     minLng = Math.min(minLng, lng);
     maxLng = Math.max(maxLng, lng);
     minLat = Math.min(minLat, lat);
@@ -2106,7 +2123,23 @@ function getFeatureCenter(feature){
   });
 
   if(!Number.isFinite(minLng) || !Number.isFinite(minLat)) return null;
-  return [(minLng + maxLng) / 2, (minLat + maxLat) / 2];
+  return normalizeLngLat([(minLng + maxLng) / 2, (minLat + maxLat) / 2]);
+}
+
+function normalizeLngLat(coord){
+  if(!Array.isArray(coord) || coord.length < 2) return null;
+  let lng = Number(coord[0]);
+  let lat = Number(coord[1]);
+  if(!Number.isFinite(lng) || !Number.isFinite(lat)) return null;
+
+  // Defensive guard for accidental [lat, lng] ordering in JC area.
+  const appearsSwapped = lng > 39 && lng < 42 && lat < -72 && lat > -76;
+  if(appearsSwapped){
+    [lng, lat] = [lat, lng];
+  }
+
+  if(lng < -180 || lng > 180 || lat < -90 || lat > 90) return null;
+  return [lng, lat];
 }
 
 const districtCenters = districtGeoJSON.features.reduce((acc, feature)=>{
@@ -2118,7 +2151,7 @@ const districtCenters = districtGeoJSON.features.reduce((acc, feature)=>{
 }, {});
 
 function getDistrictCenter(id, fallback){
-  return districtCenters[id] || fallback;
+  return districtCenters[id] || normalizeLngLat(fallback) || [-74.066, 40.719];
 }
 
 
