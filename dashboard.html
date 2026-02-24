@@ -4,6 +4,7 @@
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>BlockIQ JC — Jersey City Neighborhood Intelligence</title>
+<link rel="canonical" href="https://blockiqjc.com/dashboard.html">
 <link href="https://api.mapbox.com/mapbox-gl-js/v3.1.2/mapbox-gl.css" rel="stylesheet">
 <script src="https://api.mapbox.com/mapbox-gl-js/v3.1.2/mapbox-gl.js"></script>
 <link rel="stylesheet" href="https://api.mapbox.com/mapbox-gl-js/plugins/mapbox-gl-geocoder/v5.0.0/mapbox-gl-geocoder.css">
@@ -386,22 +387,8 @@
   .category-crime{color:var(--accent);}
   .category-community{color:var(--accent);}
   .category-poi{color:var(--accent);}
-  .category-muted{color:var(--accent);}
   .toggle-label { font-size:12px; display:flex; align-items:center; gap:8px; }
   .toggle-swatch { width:14px; height:14px; border-radius:3px; }
-  .safety-label{color:#4ade80;}
-  .safety-disclaimer{font-size:9px;color:#6b7280;line-height:1.5;font-family:'Space Mono',monospace;margin-top:8px;}
-  .locked-toggle-row{opacity:.4;cursor:not-allowed;}
-  .locked-badge{
-    font-family:'Space Mono',monospace;
-    font-size:9px;
-    color:#6b7280;
-    border:1px solid #2a2d35;
-    border-radius:999px;
-    padding:2px 7px;
-    text-transform:uppercase;
-    letter-spacing:.06em;
-  }
   .ward-main-row{display:flex;align-items:center;justify-content:space-between;gap:8px;}
   .ward-score-pill{
     font-family:'Space Mono',monospace;
@@ -960,18 +947,6 @@
       opacity: 0.75;
     }
 
-    .sheet-locked-label {
-      font-family: 'Space Mono', monospace;
-      font-size: 0.58rem;
-      color: #6b7280;
-      border: 1px solid #2a2d35;
-      border-radius: 99px;
-      padding: 2px 7px;
-      letter-spacing: 0.06em;
-    }
-
-    .sheet-layer-row.locked { opacity: 0.4; }
-
     /* Freshness badge */
     .sheet-freshness {
       display: flex;
@@ -1290,16 +1265,6 @@
       <div class="toggle-label"><div class="toggle-swatch" style="background:#22c55e;border-radius:50%;"></div>Parks &amp; Green Space</div>
       <label class="toggle"><input type="checkbox" id="toggle-parks" data-layer="poiParks" onchange="toggleLayer('poiParks', this.checked)"><span class="slider"></span></label>
     </div>
-    <div class="section-category-label category-muted">Safety (Coming Soon)</div>
-    <div class="toggle-row locked-toggle-row" title="Coming soon — data verification in progress">
-      <div class="toggle-label"><div class="toggle-swatch" style="background:#6b7280;opacity:.6;border-radius:50%;"></div>CCTV Coverage</div>
-      <div class="locked-badge">Locked 🔒</div>
-    </div>
-    <div class="toggle-row locked-toggle-row" title="Coming soon — data verification in progress">
-      <div class="toggle-label"><div class="toggle-swatch" style="background:#6b7280;opacity:.6;border-radius:50%;"></div>Street Lighting</div>
-      <div class="locked-badge">Locked 🔒</div>
-    </div>
-    <div class="safety-disclaimer">Source: Jersey City Open Data Portal</div>
   </div>
 
   <div class="section section-collapsible">
@@ -3057,22 +3022,6 @@ async function toggleLayer(group, forceVisible){
         Parks &amp; Green Space
       </div>
       <label class="toggle"><input type="checkbox" data-layer="poiParks" onchange="toggleLayer('poiParks', this.checked)"><span class="slider"></span></label>
-    </div>
-
-    <div class="sheet-layer-category">Coming Soon</div>
-    <div class="sheet-layer-row locked">
-      <div class="sheet-layer-label">
-        <div class="sheet-layer-swatch round" style="background:#6b7280;opacity:.5;"></div>
-        CCTV Coverage
-      </div>
-      <span class="sheet-locked-label">Locked 🔒</span>
-    </div>
-    <div class="sheet-layer-row locked">
-      <div class="sheet-layer-label">
-        <div class="sheet-layer-swatch round" style="background:#6b7280;opacity:.5;"></div>
-        Street Lighting
-      </div>
-      <span class="sheet-locked-label">Locked 🔒</span>
     </div>
 
     <!-- Police Districts -->
