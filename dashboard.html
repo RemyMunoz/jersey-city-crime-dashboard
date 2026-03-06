@@ -895,14 +895,48 @@
       margin-top: 6px;
     }
 
+    .sheet-safety-toggle {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 8px;
+      margin-bottom: 8px;
+    }
+    .sheet-safety-btn {
+      border: 1px solid rgba(255,255,255,0.15);
+      background: rgba(255,255,255,0.04);
+      color: #9aa3b5;
+      border-radius: 999px;
+      font-family: 'DM Mono', monospace;
+      font-size: 0.62rem;
+      letter-spacing: 0.1em;
+      text-transform: uppercase;
+      padding: 7px 10px;
+      min-height: 36px;
+      transition: border-color 0.2s, color 0.2s, background 0.2s;
+      -webkit-tap-highlight-color: transparent;
+    }
+    .sheet-safety-btn.is-active {
+      color: #fff;
+      border-color: rgba(232,87,26,0.75);
+      background: rgba(232,87,26,0.2);
+      box-shadow: 0 0 0 1px rgba(232,87,26,0.3) inset;
+    }
+
     /* Ward score grid: 3 columns */
     .sheet-ward-grid {
       display: grid;
       grid-template-columns: 1fr 1fr 1fr;
       gap: 6px;
     }
+    .sheet-ward-grid.is-district {
+      grid-template-columns: 1fr 1fr;
+    }
 
     .sheet-pill {
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
       border-radius: 8px;
       padding: 8px 6px;
       font-size: 0.7rem;
@@ -913,8 +947,29 @@
       cursor: pointer;
       -webkit-tap-highlight-color: transparent;
       border: 1px solid transparent;
+      min-height: 66px;
+      transition: border-color .2s, box-shadow .2s, transform .15s;
+    }
+    .sheet-pill-name {
+      font-size: 0.6rem;
+      letter-spacing: 0.08em;
+      text-transform: uppercase;
+      line-height: 1.2;
+      margin-bottom: 2px;
+    }
+    .sheet-pill-meta {
+      font-size: 0.55rem;
+      letter-spacing: 0.09em;
+      text-transform: uppercase;
+      opacity: 0.85;
+      line-height: 1.2;
     }
     .sheet-pill:active { opacity: 0.7; }
+    .sheet-pill.is-active {
+      border-color: rgba(232,87,26,0.85);
+      box-shadow: 0 0 0 1px rgba(232,87,26,0.35) inset;
+      transform: translateY(-1px);
+    }
     .sheet-pill.tier-caution {
       background: rgba(220, 38, 38, 0.25);
       border-color: rgba(220, 38, 38, 0.6);
@@ -2548,6 +2603,18 @@ function setActiveDistrictListItem(districtId){
   });
 }
 
+function setActiveMobileSafetyItem(type, id){
+  document.querySelectorAll('#mobileSafetyGrid .sheet-pill[data-ward], #mobileSafetyGrid .sheet-pill[data-district]').forEach((item)=>{
+    if(type === 'ward'){
+      item.classList.toggle('is-active', !!id && item.dataset.ward === id);
+    }else if(type === 'district'){
+      item.classList.toggle('is-active', !!id && item.dataset.district === id);
+    }else{
+      item.classList.remove('is-active');
+    }
+  });
+}
+
 function activateWardFromHash(hash = window.location.hash){
   const wardId = getWardIdFromHash(hash);
   if(!wardId) return false;
@@ -2576,6 +2643,7 @@ function hideWardInfoPanel() {
   selectedFeatureKey = null;
   setActiveWardListItem(null);
   setActiveDistrictListItem(null);
+  setActiveMobileSafetyItem(null, null);
   clearWardSelectionVisuals();
   if (wardInfoPanelEl) wardInfoPanelEl.classList.remove('is-visible');
 }
@@ -2613,6 +2681,7 @@ function setSelectedWard(wardId, councilName) {
   selectedFeatureKey = key;
   setActiveWardListItem(wardId);
   setActiveDistrictListItem(null);
+  setActiveMobileSafetyItem('ward', wardId);
   if (map.getLayer('ward-selected-outline')) {
     map.setFilter('ward-selected-outline', ['==', ['upcase', ['get', 'ward']], wardId]);
   }
@@ -2655,6 +2724,7 @@ function setSelectedDistrict(districtId, districtName, districtColor){
   selectedFeatureKey = key;
   setActiveWardListItem(null);
   setActiveDistrictListItem(districtId);
+  setActiveMobileSafetyItem('district', districtId);
   if (map.getLayer('district-selected-outline')) {
     map.setFilter('district-selected-outline', ['==', ['get', 'id'], districtId]);
   }
@@ -2730,6 +2800,7 @@ window.addEventListener('hashchange', () => {
 
 /* ── SIDEBAR: SAFETY SCORES ── */
 const wardList = document.getElementById('wardList');
+const mobileSafetyGrid = document.getElementById('mobileSafetyGrid');
 const safetyViewButtons = Array.from(document.querySelectorAll('.safety-view-btn'));
 
 function getDistrictSafetyRows(){
@@ -2747,6 +2818,38 @@ function getDistrictSafetyRows(){
   });
 }
 
+function getTierClassName(score){
+  const tier = getSafetyTier(score);
+  if(tier.label === 'Great') return 'tier-great';
+  if(tier.label === 'Good') return 'tier-good';
+  if(tier.label === 'Fair') return 'tier-fair';
+  return 'tier-caution';
+}
+
+function getRankedWardRows(){
+  return [...wardsGeoJSON.features]
+    .map((feature)=>{
+      const wardId = String((feature.properties && feature.properties.ward) || '').toUpperCase();
+      const details = wardData[wardId] || { incidents:0, safetyScore:50 };
+      const score = Number(details.safetyScore || calculateSafetyScore(details)) || 0;
+      const incidents = Number(details.incidents) || 0;
+      return { feature, score, incidents, wardId };
+    })
+    .sort((a, b)=> (b.score - a.score) || (a.incidents - b.incidents) || a.wardId.localeCompare(b.wardId));
+}
+
+function syncMobileSafetyGridSelection(){
+  if(String(selectedFeatureKey || '').startsWith('ward:')){
+    setActiveMobileSafetyItem('ward', selectedFeatureKey.split(':')[1] || null);
+    return;
+  }
+  if(String(selectedFeatureKey || '').startsWith('district:')){
+    setActiveMobileSafetyItem('district', selectedFeatureKey.split(':')[1] || null);
+    return;
+  }
+  setActiveMobileSafetyItem(null, null);
+}
+
 function updateSafetyViewButtons(){
   safetyViewButtons.forEach((btn)=>{
     btn.classList.toggle('is-active', btn.dataset.view === safetyScoreView);
@@ -2757,30 +2860,23 @@ function syncSafetyListSelection(){
   if(String(selectedFeatureKey || '').startsWith('ward:')){
     setActiveWardListItem(selectedFeatureKey.split(':')[1] || null);
     setActiveDistrictListItem(null);
+    syncMobileSafetyGridSelection();
     return;
   }
   if(String(selectedFeatureKey || '').startsWith('district:')){
     setActiveDistrictListItem(selectedFeatureKey.split(':')[1] || null);
     setActiveWardListItem(null);
+    syncMobileSafetyGridSelection();
     return;
   }
   setActiveWardListItem(null);
   setActiveDistrictListItem(null);
+  syncMobileSafetyGridSelection();
 }
 
 function renderWardSafetyList(){
   wardList.innerHTML = '';
-  const rankedWardFeatures = [...wardsGeoJSON.features]
-    .map((feature)=>{
-      const wardId = String((feature.properties && feature.properties.ward) || '').toUpperCase();
-      const details = wardData[wardId] || { incidents:0, safetyScore:50 };
-      const score = Number(details.safetyScore || calculateSafetyScore(details)) || 0;
-      const incidents = Number(details.incidents) || 0;
-      return { feature, score, incidents, wardId };
-    })
-    .sort((a, b)=> (b.score - a.score) || (a.incidents - b.incidents) || a.wardId.localeCompare(b.wardId));
-
-  rankedWardFeatures.forEach((entry)=>{
+  getRankedWardRows().forEach((entry)=>{
     const f = entry.feature;
     const w = f.properties.ward.toUpperCase();
     const d = wardData[w] || {description:'',incidents:'N/A',dot:'#457b9d',safetyScore:50,topCrime:'N/A'};
@@ -2816,6 +2912,54 @@ function renderWardSafetyList(){
     });
     wardList.appendChild(el);
   });
+}
+
+function renderMobileSafetyGrid(){
+  if(!mobileSafetyGrid) return;
+  mobileSafetyGrid.innerHTML = '';
+
+  if(safetyScoreView === 'district'){
+    mobileSafetyGrid.classList.add('is-district');
+    const rows = getDistrictSafetyRows()
+      .sort((a, b)=> (b.score - a.score) || (a.totalIncidents - b.totalIncidents) || a.name.localeCompare(b.name));
+    rows.forEach((row)=>{
+      const tierClass = getTierClassName(row.score);
+      const tierLabel = escapeHTML(getSafetyTier(row.score).label.toUpperCase());
+      const shortName = escapeHTML(row.name.replace(/\s+District$/i, ''));
+      const btn = document.createElement('button');
+      btn.type = 'button';
+      btn.className = `sheet-pill ${tierClass}`;
+      btn.dataset.district = row.id;
+      btn.innerHTML = `<span class="sheet-pill-name">${shortName}</span><strong>${row.score}</strong><span class="sheet-pill-meta">${tierLabel}</span>`;
+      btn.addEventListener('click', ()=>{
+        const districtCenter = getDistrictCenter(row.id, null);
+        map.flyTo({ center: districtCenter, zoom: 13.3, duration: 800 });
+        setSelectedDistrict(row.id, row.name, row.color);
+      });
+      mobileSafetyGrid.appendChild(btn);
+    });
+  }else{
+    mobileSafetyGrid.classList.remove('is-district');
+    getRankedWardRows().forEach((entry)=>{
+      const wardId = entry.wardId;
+      const tierClass = getTierClassName(entry.score);
+      const tierLabel = escapeHTML(getSafetyTier(entry.score).label.toUpperCase());
+      const btn = document.createElement('button');
+      btn.type = 'button';
+      btn.className = `sheet-pill ${tierClass}`;
+      btn.dataset.ward = wardId;
+      btn.innerHTML = `<span class="sheet-pill-name">Ward ${escapeHTML(wardId)}</span><strong>${entry.score}</strong><span class="sheet-pill-meta">${tierLabel}</span>`;
+      btn.addEventListener('click', ()=>{
+        const feature = entry.feature;
+        zoomToFeature(feature);
+        const councilName = (feature.properties && feature.properties.council_pe) || '';
+        setSelectedWard(wardId, councilName);
+      });
+      mobileSafetyGrid.appendChild(btn);
+    });
+  }
+
+  syncMobileSafetyGridSelection();
 }
 
 function renderDistrictSafetyList(){
@@ -2858,12 +3002,13 @@ function renderDistrictSafetyList(){
 }
 
 function renderSafetyScoreList(){
-  if(!wardList) return;
+  if(!wardList && !mobileSafetyGrid) return;
   if(safetyScoreView === 'district'){
     renderDistrictSafetyList();
   }else{
     renderWardSafetyList();
   }
+  renderMobileSafetyGrid();
   syncSafetyListSelection();
 }
 
@@ -2883,6 +3028,11 @@ function setSafetyScoreView(view){
   if(view !== 'ward' && view !== 'district') return;
   const viewChanged = safetyScoreView !== view;
   safetyScoreView = view;
+
+  if(viewChanged){
+    hideWardInfoPanel();
+  }
+
   applySafetyViewToMap();
 
   if (viewChanged) {
@@ -3376,14 +3526,11 @@ async function toggleLayer(group, forceVisible){
 
     <!-- Ward Safety Scores -->
     <div class="sheet-section-title">Neighborhood Safety Scores</div>
-    <div class="sheet-ward-grid">
-      <div class="sheet-pill tier-caution">Ward A<br><strong>45</strong> Caution</div>
-      <div class="sheet-pill tier-fair">Ward B<br><strong>57</strong> Fair</div>
-      <div class="sheet-pill tier-good">Ward C<br><strong>65</strong> Good</div>
-      <div class="sheet-pill tier-good">Ward D<br><strong>69</strong> Good</div>
-      <div class="sheet-pill tier-good">Ward E<br><strong>75</strong> Good</div>
-      <div class="sheet-pill tier-good">Ward F<br><strong>79</strong> Good</div>
+    <div class="sheet-safety-toggle" role="tablist" aria-label="Mobile safety score view">
+      <button type="button" class="sheet-safety-btn safety-view-btn is-active" data-view="district" id="mobile-safety-view-district">By District</button>
+      <button type="button" class="sheet-safety-btn safety-view-btn" data-view="ward" id="mobile-safety-view-ward">By Ward</button>
     </div>
+    <div class="sheet-ward-grid is-district" id="mobileSafetyGrid"></div>
 
     <!-- 2025 Crime Stats -->
     <div class="sheet-section-title">2025 Crime Stats (Jan–Dec)</div>
