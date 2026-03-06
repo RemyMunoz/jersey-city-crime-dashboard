@@ -2867,20 +2867,23 @@ function renderSafetyScoreList(){
   syncSafetyListSelection();
 }
 
-function setSafetyScoreView(view){
-  if(view !== 'ward' && view !== 'district') return;
-  const viewChanged = safetyScoreView !== view;
-  safetyScoreView = view;
-
-  const showWardMap = view === 'ward';
+function applySafetyViewToMap(){
+  const showWardMap = safetyScoreView === 'ward';
   layerState.wardBoundaries = showWardMap;
   layerState.districts = !showWardMap;
   syncLayerToggleInputs('wardBoundaries', layerState.wardBoundaries);
   syncLayerToggleInputs('districts', layerState.districts);
-  if (typeof map?.isStyleLoaded === 'function' && map.isStyleLoaded()) {
-    toggleLayer('wardBoundaries', showWardMap);
-    toggleLayer('districts', !showWardMap);
-  }
+
+  if(!mapHasLoaded) return;
+  if(map.getLayer('wards-fill')) toggleLayer('wardBoundaries', showWardMap);
+  if(map.getLayer('districts-fill')) toggleLayer('districts', !showWardMap);
+}
+
+function setSafetyScoreView(view){
+  if(view !== 'ward' && view !== 'district') return;
+  const viewChanged = safetyScoreView !== view;
+  safetyScoreView = view;
+  applySafetyViewToMap();
 
   if (viewChanged) {
     updateSafetyViewButtons();
@@ -3040,6 +3043,7 @@ map.on('load',()=>{
   updatePathLegend();
   updatePoiLegend();
   updateHeatmapLegend();
+  applySafetyViewToMap();
   syncAllLayerToggles();
 
   // Precinct markers
