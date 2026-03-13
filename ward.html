@@ -1,0 +1,905 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Ward Detail | BlockIQ JC</title>
+  <meta name="description" content="Ward-level neighborhood detail for Jersey City with BlockIQ JC safety score context, modeled 2025 crime mix, schools, parks, and nearby transit.">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Bebas+Neue&family=DM+Sans:wght@400;500;700&family=Space+Mono:wght@400;700&display=swap" rel="stylesheet">
+  <style>
+    :root {
+      --bg: #0a0c10;
+      --panel: #111318;
+      --panel-soft: rgba(17, 19, 24, 0.9);
+      --border: #1e2229;
+      --text: #e8eaed;
+      --muted: #6b7280;
+      --accent: #e8571a;
+      --accent-soft: rgba(232, 87, 26, 0.16);
+      --blue: #4a90d9;
+      --green: #4ade80;
+      --yellow: #facc15;
+      --orange: #fb923c;
+      --red: #ef4444;
+      --shadow: 0 24px 80px rgba(0, 0, 0, 0.35);
+    }
+
+    * { box-sizing: border-box; }
+    html, body { margin: 0; padding: 0; background: radial-gradient(circle at top, rgba(74, 144, 217, 0.12), transparent 32%), var(--bg); color: var(--text); font-family: 'DM Sans', sans-serif; }
+    body { min-height: 100vh; }
+    a { color: inherit; }
+
+    .page-shell {
+      max-width: 1180px;
+      margin: 0 auto;
+      padding: 28px 24px 56px;
+    }
+
+    .topbar {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      gap: 18px;
+      margin-bottom: 26px;
+      padding: 12px 16px;
+      border: 1px solid var(--border);
+      border-radius: 16px;
+      background: rgba(10, 12, 16, 0.85);
+      backdrop-filter: blur(14px);
+      box-shadow: var(--shadow);
+    }
+
+    .brand {
+      display: flex;
+      flex-direction: column;
+      gap: 4px;
+    }
+
+    .brand-mark {
+      font-family: 'Bebas Neue', sans-serif;
+      font-size: 2rem;
+      letter-spacing: 2px;
+      line-height: 1;
+    }
+
+    .brand-mark .iq { color: var(--accent); }
+    .brand-sub {
+      font-family: 'Space Mono', monospace;
+      font-size: 0.72rem;
+      letter-spacing: 2px;
+      color: var(--muted);
+      text-transform: uppercase;
+    }
+
+    .top-links {
+      display: flex;
+      gap: 10px;
+      flex-wrap: wrap;
+      justify-content: flex-end;
+    }
+
+    .ghost-link,
+    .primary-link {
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      min-height: 42px;
+      padding: 0 16px;
+      border-radius: 999px;
+      border: 1px solid var(--border);
+      text-decoration: none;
+      font-size: 0.86rem;
+      transition: transform 0.2s ease, border-color 0.2s ease, background 0.2s ease;
+    }
+
+    .ghost-link {
+      background: rgba(255, 255, 255, 0.02);
+      color: var(--muted);
+    }
+
+    .ghost-link:hover {
+      transform: translateY(-1px);
+      color: var(--text);
+      border-color: rgba(74, 144, 217, 0.45);
+    }
+
+    .primary-link {
+      background: var(--accent-soft);
+      border-color: rgba(232, 87, 26, 0.4);
+      color: #ffd8c9;
+    }
+
+    .primary-link:hover {
+      transform: translateY(-1px);
+      background: rgba(232, 87, 26, 0.22);
+    }
+
+    .hero {
+      display: grid;
+      grid-template-columns: minmax(0, 1.3fr) minmax(320px, 0.7fr);
+      gap: 22px;
+      margin-bottom: 22px;
+    }
+
+    .hero-card,
+    .panel,
+    .metric-card,
+    .crime-table-wrap,
+    .sources-card,
+    .empty-state {
+      border: 1px solid var(--border);
+      border-radius: 22px;
+      background: linear-gradient(180deg, rgba(17, 19, 24, 0.96), rgba(10, 12, 16, 0.98));
+      box-shadow: var(--shadow);
+    }
+
+    .hero-card {
+      position: relative;
+      overflow: hidden;
+      padding: 32px;
+    }
+
+    .hero-card::after {
+      content: '';
+      position: absolute;
+      inset: auto -12% -38% auto;
+      width: 320px;
+      height: 320px;
+      border-radius: 50%;
+      background: radial-gradient(circle, rgba(232, 87, 26, 0.18), rgba(232, 87, 26, 0));
+      pointer-events: none;
+    }
+
+    .eyebrow {
+      display: inline-flex;
+      align-items: center;
+      gap: 8px;
+      min-height: 30px;
+      padding: 0 12px;
+      margin-bottom: 18px;
+      border: 1px solid rgba(232, 87, 26, 0.3);
+      border-radius: 999px;
+      background: rgba(232, 87, 26, 0.08);
+      color: #ffbb9e;
+      font-family: 'Space Mono', monospace;
+      font-size: 0.72rem;
+      letter-spacing: 1.5px;
+      text-transform: uppercase;
+    }
+
+    .hero h1 {
+      margin: 0;
+      font-family: 'Bebas Neue', sans-serif;
+      font-size: clamp(3rem, 7vw, 5.6rem);
+      line-height: 0.94;
+      letter-spacing: 1px;
+    }
+
+    .hero h1 span { color: var(--accent); }
+
+    .hero-copy {
+      max-width: 620px;
+      margin: 16px 0 0;
+      color: #c4cad2;
+      font-size: 1rem;
+      line-height: 1.75;
+    }
+
+    .hero-meta {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 10px;
+      margin-top: 20px;
+    }
+
+    .meta-chip {
+      display: inline-flex;
+      align-items: center;
+      gap: 8px;
+      min-height: 36px;
+      padding: 0 12px;
+      border-radius: 999px;
+      border: 1px solid rgba(255, 255, 255, 0.06);
+      background: rgba(255, 255, 255, 0.03);
+      color: var(--muted);
+      font-size: 0.84rem;
+    }
+
+    .score-panel {
+      padding: 28px;
+      display: flex;
+      flex-direction: column;
+      justify-content: space-between;
+      gap: 18px;
+    }
+
+    .score-ring {
+      --score: 50;
+      --ring-color: var(--orange);
+      width: 178px;
+      height: 178px;
+      margin: 0 auto;
+      border-radius: 50%;
+      background: conic-gradient(var(--ring-color) calc(var(--score) * 1%), rgba(255, 255, 255, 0.08) 0);
+      display: grid;
+      place-items: center;
+      position: relative;
+      box-shadow: 0 0 0 1px rgba(255,255,255,0.04) inset;
+    }
+
+    .score-ring::before {
+      content: '';
+      position: absolute;
+      inset: 12px;
+      border-radius: 50%;
+      background: linear-gradient(180deg, rgba(17, 19, 24, 0.95), rgba(10, 12, 16, 0.98));
+      border: 1px solid rgba(255,255,255,0.05);
+    }
+
+    .score-ring-inner {
+      position: relative;
+      z-index: 1;
+      text-align: center;
+    }
+
+    .score-value {
+      font-family: 'Bebas Neue', sans-serif;
+      font-size: 4rem;
+      line-height: 0.9;
+      letter-spacing: 1px;
+    }
+
+    .score-label {
+      margin-top: 6px;
+      font-family: 'Space Mono', monospace;
+      font-size: 0.78rem;
+      letter-spacing: 1.6px;
+      color: var(--muted);
+      text-transform: uppercase;
+    }
+
+    .score-tier {
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      min-height: 34px;
+      padding: 0 12px;
+      border-radius: 999px;
+      font-family: 'Space Mono', monospace;
+      font-size: 0.76rem;
+      letter-spacing: 1px;
+      text-transform: uppercase;
+      color: #111;
+      font-weight: 700;
+      margin: 0 auto;
+    }
+
+    .score-summary {
+      display: grid;
+      grid-template-columns: repeat(3, minmax(0, 1fr));
+      gap: 12px;
+      margin-top: 6px;
+    }
+
+    .summary-card {
+      border: 1px solid rgba(255, 255, 255, 0.05);
+      border-radius: 16px;
+      padding: 14px;
+      background: rgba(255, 255, 255, 0.03);
+    }
+
+    .summary-label {
+      font-family: 'Space Mono', monospace;
+      font-size: 0.68rem;
+      letter-spacing: 1.5px;
+      text-transform: uppercase;
+      color: var(--muted);
+      margin-bottom: 8px;
+    }
+
+    .summary-value {
+      font-size: 1rem;
+      font-weight: 700;
+      line-height: 1.3;
+    }
+
+    .summary-note {
+      margin-top: 4px;
+      color: var(--muted);
+      font-size: 0.82rem;
+      line-height: 1.5;
+    }
+
+    .content-grid {
+      display: grid;
+      grid-template-columns: minmax(0, 1.05fr) minmax(320px, 0.95fr);
+      gap: 22px;
+      align-items: start;
+    }
+
+    .panel {
+      padding: 26px;
+    }
+
+    .section-kicker {
+      font-family: 'Space Mono', monospace;
+      font-size: 0.76rem;
+      letter-spacing: 2px;
+      color: var(--accent);
+      text-transform: uppercase;
+      margin-bottom: 12px;
+    }
+
+    .section-title {
+      margin: 0 0 12px;
+      font-family: 'Bebas Neue', sans-serif;
+      font-size: 2.3rem;
+      letter-spacing: 1px;
+      line-height: 1;
+    }
+
+    .section-copy {
+      margin: 0 0 18px;
+      color: #c4cad2;
+      line-height: 1.75;
+      font-size: 0.96rem;
+    }
+
+    .method-note {
+      margin: 14px 0 0;
+      padding: 12px 14px;
+      border-radius: 14px;
+      background: rgba(74, 144, 217, 0.08);
+      border: 1px solid rgba(74, 144, 217, 0.18);
+      color: #c9d8eb;
+      font-size: 0.85rem;
+      line-height: 1.7;
+    }
+
+    .crime-table-wrap {
+      overflow: hidden;
+    }
+
+    .crime-table {
+      width: 100%;
+      border-collapse: collapse;
+      font-size: 0.94rem;
+    }
+
+    .crime-table th,
+    .crime-table td {
+      padding: 13px 14px;
+      border-bottom: 1px solid rgba(255, 255, 255, 0.06);
+      text-align: left;
+    }
+
+    .crime-table th {
+      background: rgba(255, 255, 255, 0.03);
+      font-family: 'Space Mono', monospace;
+      font-size: 0.72rem;
+      letter-spacing: 1.4px;
+      color: var(--muted);
+      text-transform: uppercase;
+    }
+
+    .crime-table td:last-child,
+    .crime-table th:last-child { text-align: right; }
+
+    .crime-table tr.signal-row td:first-child {
+      color: #ffd6c7;
+      font-weight: 700;
+    }
+
+    .signal-badge {
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      min-height: 22px;
+      padding: 0 8px;
+      margin-left: 8px;
+      border-radius: 999px;
+      font-family: 'Space Mono', monospace;
+      font-size: 0.62rem;
+      letter-spacing: 1px;
+      text-transform: uppercase;
+      background: rgba(232, 87, 26, 0.14);
+      color: #ffbb9e;
+      border: 1px solid rgba(232, 87, 26, 0.28);
+      vertical-align: middle;
+    }
+
+    .crime-count {
+      font-family: 'Space Mono', monospace;
+      font-weight: 700;
+      color: #f7f8fa;
+    }
+
+    .metrics-grid {
+      display: grid;
+      grid-template-columns: repeat(2, minmax(0, 1fr));
+      gap: 14px;
+    }
+
+    .metric-card {
+      padding: 18px;
+      background: linear-gradient(180deg, rgba(17, 19, 24, 0.95), rgba(13, 15, 20, 0.98));
+    }
+
+    .metric-card h3 {
+      margin: 0 0 10px;
+      font-family: 'Bebas Neue', sans-serif;
+      font-size: 1.55rem;
+      letter-spacing: 1px;
+    }
+
+    .metric-value {
+      font-family: 'Space Mono', monospace;
+      font-size: 1.3rem;
+      font-weight: 700;
+      color: #f7f8fa;
+      margin-bottom: 6px;
+    }
+
+    .metric-caption {
+      color: #c4cad2;
+      font-size: 0.9rem;
+      line-height: 1.65;
+      margin: 0;
+    }
+
+    .detail-list {
+      display: flex;
+      flex-direction: column;
+      gap: 8px;
+      margin-top: 12px;
+    }
+
+    .detail-item {
+      display: flex;
+      align-items: flex-start;
+      gap: 10px;
+      color: var(--muted);
+      font-size: 0.86rem;
+      line-height: 1.6;
+    }
+
+    .detail-item::before {
+      content: '•';
+      color: var(--accent);
+      font-size: 1rem;
+      line-height: 1.2;
+      margin-top: 1px;
+    }
+
+    .sources-card {
+      margin-top: 22px;
+      padding: 18px 22px;
+      color: var(--muted);
+      font-size: 0.82rem;
+      line-height: 1.8;
+    }
+
+    .sources-card a {
+      color: #8fb8d3;
+      text-decoration: none;
+    }
+
+    .sources-card a:hover { text-decoration: underline; }
+
+    .empty-state {
+      padding: 34px;
+      text-align: center;
+    }
+
+    .empty-state h1 {
+      margin: 0 0 10px;
+      font-family: 'Bebas Neue', sans-serif;
+      font-size: 2.8rem;
+      letter-spacing: 1px;
+    }
+
+    .empty-state p {
+      max-width: 560px;
+      margin: 0 auto 18px;
+      color: #c4cad2;
+      line-height: 1.75;
+    }
+
+    @media (max-width: 1024px) {
+      .hero,
+      .content-grid {
+        grid-template-columns: 1fr;
+      }
+
+      .score-summary,
+      .metrics-grid {
+        grid-template-columns: 1fr;
+      }
+    }
+
+    @media (max-width: 768px) {
+      .page-shell {
+        padding: 18px 16px 42px;
+      }
+
+      .topbar {
+        align-items: flex-start;
+        flex-direction: column;
+      }
+
+      .hero-card,
+      .score-panel,
+      .panel {
+        padding: 22px;
+      }
+
+      .hero h1 {
+        font-size: clamp(2.7rem, 14vw, 4rem);
+      }
+
+      .score-ring {
+        width: 156px;
+        height: 156px;
+      }
+    }
+
+    @media (max-width: 480px) {
+      .hero-copy,
+      .section-copy,
+      .metric-caption,
+      .detail-item,
+      .sources-card {
+        font-size: 0.88rem;
+      }
+
+      .top-links {
+        width: 100%;
+      }
+
+      .ghost-link,
+      .primary-link {
+        flex: 1 1 auto;
+      }
+    }
+  </style>
+</head>
+<body>
+  <div class="page-shell" id="pageShell"></div>
+
+  <script>
+    const CITYWIDE_2025_TOTALS = {
+      'Shooting Incidents': 36,
+      'Shooting Victims': 45,
+      'Homicides': 12,
+      'Robbery': 388,
+      'Aggravated Assault': 956,
+      'Criminal Mischief': 2132,
+      'Burglary': 462,
+      'Theft': 4037,
+      'Stolen Vehicles': 843
+    };
+
+    const WARD_TOTAL_INCIDENTS = 1191;
+    const WARD_PROFILES = {
+      A: {
+        id: 'A',
+        name: 'Ward A',
+        neighborhood: 'Greenville',
+        score: 45,
+        incidents: 312,
+        topCrime: 'Assault',
+        council: 'Denise Ridley',
+        scoreColor: '#ef4444',
+        tierLabel: 'Caution',
+        schools: 4,
+        schoolExamples: ['Bergen-Lafayette Montessori School', 'Elementary School 22', 'New York/New Jersey Academy of Ceramic Arts', 'Public School 34'],
+        parks: 7,
+        parkExamples: ['Skinner Memorial Park', 'Ralph Taylor Memorial Park', 'Claremont Avenue Playground', 'Ferris Triangle Park'],
+        transit: 'Exchange Place PATH',
+        transitDetail: 'Closest PATH connection is about 2.5 miles away.',
+        libraries: 2,
+        affordableHousing: 4
+      },
+      B: {
+        id: 'B',
+        name: 'Ward B',
+        neighborhood: 'West Side',
+        score: 57,
+        incidents: 245,
+        topCrime: 'Robbery',
+        council: 'Joel A. Brooks',
+        scoreColor: '#fb923c',
+        tierLabel: 'Fair',
+        schools: 14,
+        schoolExamples: ['A Harry Moore School', 'Badr School', 'Bentley Avenue', 'Bright Future Day/Night Childcare'],
+        parks: 5,
+        parkExamples: ['Ege Avenue Playground', 'Virginia Avenue Park', 'Bramhall Avenue Mini Park', 'Monticello Avenue Mini Park'],
+        transit: 'Journal Square PATH',
+        transitDetail: 'Closest PATH connection is about 1.2 miles away.',
+        libraries: 3,
+        affordableHousing: 1
+      },
+      C: {
+        id: 'C',
+        name: 'Ward C',
+        neighborhood: 'Journal Square',
+        score: 65,
+        incidents: 198,
+        topCrime: 'Larceny',
+        council: 'Thomas Zuppa Jr.',
+        scoreColor: '#facc15',
+        tierLabel: 'Good',
+        schools: 12,
+        schoolExamples: ['Academy House CDC 4', 'Hudson Catholic Regional High School', 'Jersey City Golden Door Charter School', 'Jotham W. Wakeman No. 6 Elementary School'],
+        parks: 6,
+        parkExamples: ['Pavonia/Marion Playground Pool', 'Brett Triangle', 'LaPOINTE Park', 'Apple Tree House'],
+        transit: 'Journal Square PATH',
+        transitDetail: 'Closest PATH connection is about 0.5 miles away.',
+        libraries: 2,
+        affordableHousing: 3
+      },
+      D: {
+        id: 'D',
+        name: 'Ward D',
+        neighborhood: 'The Heights',
+        score: 69,
+        incidents: 176,
+        topCrime: 'Burglary',
+        council: 'Jake Ephros',
+        scoreColor: '#facc15',
+        tierLabel: 'Good',
+        schools: 8,
+        schoolExamples: ['Alfred E. Zampella No. 27 Elementary School', 'Bright Star Learning Center II', 'Christa McAuliffe School', 'Jersey City Global Charter School'],
+        parks: 5,
+        parkExamples: ['Terrace Avenue / Edward Crincoli Park', 'Fisk Park', 'Riverview Park', 'Cueno Place Park'],
+        transit: 'Journal Square PATH',
+        transitDetail: 'Closest PATH connection is about 1.6 miles away.',
+        libraries: 1,
+        affordableHousing: 2
+      },
+      E: {
+        id: 'E',
+        name: 'Ward E',
+        neighborhood: 'Historic Downtown',
+        score: 75,
+        incidents: 142,
+        topCrime: 'Theft',
+        council: 'Eleana Little',
+        scoreColor: '#4ade80',
+        tierLabel: 'Good',
+        schools: 13,
+        schoolExamples: ['Explore 2000 Middle School', 'Garden Preschool Cooperative', 'Hamilton Park Montessori', 'Jersey City Golden Door Charter'],
+        parks: 8,
+        parkExamples: ['Roberto Clemente LL', 'Laurel Court', 'Wayne Street Playground', 'City Hall Park'],
+        transit: 'Grove Street PATH',
+        transitDetail: 'Closest PATH connection is about 0.3 miles away.',
+        libraries: 3,
+        affordableHousing: 1
+      },
+      F: {
+        id: 'F',
+        name: 'Ward F',
+        neighborhood: 'Bergen-Lafayette',
+        score: 79,
+        incidents: 118,
+        topCrime: 'Vandalism',
+        council: 'Frank E. Gilmore',
+        scoreColor: '#4ade80',
+        tierLabel: 'Good',
+        schools: 13,
+        schoolExamples: ['268 Varick St', 'Bergen Community Action Head Start', 'Cradle To Crayons Learning Center', 'Frank R Conwell Middle School'],
+        parks: 15,
+        parkExamples: ['Dr. Lena Edwards Park', 'Meluso Park', 'Gateway Park Complex', 'Terry DeHere / Garfield Avenue Park'],
+        transit: 'Exchange Place PATH',
+        transitDetail: 'Closest PATH connection is about 0.8 miles away.',
+        libraries: 2,
+        affordableHousing: 12
+      }
+    };
+
+    const LOCAL_SIGNAL_CATEGORY = {
+      Assault: 'Aggravated Assault',
+      Robbery: 'Robbery',
+      Larceny: 'Theft',
+      Theft: 'Theft',
+      Burglary: 'Burglary',
+      Vandalism: 'Criminal Mischief'
+    };
+
+    function escapeHTML(value) {
+      return String(value ?? '')
+        .replace(/&/g, '&amp;')
+        .replace(/</g, '&lt;')
+        .replace(/>/g, '&gt;')
+        .replace(/"/g, '&quot;')
+        .replace(/'/g, '&#39;');
+    }
+
+    function formatNumber(value) {
+      return Number(value || 0).toLocaleString();
+    }
+
+    function getWardFromUrl() {
+      const params = new URLSearchParams(window.location.search);
+      const ward = String(params.get('ward') || window.location.hash.replace('#', '') || '').trim().toUpperCase();
+      return WARD_PROFILES[ward] ? ward : null;
+    }
+
+    function buildCrimeRows(profile) {
+      const signalCategory = LOCAL_SIGNAL_CATEGORY[profile.topCrime] || '';
+      const share = profile.incidents / WARD_TOTAL_INCIDENTS;
+      const rows = Object.entries(CITYWIDE_2025_TOTALS).map(([name, total]) => {
+        const estimate = Math.max(1, Math.round(total * share));
+        return {
+          name,
+          estimate,
+          isSignal: name === signalCategory
+        };
+      });
+
+      rows.sort((a, b) => {
+        if (a.isSignal && !b.isSignal) return -1;
+        if (!a.isSignal && b.isSignal) return 1;
+        return b.estimate - a.estimate;
+      });
+      return rows;
+    }
+
+    function renderWardPage(profile) {
+      const pageShell = document.getElementById('pageShell');
+      const title = `${profile.name} — ${profile.neighborhood} | BlockIQ JC`;
+      document.title = title;
+
+      const crimeRows = buildCrimeRows(profile).map((row) => `
+        <tr class="${row.isSignal ? 'signal-row' : ''}">
+          <td>${escapeHTML(row.name)}${row.isSignal ? '<span class="signal-badge">Local signal</span>' : ''}</td>
+          <td><span class="crime-count">~${formatNumber(row.estimate)}</span></td>
+        </tr>
+      `).join('');
+
+      pageShell.innerHTML = `
+        <header class="topbar">
+          <div class="brand">
+            <div class="brand-mark">BLOCK<span class="iq">IQ</span> JC</div>
+            <div class="brand-sub">Ward intelligence profile</div>
+          </div>
+          <div class="top-links">
+            <a class="ghost-link" href="index.html">← Back to Home</a>
+            <a class="primary-link" href="dashboard.html">Back to Dashboard</a>
+          </div>
+        </header>
+
+        <section class="hero">
+          <article class="hero-card">
+            <div class="eyebrow">Ward detail page · Jersey City</div>
+            <h1>${escapeHTML(profile.name)} <span>— ${escapeHTML(profile.neighborhood)}</span></h1>
+            <p class="hero-copy">This page combines the current BlockIQ neighborhood safety model with Jersey City’s published 2025 NIBRS citywide totals so you can review one ward in isolation without bouncing back to the map.</p>
+            <div class="hero-meta">
+              <div class="meta-chip"><strong>${formatNumber(profile.incidents)}</strong>&nbsp;current incident-weighted model count</div>
+              <div class="meta-chip"><strong>${escapeHTML(profile.topCrime)}</strong>&nbsp;top local crime signal</div>
+              <div class="meta-chip"><strong>${escapeHTML(profile.council)}</strong>&nbsp;council representative</div>
+            </div>
+          </article>
+
+          <aside class="score-panel hero-card">
+            <div class="score-ring" style="--score:${profile.score}; --ring-color:${profile.scoreColor};">
+              <div class="score-ring-inner">
+                <div class="score-value">${profile.score}</div>
+                <div class="score-label">Safety Score</div>
+              </div>
+            </div>
+            <div class="score-tier" style="background:${profile.scoreColor};">${escapeHTML(profile.tierLabel)}</div>
+            <div class="score-summary">
+              <div class="summary-card">
+                <div class="summary-label">Top Crime</div>
+                <div class="summary-value">${escapeHTML(profile.topCrime)}</div>
+                <div class="summary-note">Strongest local risk signal in the current model.</div>
+              </div>
+              <div class="summary-card">
+                <div class="summary-label">Schools</div>
+                <div class="summary-value">${formatNumber(profile.schools)}</div>
+                <div class="summary-note">Schools and daycares currently mapped in this ward.</div>
+              </div>
+              <div class="summary-card">
+                <div class="summary-label">Transit</div>
+                <div class="summary-value">${escapeHTML(profile.transit)}</div>
+                <div class="summary-note">${escapeHTML(profile.transitDetail)}</div>
+              </div>
+            </div>
+          </aside>
+        </section>
+
+        <section class="content-grid">
+          <div class="panel">
+            <div class="section-kicker">Crime profile</div>
+            <h2 class="section-title">2025 Crime Breakdown</h2>
+            <p class="section-copy">JCPD publishes 2025 NIBRS totals citywide, not ward by ward. These rows estimate this ward’s likely share of citywide offense volume using the same incident-weighted ward model already used in the dashboard.</p>
+            <div class="crime-table-wrap">
+              <table class="crime-table" aria-label="Estimated 2025 ward crime breakdown">
+                <thead>
+                  <tr>
+                    <th>Offense</th>
+                    <th>Estimated Ward Share</th>
+                  </tr>
+                </thead>
+                <tbody>${crimeRows}</tbody>
+              </table>
+            </div>
+            <div class="method-note">Method note: estimates are directional, not official ward-level JCPD counts. They are calculated from this ward’s incident share within the current BlockIQ safety model and the published 2025 citywide NIBRS totals.</div>
+          </div>
+
+          <div class="panel">
+            <div class="section-kicker">Nearby essentials</div>
+            <h2 class="section-title">Key Stats Around ${escapeHTML(profile.neighborhood)}</h2>
+            <div class="metrics-grid">
+              <article class="metric-card">
+                <h3>Schools &amp; Daycares</h3>
+                <div class="metric-value">${formatNumber(profile.schools)}</div>
+                <p class="metric-caption">Current school and daycare locations already mapped inside this ward.</p>
+                <div class="detail-list">
+                  ${profile.schoolExamples.map((item) => `<div class="detail-item">${escapeHTML(item)}</div>`).join('')}
+                </div>
+              </article>
+
+              <article class="metric-card">
+                <h3>Parks &amp; Green Space</h3>
+                <div class="metric-value">${formatNumber(profile.parks)}</div>
+                <p class="metric-caption">Verified parks and green-space locations from the current BlockIQ ward map.</p>
+                <div class="detail-list">
+                  ${profile.parkExamples.map((item) => `<div class="detail-item">${escapeHTML(item)}</div>`).join('')}
+                </div>
+              </article>
+
+              <article class="metric-card">
+                <h3>Transit Nearby</h3>
+                <div class="metric-value">${escapeHTML(profile.transit)}</div>
+                <p class="metric-caption">${escapeHTML(profile.transitDetail)}</p>
+                <div class="detail-list">
+                  <div class="detail-item">Ward detail pages stay linked back to the full dashboard map for route-level context.</div>
+                </div>
+              </article>
+
+              <article class="metric-card">
+                <h3>Community Snapshot</h3>
+                <div class="metric-value">${formatNumber(profile.libraries)} libraries · ${formatNumber(profile.affordableHousing)} housing sites</div>
+                <p class="metric-caption">Additional ward-level counts derived from the same verified BlockIQ community layers already active in the dashboard.</p>
+                <div class="detail-list">
+                  <div class="detail-item">Council member: ${escapeHTML(profile.council)}</div>
+                  <div class="detail-item">Current score tier: ${escapeHTML(profile.tierLabel)}</div>
+                </div>
+              </article>
+            </div>
+          </div>
+        </section>
+
+        <section class="sources-card">
+          Source set: BlockIQ ward safety model + Jersey City 2025 JCPD NIBRS citywide totals + verified community layers already published in the dashboard. Official 2025 crime source: <a href="https://cdnsm5-hosted.civiclive.com/UserFiles/Servers/Server_6189660/File/City%20Hall/Public%20Safety/UCR%20Crime%20Data%20Report/2025-JCPD-Crime-Stats.png" target="_blank" rel="noopener noreferrer">JCPD Crime Stats 2025</a>.
+        </section>
+      `;
+    }
+
+    function renderInvalidState() {
+      document.title = 'Ward Detail | BlockIQ JC';
+      document.getElementById('pageShell').innerHTML = `
+        <div class="empty-state">
+          <h1>Ward not found</h1>
+          <p>Use one of the BlockIQ ward links from the landing page or dashboard, or jump back to the main dashboard and choose a ward from there.</p>
+          <div class="top-links" style="justify-content:center;">
+            <a class="ghost-link" href="index.html">Back to Home</a>
+            <a class="primary-link" href="dashboard.html">Back to Dashboard</a>
+          </div>
+        </div>
+      `;
+    }
+
+    const wardId = getWardFromUrl();
+    if (wardId) {
+      renderWardPage(WARD_PROFILES[wardId]);
+    } else {
+      renderInvalidState();
+    }
+  </script>
+</body>
+</html>

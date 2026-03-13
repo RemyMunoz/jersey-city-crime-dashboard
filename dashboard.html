@@ -430,7 +430,7 @@
   .source-url:hover{color:#8fb8d3; text-decoration:underline;}
   .source-desc{font-size:10px; color:#b6bcc7; line-height:1.4; margin-top:5px;}
   .ward-list,.precinct-list { display:flex; flex-direction:column; gap:8px; }
-  .ward-item { display:flex; align-items:flex-start; gap:10px; padding:8px 10px; background:var(--bg); border:1px solid var(--border); border-radius:5px; cursor:pointer; transition:border-color .2s; }
+  .ward-item { display:flex; align-items:flex-start; gap:10px; padding:8px 10px; background:var(--bg); border:1px solid var(--border); border-radius:5px; cursor:pointer; transition:border-color .2s; color:inherit; text-decoration:none; }
   .ward-item:hover { border-color:var(--blue); }
   .ward-item.is-active { border-color: var(--accent); box-shadow: 0 0 0 1px rgba(232,87,26,0.35) inset; }
   .ward-dot { width:10px; height:10px; border-radius:50%; flex-shrink:0; }
@@ -615,47 +615,6 @@
   .mapboxgl-ctrl-geocoder .suggestions > li > a:hover {
     background-color:#1e2229 !important;
     color:#e8eaed !important;
-  }
-  .biq-ad-slot {
-    margin: 16px 12px;
-    padding: 16px;
-    background: rgba(232,87,26,0.05);
-    border: 1px dashed rgba(232,87,26,0.28);
-    border-left: 3px solid #E8571A;
-    border-radius: 10px;
-    display: flex;
-    flex-direction: column;
-    gap: 4px;
-  }
-  .biq-ad-label {
-    font-family: 'DM Mono', monospace;
-    font-size: 0.58rem;
-    letter-spacing: 2px;
-    text-transform: uppercase;
-    color: var(--accent);
-  }
-  .biq-ad-name {
-    font-family: 'Bebas Neue', sans-serif;
-    font-size: 1.1rem;
-    letter-spacing: 1px;
-    color: var(--text);
-  }
-  .biq-ad-sub {
-    font-size: 0.72rem;
-    color: var(--muted);
-    font-weight: 300;
-    line-height: 1.5;
-  }
-  .biq-ad-link {
-    font-size: 0.75rem;
-    color: var(--accent);
-    text-decoration: none;
-    font-weight: 600;
-    margin-top: 4px;
-    transition: color 0.2s;
-  }
-  .biq-ad-link:hover {
-    color: var(--cyan);
   }
   .biq-disclaimer {
     font-size: 0.62rem;
@@ -960,6 +919,7 @@
       -webkit-tap-highlight-color: transparent;
       border: 1px solid transparent;
       min-height: 66px;
+      text-decoration: none;
       transition: border-color .2s, box-shadow .2s, transform .15s;
     }
     .sheet-pill-name {
@@ -1245,46 +1205,6 @@
       font-weight: 700;
     }
 
-    /* ── Ad Banner ── */
-    .sheet-ad-banner {
-      background: linear-gradient(135deg, #1a0a00, #2d1500);
-      border: 1px solid #f0a500;
-      border-radius: 8px;
-      padding: 12px 14px;
-      margin: 14px 0;
-      text-align: left;
-    }
-    .sheet-ad-label {
-      font-size: 0.55rem;
-      font-family: 'Space Mono', monospace;
-      color: #f0a500;
-      letter-spacing: 0.1em;
-      text-transform: uppercase;
-      margin-bottom: 2px;
-    }
-    .sheet-ad-headline {
-      font-size: 1rem;
-      font-weight: 900;
-      color: #fff;
-      font-family: 'Space Mono', monospace;
-      letter-spacing: 0.05em;
-    }
-    .sheet-ad-sub {
-      font-size: 0.62rem;
-      color: #cbd5e0;
-      font-family: 'Space Mono', monospace;
-      margin: 4px 0 8px;
-    }
-    .sheet-ad-cta {
-      display: inline-block;
-      font-size: 0.65rem;
-      font-family: 'Space Mono', monospace;
-      color: #f0a500;
-      text-decoration: none;
-      font-weight: 700;
-    }
-    .sheet-ad-cta:hover { text-decoration: underline; }
-
     /* ── Source Links ── */
     .sheet-source-links {
       display: flex;
@@ -1567,14 +1487,8 @@
   </div>
 
   <p class="biq-disclaimer">Data from official government sources for informational purposes only. Not legal or financial advice. BlockIQ JC is not responsible for decisions made based on this information.</p>
-  <div class="biq-ad-slot">
-    <div class="biq-ad-label">Featured Agent</div>
-    <div class="biq-ad-name">Advertise Here</div>
-    <div class="biq-ad-sub">Reach JC home buyers · $100/mo</div>
-    <a href="index.html#advertise" class="biq-ad-link">Learn More →</a>
-  </div>
 
-  <div class="data-note">Source: FBI UCR 2024 · jerseycitynj.gov<br>Hover wards &amp; precincts for details<br>Click any item to zoom map</div>
+  <div class="data-note">Source: FBI UCR 2024 · jerseycitynj.gov<br>Hover wards &amp; precincts for details<br>District rows control the map · ward rows open detail pages</div>
 </div>
 
 <div id="map">
@@ -2604,6 +2518,10 @@ function getWardIdFromHash(hash){
   return match ? match[1].toUpperCase() : null;
 }
 
+function getWardDetailUrl(wardId){
+  return `ward.html?ward=${String(wardId || '').trim().toLowerCase()}`;
+}
+
 function setActiveWardListItem(wardId){
   document.querySelectorAll('.ward-item[data-ward]').forEach((item)=>{
     item.classList.toggle('is-active', !!wardId && item.dataset.ward === wardId);
@@ -2635,9 +2553,17 @@ function activateWardFromHash(hash = window.location.hash){
     pendingWardHashId = wardId;
     return false;
   }
-  const wardCard = document.querySelector(`.ward-item[data-ward="${wardId}"]`);
-  if(!wardCard) return false;
-  wardCard.click();
+  if(safetyScoreView !== 'ward'){
+    setSafetyScoreView('ward');
+  }
+  const feature = wardsGeoJSON.features.find((item)=>{
+    const itemWardId = String((item.properties && item.properties.ward) || '').toUpperCase();
+    return itemWardId === wardId;
+  });
+  if(!feature) return false;
+  zoomToFeature(feature);
+  const councilName = (feature.properties && feature.properties.council_pe) || '';
+  setSelectedWard(wardId, councilName);
   return true;
 }
 
@@ -2908,9 +2834,10 @@ function renderWardSafetyList(){
     const dotColor = safeColor(d.dot);
     const tierColor = safeColor(tier.color, '#6b7280');
     const tierLabel = escapeHTML(tier.label.toUpperCase());
-    const el = document.createElement('div');
+    const el = document.createElement('a');
     el.className = 'ward-item';
     el.dataset.ward = w;
+    el.href = getWardDetailUrl(w);
     el.innerHTML = `
       <div class="ward-dot" style="background:${dotColor}"></div>
       <div class="ward-content">
@@ -2923,12 +2850,6 @@ function renderWardSafetyList(){
           <div class="ward-incidents">${incidents} incidents</div>
         </div>
       </div>`;
-    el.addEventListener('click', ()=>{
-      zoomToFeature(f);
-      const wardId = ((f.properties && f.properties.ward) || '').toUpperCase();
-      const councilName = (f.properties && f.properties.council_pe) || '';
-      setSelectedWard(wardId, councilName);
-    });
     wardList.appendChild(el);
   });
 }
@@ -2964,17 +2885,11 @@ function renderMobileSafetyGrid(){
       const wardId = entry.wardId;
       const tierClass = getTierClassName(entry.score);
       const tierLabel = escapeHTML(getSafetyTier(entry.score).label.toUpperCase());
-      const btn = document.createElement('button');
-      btn.type = 'button';
+      const btn = document.createElement('a');
       btn.className = `sheet-pill ${tierClass}`;
       btn.dataset.ward = wardId;
+      btn.href = getWardDetailUrl(wardId);
       btn.innerHTML = `<span class="sheet-pill-name">Ward ${escapeHTML(wardId)}</span><strong>${entry.score}</strong><span class="sheet-pill-meta">${tierLabel}</span>`;
-      btn.addEventListener('click', ()=>{
-        const feature = entry.feature;
-        zoomToFeature(feature);
-        const councilName = (feature.properties && feature.properties.council_pe) || '';
-        setSelectedWard(wardId, councilName);
-      });
       mobileSafetyGrid.appendChild(btn);
     });
   }
@@ -3771,14 +3686,6 @@ async function toggleLayer(group, forceVisible){
         <div class="sheet-crime-row"><span>Larceny/Theft</span><strong>4,102</strong></div>
         <div class="sheet-crime-row"><span>Motor Vehicle Theft</span><strong>901</strong></div>
       </div>
-    </div>
-
-    <!-- Featured Agent Ad -->
-    <div class="sheet-ad-banner">
-      <div class="sheet-ad-label">FEATURED AGENT</div>
-      <div class="sheet-ad-headline">ADVERTISE HERE</div>
-      <div class="sheet-ad-sub">Reach JC home buyers · $100/mo</div>
-      <a href="mailto:ads@blockiqjc.com" class="sheet-ad-cta">Learn More →</a>
     </div>
 
     <!-- Data Sources -->

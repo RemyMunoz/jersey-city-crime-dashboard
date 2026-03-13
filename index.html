@@ -4,7 +4,7 @@
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>BlockIQ JC — Jersey City Crime Dashboard & Neighborhood Safety Scores</title>
-<meta http-equiv="Content-Security-Policy" content="default-src 'self'; base-uri 'self'; object-src 'none'; script-src 'self' 'unsafe-inline' https://www.googletagmanager.com; style-src 'self' 'unsafe-inline' https://fonts.googleapis.com; font-src 'self' data: https://fonts.gstatic.com; img-src 'self' data: blob: https:; connect-src 'self' https://formspree.io https://www.google-analytics.com https://region1.google-analytics.com https://stats.g.doubleclick.net https://www.googletagmanager.com; form-action 'self' https://formspree.io; upgrade-insecure-requests; block-all-mixed-content">
+<meta http-equiv="Content-Security-Policy" content="default-src 'self'; base-uri 'self'; object-src 'none'; script-src 'self' 'unsafe-inline' https://www.googletagmanager.com; style-src 'self' 'unsafe-inline' https://fonts.googleapis.com; font-src 'self' data: https://fonts.gstatic.com; img-src 'self' data: blob: https:; connect-src 'self' https://www.google-analytics.com https://region1.google-analytics.com https://stats.g.doubleclick.net https://www.googletagmanager.com; form-action 'self'; upgrade-insecure-requests; block-all-mixed-content">
 <meta name="referrer" content="strict-origin-when-cross-origin">
 <meta http-equiv="X-Content-Type-Options" content="nosniff">
 <meta http-equiv="Permissions-Policy" content="geolocation=(), camera=(), microphone=(), payment=(), usb=(), gyroscope=(), magnetometer=()">
@@ -988,9 +988,6 @@ footer {
   <a href="index.html" class="nav-logo">BLOCK<span class="iq">IQ</span> JC<span class="dot"></span></a>
   <ul class="nav-links">
     <li><a href="#features">Features</a></li>
-    <li><a href="#agents">Local Agents</a></li>
-    <li><a href="#advertise">Advertise</a></li>
-    <li><a href="#contact">Contact</a></li>
     <li><a href="dashboard.html" target="_blank" rel="noopener noreferrer" class="nav-cta">Open Dashboard ↗</a></li>
   </ul>
 </nav>
@@ -1088,12 +1085,12 @@ footer {
     </h1>
 
     <div class="ward-strip">
-      <a class="ward-tag active" href="dashboard.html#ward-d">The Heights</a>
-      <a class="ward-tag" href="dashboard.html#ward-c">Journal Sq</a>
-      <a class="ward-tag" href="dashboard.html#ward-e">Downtown</a>
-      <a class="ward-tag" href="dashboard.html#ward-a">Greenville</a>
-      <a class="ward-tag" href="dashboard.html#ward-b">West Side</a>
-      <a class="ward-tag" href="dashboard.html#ward-f">Bergen-Lafayette</a>
+      <a class="ward-tag active" href="ward.html?ward=d">The Heights</a>
+      <a class="ward-tag" href="ward.html?ward=c">Journal Sq</a>
+      <a class="ward-tag" href="ward.html?ward=e">Downtown</a>
+      <a class="ward-tag" href="ward.html?ward=a">Greenville</a>
+      <a class="ward-tag" href="ward.html?ward=b">West Side</a>
+      <a class="ward-tag" href="ward.html?ward=f">Bergen-Lafayette</a>
     </div>
 
     <p class="hero-sub">A free dashboard for Jersey City residents to quickly check crime stats, schools, parks, transit, and neighborhood context — all in one place.</p>
@@ -1184,91 +1181,45 @@ footer {
   <div class="features-grid">
     <div class="feature-card">
       <div class="feature-num">01</div>
-      <img class="feature-img" loading="lazy" src="https://images.unsplash.com/photo-1586449480537-3a22cf98b04c?q=80&w=3270&auto=format&fit=crop&ixlib=rb-4.1.0&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D" alt="Crime map">
+      <img class="feature-img" src="https://images.unsplash.com/photo-1586449480537-3a22cf98b04c?q=80&w=3270&auto=format&fit=crop&ixlib=rb-4.1.0&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D" alt="Interactive crime map" loading="lazy">
       <h3>Interactive Crime Map</h3>
       <p>Visualize crime heatmaps, police districts, and ward boundaries. Powered by 2025 JCPD NIBRS data updated quarterly.</p>
     </div>
     <div class="feature-card">
       <div class="feature-num">02</div>
-      <img class="feature-img" loading="lazy" src="https://images.unsplash.com/photo-1608095476825-d4e0f916372f?q=80&w=3270&auto=format&fit=crop&ixlib=rb-4.1.0&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D" alt="Jersey City neighborhood">
+      <img class="feature-img" src="https://images.unsplash.com/photo-1608095476825-d4e0f916372f?q=80&w=3270&auto=format&fit=crop&ixlib=rb-4.1.0&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D" alt="Neighborhood safety" loading="lazy">
       <h3>Neighborhood Safety Scores</h3>
       <p>Every ward scored 0–100 based on verified crime data. See which neighborhoods are improving and how yours compares.</p>
     </div>
     <div class="feature-card">
       <div class="feature-num">03</div>
-      <img class="feature-img" loading="lazy" src="https://images.unsplash.com/photo-1497633762265-9d179a990aa6?q=80&w=3273&auto=format&fit=crop&ixlib=rb-4.1.0&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D" alt="School">
+      <img class="feature-img" src="https://images.unsplash.com/photo-1497633762265-9d179a990aa6?q=80&w=3273&auto=format&fit=crop&ixlib=rb-4.1.0&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D" alt="Schools and daycares" loading="lazy">
       <h3>Schools & Daycares</h3>
       <p>Every public school, private school, and daycare plotted on the map. Know what's near any address before you move.</p>
     </div>
     <div class="feature-card">
       <div class="feature-num">04</div>
-      <img class="feature-img" loading="lazy" src="https://plus.unsplash.com/premium_photo-1681558921634-f73645bde42f?q=80&w=3770&auto=format&fit=crop&ixlib=rb-4.1.0&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D" alt="Park">
+      <img class="feature-img" src="https://plus.unsplash.com/premium_photo-1681558921634-f73645bde42f?q=80&w=3770&auto=format&fit=crop&ixlib=rb-4.1.0&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D" alt="Parks and green space" loading="lazy">
       <h3>Parks & Green Space</h3>
       <p>All 86 verified Jersey City parks mapped — from Lincoln Park to your neighborhood playground.</p>
     </div>
     <div class="feature-card">
       <div class="feature-num">05</div>
-      <img class="feature-img" loading="lazy" src="https://images.unsplash.com/photo-1614582222696-8027eeaa31e1?q=80&w=1587&auto=format&fit=crop&ixlib=rb-4.1.0&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D" alt="Subway transit">
+      <img class="feature-img" src="https://images.unsplash.com/photo-1614582222696-8027eeaa31e1?q=80&w=1587&auto=format&fit=crop&ixlib=rb-4.1.0&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D" alt="PATH stations and transit" loading="lazy">
       <h3>PATH Stations & Transit</h3>
       <p>All four JC PATH stations mapped with service info. See transit access for any neighborhood instantly.</p>
     </div>
     <div class="feature-card">
       <div class="feature-num">06</div>
-      <img class="feature-img" loading="lazy" src="https://images.unsplash.com/photo-1551288049-bebda4e38f71?w=600&q=80" alt="Data charts">
+      <img class="feature-img" src="https://images.unsplash.com/photo-1551288049-bebda4e38f71?w=600&q=80" alt="Crime trend charts" loading="lazy">
       <h3>Crime Trend Charts</h3>
       <p>Monthly crime trends across 9 offense categories. Understand if a neighborhood is getting safer or not.</p>
     </div>
   </div>
 </div>
 
-<!-- AGENTS SECTION HIDDEN FOR NOW
-<div class="sw-full" id="agents">
-  <div class="inner">
-    <p class="section-label reveal">Local Real Estate Experts</p>
-    <h2 class="section-title reveal">CONNECT WITH JC<br>AGENTS WHO KNOW THE DATA</h2>
-    <p class="section-sub reveal">These Jersey City real estate professionals advertise here to connect with buyers and renters researching JC neighborhoods.</p>
-    <div class="agents-grid">
-      <div class="agent-card">
-        <span class="agent-badge available">Spot Available</span>
-        <div class="agent-name">Your Name Here</div>
-        <div class="agent-brokerage">Brokerage Name · Jersey City, NJ</div>
-        <div class="agent-specialty">Specializing in Downtown JC, The Heights, Journal Square</div>
-        <a href="#contact" class="agent-contact">📞 Get In Touch →</a>
-      </div>
-      <div class="agent-card">
-        <span class="agent-badge available">Spot Available</span>
-        <div class="agent-name">Your Name Here</div>
-        <div class="agent-brokerage">Brokerage Name · Jersey City, NJ</div>
-        <div class="agent-specialty">Specializing in Greenville, Bergen-Lafayette, West Side</div>
-        <a href="#contact" class="agent-contact">📞 Get In Touch →</a>
-      </div>
-      <a href="#advertise" class="agent-slot">
-        <span class="agent-slot-icon">➕</span>
-        <span class="agent-slot-title">Your Spot Here</span>
-        <p class="agent-slot-sub">Reach every JC home buyer and renter visiting this site. Starting at $50/mo.</p>
-      </a>
-    </div>
-  </div>
-</div>
--->
-
-<!-- ADVERTISE -->
-<div class="sw" id="advertise">
-  <p class="section-label reveal">Partner Waitlist</p>
-  <h2 class="section-title reveal">ADVERTISING OPENS SOON<br>FOR JERSEY CITY LOCAL BUSINESSES</h2>
-  <p class="section-sub reveal">We’re currently focused on growing resident usage. Join the waitlist and we’ll contact you when ad spots officially open.</p>
-  <div class="advertise-grid" style="grid-template-columns:1fr; max-width:720px; margin-left:auto; margin-right:auto;">
-    <div class="advertise-card" style="border-right:none; text-align:center;">
-      <div class="ad-plan-label">// Coming Soon</div>
-      <h3>Advertising opens soon</h3>
-      <p>We’re currently focused on growing resident usage and dashboard traffic. Join the early waitlist and we’ll contact you first when spots open.</p>
-      <a href="#contact" class="btn-outline">Join Waitlist →</a>
-    </div>
-  </div>
-</div>
-
 <!-- DATA SOURCES -->
-<div class="sw-full">
+<div class="sw-full" id="sources">
   <div class="inner">
     <p class="section-label reveal">Data Integrity</p>
     <h2 class="section-title reveal">GOVERNMENT DATA.<br>NOTHING MADE UP.</h2>
@@ -1284,67 +1235,11 @@ footer {
   </div>
 </div>
 
-<!-- AD SLOT -->
-<div style="padding: 28px 48px; background: var(--bg); display: flex; justify-content: center;">
-  <a href="#advertise" style="display:flex; align-items:center; justify-content:space-between; width:100%; max-width:728px; height:90px; background:rgba(232,87,26,0.06); border:1px solid rgba(232,87,26,0.2); border-radius:2px; padding: 0 32px; text-decoration:none;">
-    <div>
-      <div style="font-family:'Bebas Neue',sans-serif; font-size:1.4rem; color:#F2EDE4; letter-spacing:2px;">ADVERTISING WAITLIST OPEN</div>
-      <div style="font-family:'IBM Plex Mono',monospace; font-size:0.65rem; color:#E8571A; letter-spacing:2px; margin-top:4px;">BE FIRST TO KNOW WHEN SPOTS GO LIVE</div>
-    </div>
-    <div style="font-family:'IBM Plex Mono',monospace; font-size:0.75rem; color:#E8571A; letter-spacing:1px; border:1px solid rgba(232,87,26,0.4); padding:8px 16px; border-radius:2px;">JOIN WAITLIST →</div>
-  </a>
-</div>
-
-<!-- CONTACT -->
-<div class="sw" id="contact">
-  <p class="section-label reveal">Get In Touch</p>
-  <h2 class="section-title reveal">QUESTIONS?<br>WANT TO JOIN THE WAITLIST?</h2>
-  <div class="contact-grid">
-    <div class="contact-info reveal">
-      <h3>LET'S TALK ABOUT EARLY PARTNER ACCESS, FEEDBACK, OR LOCAL COLLABORATION.</h3>
-      <p>If you're a local business, real estate professional, or Jersey City resident with feedback, send us a message. We’ll keep you posted as advertising opens.</p>
-      <ul class="contact-perks">
-        <li><span class="perk-line"></span>Join the early advertising waitlist</li>
-        <li><span class="perk-line"></span>Get notified first when spots open</li>
-        <li><span class="perk-line"></span>Share feedback on what placements you want</li>
-        <li><span class="perk-line"></span>The dashboard is always free for the public</li>
-        <li><span class="perk-line"></span>Built by a Jersey City resident</li>
-      </ul>
-    </div>
-    <div class="contact-form reveal">
-      <div id="formContent">
-        <p class="form-title">JOIN THE WAITLIST</p>
-        <div class="form-group"><label>Your Name</label><input type="text" id="fname" placeholder="Jane Smith"></div>
-        <div class="form-group"><label>Email Address</label><input type="email" id="femail" placeholder="jane@realty.com"></div>
-        <div class="form-group form-interest-group">
-          <label>I’m interested in...</label>
-          <select id="finterest">
-            <option value="">Select one</option>
-            <option>Join advertising waitlist</option>
-            <option>Local partnership/collaboration</option>
-            <option>General Feedback</option>
-            <option>Something Else</option>
-          </select>
-        </div>
-        <div class="form-group"><label>Message</label><textarea id="fmessage" rows="3" placeholder="Tell us a bit about what you're looking for..."></textarea></div>
-        <button class="form-submit" onclick="submitForm()">JOIN WAITLIST →</button>
-        <p class="form-note">// We typically respond within 24 hours. No spam. Your info is never sold.</p>
-      </div>
-      <div class="form-success" id="formSuccess">
-        <div style="font-size:3rem;margin-bottom:16px;">⚡</div>
-        <h3>MESSAGE SENT.</h3>
-        <p>Thanks for reaching out. We'll be in touch within 24 hours.</p>
-      </div>
-    </div>
-  </div>
-</div>
-
 <footer>
   <div class="footer-logo">BLOCK<span>IQ</span> JC</div>
   <div class="footer-links">
     <a href="dashboard.html" target="_blank" rel="noopener noreferrer">Dashboard</a>
-    <a href="#advertise">Advertise</a>
-    <a href="#contact">Contact</a>
+    <a href="#sources">Sources</a>
   </div>
   <div class="footer-copy">© 2026 BlockIQ JC · Free for Jersey City · Built by a JC resident · Data from official government sources</div>
 </footer>
@@ -1378,10 +1273,8 @@ const observer = new IntersectionObserver(entries => {
 }, { threshold: 0.05, rootMargin: "0px 0px -40px 0px" });
 
 document.querySelectorAll('.feature-card').forEach((el, i) => { el.style.transitionDelay = `${i * 60}ms`; });
-document.querySelectorAll('.agent-card, .agent-slot').forEach((el, i) => { el.style.transitionDelay = `${i * 80}ms`; });
-document.querySelectorAll('.advertise-card').forEach((el, i) => { el.style.transitionDelay = `${i * 100}ms`; });
 document.querySelectorAll('.source-item').forEach((el, i) => { el.style.transitionDelay = `${i * 45}ms`; });
-document.querySelectorAll('.reveal, .feature-card, .agent-card, .agent-slot, .advertise-card, .source-item').forEach(el => observer.observe(el));
+document.querySelectorAll('.reveal, .feature-card, .source-item').forEach(el => observer.observe(el));
 
 // WARD TAG ROTATION
 const tags = document.querySelectorAll('.ward-tag');
@@ -1394,7 +1287,7 @@ setInterval(() => {
 
 // NAV
 window.addEventListener('scroll', () => {
-  document.getElementById('navbar').style.background = window.scrollY > 60 ? 'rgba(8,8,8,0.98)' : 'rgba(8,8,8,0.85)';
+  document.getElementById('navbar').style.background = window.scrollY > 60 ? 'rgba(10,16,32,0.92)' : 'rgba(10,16,32,0.74)';
 });
 
 // ANALYTICS HELPERS
@@ -1419,41 +1312,6 @@ document.querySelectorAll('a[href^="dashboard.html"]').forEach((link) => {
   });
 });
 
-// FORM
-function submitForm() {
-  const name = document.getElementById('fname').value.trim();
-  const email = document.getElementById('femail').value.trim();
-  if (!name || !email) { alert('Please enter your name and email.'); return; }
-  if (!email.includes('@')) { alert('Please enter a valid email.'); return; }
-  const btn = document.querySelector('.form-submit');
-  btn.textContent = 'SENDING...';
-  btn.disabled = true;
-  fetch('https://formspree.io/f/xbdaplzd', {
-    method: 'POST',
-    headers: { 'Content-Type': 'application/json', 'Accept': 'application/json' },
-    body: JSON.stringify({ name, email, interest: document.getElementById('finterest').value, message: document.getElementById('fmessage').value })
-  })
-  .then(res => res.json())
-  .then(data => {
-    if (data.ok) {
-      trackEvent('waitlist_submit', {
-        event_category: 'lead',
-        event_label: (document.getElementById('finterest').value || 'unspecified').trim()
-      });
-      document.getElementById('formContent').style.display = 'none';
-      document.getElementById('formSuccess').classList.add('show');
-    } else {
-      alert('Something went wrong. Please try again.');
-      btn.textContent = 'SEND MESSAGE →';
-      btn.disabled = false;
-    }
-  })
-  .catch(() => {
-    alert('Network error. Please try again.');
-    btn.textContent = 'SEND MESSAGE →';
-    btn.disabled = false;
-  });
-}
 </script>
 </body>
 </html>
