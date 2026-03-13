@@ -477,6 +477,15 @@
   }
   .ward-meta{display:flex;align-items:center;justify-content:space-between;gap:8px;margin-top:3px;}
   .ward-incidents{font-size:10px;color:#6b7280;font-family:'Space Mono',monospace;}
+  .ward-link-hint{
+    margin-top:6px;
+    font-size:10px;
+    color:#8fb8d3;
+    font-family:'Space Mono',monospace;
+    text-transform:uppercase;
+    letter-spacing:.08em;
+  }
+  .ward-item:hover .ward-link-hint{color:#d6e7f6;}
   .district-coverage{
     margin-top:3px;
     font-size:10px;
@@ -933,6 +942,15 @@
       font-size: 0.55rem;
       letter-spacing: 0.09em;
       text-transform: uppercase;
+      opacity: 0.85;
+      line-height: 1.2;
+    }
+    .sheet-pill-link {
+      margin-top: 3px;
+      font-size: 0.5rem;
+      letter-spacing: 0.08em;
+      text-transform: uppercase;
+      color: #d6e7f6;
       opacity: 0.85;
       line-height: 1.2;
     }
@@ -2849,6 +2867,7 @@ function renderWardSafetyList(){
           <div class="ward-top-crime">Top crime: ${topCrime}</div>
           <div class="ward-incidents">${incidents} incidents</div>
         </div>
+        <div class="ward-link-hint">Open ward page →</div>
       </div>`;
     wardList.appendChild(el);
   });
@@ -2889,7 +2908,7 @@ function renderMobileSafetyGrid(){
       btn.className = `sheet-pill ${tierClass}`;
       btn.dataset.ward = wardId;
       btn.href = getWardDetailUrl(wardId);
-      btn.innerHTML = `<span class="sheet-pill-name">Ward ${escapeHTML(wardId)}</span><strong>${entry.score}</strong><span class="sheet-pill-meta">${tierLabel}</span>`;
+      btn.innerHTML = `<span class="sheet-pill-name">Ward ${escapeHTML(wardId)}</span><strong>${entry.score}</strong><span class="sheet-pill-meta">${tierLabel}</span><span class="sheet-pill-link">Open page →</span>`;
       mobileSafetyGrid.appendChild(btn);
     });
   }
