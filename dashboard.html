@@ -694,15 +694,15 @@
       border: 1px solid rgba(255, 255, 255, 0.15);
       color: #e0ddd8;
       text-decoration: none;
-      padding: 9px 14px;
+      padding: 10px 16px;
       border-radius: 20px;
-      font-size: 0.73rem;
+      font-size: 0.78rem;
       white-space: nowrap;
       font-family: 'DM Mono', monospace;
       letter-spacing: 0.8px;
       transition: background 0.2s, border-color 0.2s, color 0.2s;
       -webkit-tap-highlight-color: transparent;
-      min-height: 38px;
+      min-height: 44px;
     }
     .mobile-home-link:hover,
     .mobile-home-link:active {
@@ -730,8 +730,8 @@
       box-shadow: 0 2px 12px rgba(0,0,0,0.5) !important;
     }
     .mapboxgl-ctrl-geocoder input {
-      font-size: 14px !important;
-      height: 42px !important;
+      font-size: 16px !important;
+      height: 46px !important;
     }
 
     /* Hide zoom controls — too small, use pinch */
@@ -745,7 +745,7 @@
       align-items: center;
       justify-content: center;
       position: fixed;
-      bottom: calc(env(safe-area-inset-bottom, 0px) + 26vh + 20px);
+      bottom: calc(env(safe-area-inset-bottom, 0px) + 28vh - 26px);
       right: 16px;
       width: 52px;
       height: 52px;
@@ -761,7 +761,7 @@
       -webkit-tap-highlight-color: transparent;
     }
     #mobile-sidebar-toggle.sheet-open {
-      bottom: calc(env(safe-area-inset-bottom, 0px) + 78vh + 12px);
+      bottom: calc(env(safe-area-inset-bottom, 0px) + 80vh - 26px);
     }
     #mobile-sidebar-toggle:active {
       transform: scale(0.92);
@@ -796,14 +796,14 @@
       border-radius: 18px 18px 0 0;
       border-top: 1px solid rgba(232, 87, 26, 0.25);
       z-index: 200;
-      height: 26vh;
+      height: 28vh;
       max-height: 90vh;
       transition: height 0.35s cubic-bezier(0.4, 0, 0.2, 1);
       overflow: hidden;
       padding-bottom: env(safe-area-inset-bottom, 0px);
     }
     .mobile-bottom-sheet.expanded {
-      height: 78vh;
+      height: 80vh;
     }
 
     /* Drag handle */
@@ -836,6 +836,9 @@
     .sheet-logo span { color: #E8571A; }
 
     .sheet-back-link {
+      display: inline-flex;
+      align-items: center;
+      min-height: 44px;
       font-size: 0.72rem;
       color: var(--muted);
       text-decoration: none;
@@ -848,7 +851,7 @@
       flex: 1;
       overflow-y: auto;
       -webkit-overflow-scrolling: touch;
-      padding: 0 14px 20px;
+      padding: 0 14px calc(28px + env(safe-area-inset-bottom, 0px));
       scrollbar-width: thin;
       scrollbar-color: rgba(232,87,26,0.3) transparent;
     }
@@ -861,7 +864,7 @@
     /* Section labels */
     .sheet-section-title {
       font-family: 'DM Mono', monospace;
-      font-size: 0.62rem;
+      font-size: 0.68rem;
       letter-spacing: 2px;
       text-transform: uppercase;
       color: #E8571A;
@@ -887,11 +890,11 @@
       color: #9aa3b5;
       border-radius: 999px;
       font-family: 'DM Mono', monospace;
-      font-size: 0.62rem;
+      font-size: 0.68rem;
       letter-spacing: 0.1em;
       text-transform: uppercase;
-      padding: 7px 10px;
-      min-height: 36px;
+      padding: 9px 12px;
+      min-height: 44px;
       transition: border-color 0.2s, color 0.2s, background 0.2s;
       -webkit-tap-highlight-color: transparent;
     }
@@ -918,7 +921,7 @@
       align-items: center;
       justify-content: center;
       border-radius: 8px;
-      padding: 8px 6px;
+      padding: 10px 8px;
       font-size: 0.7rem;
       color: #fff;
       text-align: center;
@@ -927,7 +930,7 @@
       cursor: pointer;
       -webkit-tap-highlight-color: transparent;
       border: 1px solid transparent;
-      min-height: 66px;
+      min-height: 78px;
       text-decoration: none;
       transition: border-color .2s, box-shadow .2s, transform .15s;
     }
@@ -1034,16 +1037,18 @@
       align-items: center;
       justify-content: space-between;
       padding: 12px 0;
+      min-height: 48px;
       border-bottom: 1px solid rgba(255,255,255,0.06);
     }
     .sheet-layer-row:last-child { border-bottom: none; }
 
     .sheet-layer-label {
-      font-size: 0.84rem;
+      font-size: 0.88rem;
       color: #d0d8e8;
       display: flex;
       align-items: center;
       gap: 8px;
+      line-height: 1.4;
     }
 
     .sheet-layer-swatch {
@@ -1115,7 +1120,7 @@
       background: rgba(255,255,255,0.04);
       border: 1px solid rgba(255,255,255,0.08);
       border-radius: 8px;
-      padding: 10px 12px;
+      padding: 12px;
     }
     .sheet-precinct-badge {
       width: 32px;
@@ -1135,14 +1140,14 @@
     .sheet-precinct-badge.ed { background: #a78bfa; }
     .sheet-precinct-badge.wd { background: #fb923c; }
     .sheet-precinct-name {
-      font-size: 0.75rem;
+      font-size: 0.82rem;
       font-weight: 700;
       color: #f0a500;
       font-family: 'Space Mono', monospace;
     }
     .sheet-precinct-addr,
     .sheet-precinct-phone {
-      font-size: 0.65rem;
+      font-size: 0.72rem;
       color: #cbd5e0;
       font-family: 'Space Mono', monospace;
       line-height: 1.5;
@@ -1164,7 +1169,7 @@
       opacity: 0.8;
     }
     .sheet-precinct-wards {
-      font-size: 0.6rem;
+      font-size: 0.68rem;
       color: #f0a500;
       font-family: 'Space Mono', monospace;
       margin-top: 2px;
@@ -1181,15 +1186,16 @@
       display: flex;
       justify-content: space-between;
       align-items: center;
-      padding: 10px 12px;
+      padding: 12px;
       background: rgba(255,255,255,0.04);
-      font-size: 0.65rem;
+      font-size: 0.72rem;
       font-family: 'Space Mono', monospace;
       font-weight: 700;
       color: #e2e8f0;
       text-transform: uppercase;
       letter-spacing: 0.05em;
       cursor: pointer;
+      min-height: 44px;
     }
     .sheet-accordion-arrow {
       font-size: 1rem;
@@ -1211,9 +1217,9 @@
       display: flex;
       justify-content: space-between;
       align-items: center;
-      padding: 5px 0;
+      padding: 7px 0;
       border-bottom: 1px solid rgba(255,255,255,0.05);
-      font-size: 0.65rem;
+      font-size: 0.72rem;
       font-family: 'Space Mono', monospace;
       color: #cbd5e0;
     }
@@ -1230,7 +1236,7 @@
       gap: 6px;
     }
     .sheet-source-links a {
-      font-size: 0.65rem;
+      font-size: 0.72rem;
       font-family: 'Space Mono', monospace;
       color: #60a5fa;
       text-decoration: none;
@@ -1243,6 +1249,8 @@
       width: auto;
       top: 112px;
       bottom: auto;
+      max-height: 34vh;
+      overflow-y: auto;
     }
   }
 

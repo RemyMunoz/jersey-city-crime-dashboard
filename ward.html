@@ -5,6 +5,7 @@
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>Ward Detail | BlockIQ JC</title>
   <meta name="description" content="Ward-level neighborhood detail for Jersey City with BlockIQ JC safety score context, modeled 2025 crime mix, schools, parks, and nearby transit.">
+  <link rel="icon" href="data:,">
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
   <link href="https://fonts.googleapis.com/css2?family=Bebas+Neue&family=DM+Sans:wght@400;500;700&family=Space+Mono:wght@400;700&display=swap" rel="stylesheet">
@@ -359,13 +360,15 @@
     }
 
     .crime-table-wrap {
-      overflow: hidden;
+      overflow-x: auto;
+      -webkit-overflow-scrolling: touch;
     }
 
     .crime-table {
       width: 100%;
       border-collapse: collapse;
       font-size: 0.94rem;
+      min-width: 360px;
     }
 
     .crime-table th,
@@ -521,12 +524,22 @@
 
     @media (max-width: 768px) {
       .page-shell {
-        padding: 18px 16px 42px;
+        padding: calc(18px + env(safe-area-inset-top, 0px)) 16px calc(42px + env(safe-area-inset-bottom, 0px));
       }
 
       .topbar {
         align-items: flex-start;
         flex-direction: column;
+      }
+
+      .top-links {
+        width: 100%;
+      }
+
+      .ghost-link,
+      .primary-link {
+        flex: 1 1 100%;
+        min-height: 44px;
       }
 
       .hero-card,
@@ -537,6 +550,16 @@
 
       .hero h1 {
         font-size: clamp(2.7rem, 14vw, 4rem);
+      }
+
+      .hero-meta {
+        flex-direction: column;
+      }
+
+      .meta-chip {
+        width: 100%;
+        justify-content: flex-start;
+        min-height: 44px;
       }
 
       .score-ring {
