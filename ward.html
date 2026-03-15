@@ -4,7 +4,7 @@
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>Ward Detail | BlockIQ JC</title>
-  <meta name="description" content="Ward-level neighborhood detail for Jersey City with BlockIQ JC safety score context, modeled 2025 crime mix, schools, parks, and nearby transit.">
+  <meta name="description" content="Ward-level neighborhood detail for Jersey City with BlockIQ JC safety score context, verified nearby schools, parks, and transit, plus clear source notes about what ward-level crime data is available.">
   <link rel="icon" href="data:,">
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
@@ -592,19 +592,6 @@
   <div class="page-shell" id="pageShell"></div>
 
   <script>
-    const CITYWIDE_2025_TOTALS = {
-      'Shooting Incidents': 36,
-      'Shooting Victims': 45,
-      'Homicides': 12,
-      'Robbery': 388,
-      'Aggravated Assault': 956,
-      'Criminal Mischief': 2132,
-      'Burglary': 462,
-      'Theft': 4037,
-      'Stolen Vehicles': 843
-    };
-
-    const WARD_TOTAL_INCIDENTS = 1191;
     const WARD_PROFILES = {
       A: {
         id: 'A',
@@ -722,15 +709,6 @@
       }
     };
 
-    const LOCAL_SIGNAL_CATEGORY = {
-      Assault: 'Aggravated Assault',
-      Robbery: 'Robbery',
-      Larceny: 'Theft',
-      Theft: 'Theft',
-      Burglary: 'Burglary',
-      Vandalism: 'Criminal Mischief'
-    };
-
     function escapeHTML(value) {
       return String(value ?? '')
         .replace(/&/g, '&amp;')
@@ -750,37 +728,10 @@
       return WARD_PROFILES[ward] ? ward : null;
     }
 
-    function buildCrimeRows(profile) {
-      const signalCategory = LOCAL_SIGNAL_CATEGORY[profile.topCrime] || '';
-      const share = profile.incidents / WARD_TOTAL_INCIDENTS;
-      const rows = Object.entries(CITYWIDE_2025_TOTALS).map(([name, total]) => {
-        const estimate = Math.max(1, Math.round(total * share));
-        return {
-          name,
-          estimate,
-          isSignal: name === signalCategory
-        };
-      });
-
-      rows.sort((a, b) => {
-        if (a.isSignal && !b.isSignal) return -1;
-        if (!a.isSignal && b.isSignal) return 1;
-        return b.estimate - a.estimate;
-      });
-      return rows;
-    }
-
     function renderWardPage(profile) {
       const pageShell = document.getElementById('pageShell');
       const title = `${profile.name} — ${profile.neighborhood} | BlockIQ JC`;
       document.title = title;
-
-      const crimeRows = buildCrimeRows(profile).map((row) => `
-        <tr class="${row.isSignal ? 'signal-row' : ''}">
-          <td>${escapeHTML(row.name)}${row.isSignal ? '<span class="signal-badge">Local signal</span>' : ''}</td>
-          <td><span class="crime-count">~${formatNumber(row.estimate)}</span></td>
-        </tr>
-      `).join('');
 
       pageShell.innerHTML = `
         <header class="topbar">
@@ -798,10 +749,10 @@
           <article class="hero-card">
             <div class="eyebrow">Ward detail page · Jersey City</div>
             <h1>${escapeHTML(profile.name)} <span>— ${escapeHTML(profile.neighborhood)}</span></h1>
-            <p class="hero-copy">This page combines the current BlockIQ neighborhood safety model with Jersey City’s published 2025 NIBRS citywide totals so you can review one ward in isolation without bouncing back to the map.</p>
+            <p class="hero-copy">This page shows the current BlockIQ ward safety context plus verified nearby schools, parks, libraries, housing, and transit. Official 2025 JCPD crime totals are citywide only, so this page does not assign 2025 incidents to individual wards.</p>
             <div class="hero-meta">
-              <div class="meta-chip"><strong>${formatNumber(profile.incidents)}</strong>&nbsp;current incident-weighted model count</div>
-              <div class="meta-chip"><strong>${escapeHTML(profile.topCrime)}</strong>&nbsp;top local crime signal</div>
+              <div class="meta-chip"><strong>${formatNumber(profile.incidents)}</strong>&nbsp;verified 2024 ward incidents</div>
+              <div class="meta-chip"><strong>${escapeHTML(profile.topCrime)}</strong>&nbsp;top reported 2024 category</div>
               <div class="meta-chip"><strong>${escapeHTML(profile.council)}</strong>&nbsp;council representative</div>
             </div>
           </article>
@@ -816,19 +767,19 @@
             <div class="score-tier" style="background:${profile.scoreColor};">${escapeHTML(profile.tierLabel)}</div>
             <div class="score-summary">
               <div class="summary-card">
-                <div class="summary-label">Top Crime</div>
+                <div class="summary-label">Top 2024 Category</div>
                 <div class="summary-value">${escapeHTML(profile.topCrime)}</div>
-                <div class="summary-note">Strongest local risk signal in the current model.</div>
+                <div class="summary-note">Highest reported category in the verified 2024 ward dataset.</div>
+              </div>
+              <div class="summary-card">
+                <div class="summary-label">2024 Incidents</div>
+                <div class="summary-value">${formatNumber(profile.incidents)}</div>
+                <div class="summary-note">Ward-level total already used throughout the current dashboard.</div>
               </div>
               <div class="summary-card">
                 <div class="summary-label">Schools</div>
                 <div class="summary-value">${formatNumber(profile.schools)}</div>
                 <div class="summary-note">Schools and daycares currently mapped in this ward.</div>
-              </div>
-              <div class="summary-card">
-                <div class="summary-label">Transit</div>
-                <div class="summary-value">${escapeHTML(profile.transit)}</div>
-                <div class="summary-note">${escapeHTML(profile.transitDetail)}</div>
               </div>
             </div>
           </aside>
@@ -836,21 +787,38 @@
 
         <section class="content-grid">
           <div class="panel">
-            <div class="section-kicker">Crime profile</div>
-            <h2 class="section-title">2025 Crime Breakdown</h2>
-            <p class="section-copy">JCPD publishes 2025 NIBRS totals citywide, not ward by ward. These rows estimate this ward’s likely share of citywide offense volume using the same incident-weighted ward model already used in the dashboard.</p>
-            <div class="crime-table-wrap">
-              <table class="crime-table" aria-label="Estimated 2025 ward crime breakdown">
-                <thead>
-                  <tr>
-                    <th>Offense</th>
-                    <th>Estimated Ward Share</th>
-                  </tr>
-                </thead>
-                <tbody>${crimeRows}</tbody>
-              </table>
+            <div class="section-kicker">Crime data availability</div>
+            <h2 class="section-title">Only Verified Ward Data</h2>
+            <p class="section-copy">Ward-level incident locations for 2025 are not published in the official JCPD release. Because of that, BlockIQ does not estimate or assign 2025 crimes to this ward.</p>
+            <div class="metrics-grid">
+              <article class="metric-card">
+                <h3>Verified 2024 Ward Total</h3>
+                <div class="metric-value">${formatNumber(profile.incidents)}</div>
+                <p class="metric-caption">Published ward-level incident total currently used in the dashboard’s ward score context.</p>
+              </article>
+
+              <article class="metric-card">
+                <h3>Top 2024 Reported Category</h3>
+                <div class="metric-value">${escapeHTML(profile.topCrime)}</div>
+                <p class="metric-caption">Highest reported category in the ward-level dataset already shown across the dashboard.</p>
+              </article>
+
+              <article class="metric-card">
+                <h3>2025 JCPD Crime Data</h3>
+                <div class="metric-value">Citywide only</div>
+                <p class="metric-caption">JCPD’s 2025 NIBRS release is public, but it is not broken out by ward or incident location on this page.</p>
+                <div class="detail-list">
+                  <div class="detail-item"><a href="https://cdnsm5-hosted.civiclive.com/UserFiles/Servers/Server_6189660/File/City%20Hall/Public%20Safety/UCR%20Crime%20Data%20Report/2025-JCPD-Crime-Stats.png" target="_blank" rel="noopener noreferrer">View official 2025 citywide JCPD stats</a></div>
+                </div>
+              </article>
+
+              <article class="metric-card">
+                <h3>Current BlockIQ Score</h3>
+                <div class="metric-value">${profile.score} · ${escapeHTML(profile.tierLabel)}</div>
+                <p class="metric-caption">This is the same safety score already shown on the dashboard for comparing wards and districts.</p>
+              </article>
             </div>
-            <div class="method-note">Method note: estimates are directional, not official ward-level JCPD counts. They are calculated from this ward’s incident share within the current BlockIQ safety model and the published 2025 citywide NIBRS totals.</div>
+            <div class="method-note">BlockIQ will only show ward-level incident counts when official ward-level or geocoded incident data is available.</div>
           </div>
 
           <div class="panel">
@@ -898,7 +866,7 @@
         </section>
 
         <section class="sources-card">
-          Source set: BlockIQ ward safety model + Jersey City 2025 JCPD NIBRS citywide totals + verified community layers already published in the dashboard. Official 2025 crime source: <a href="https://cdnsm5-hosted.civiclive.com/UserFiles/Servers/Server_6189660/File/City%20Hall/Public%20Safety/UCR%20Crime%20Data%20Report/2025-JCPD-Crime-Stats.png" target="_blank" rel="noopener noreferrer">JCPD Crime Stats 2025</a>.
+          Source set: verified ward-level data already published in the dashboard + verified community layers already active in BlockIQ. Official 2025 JCPD source: <a href="https://cdnsm5-hosted.civiclive.com/UserFiles/Servers/Server_6189660/File/City%20Hall/Public%20Safety/UCR%20Crime%20Data%20Report/2025-JCPD-Crime-Stats.png" target="_blank" rel="noopener noreferrer">JCPD Crime Stats 2025</a>. No 2025 ward-level incident breakdown is shown unless official ward-level or geocoded data exists.
         </section>
       `;
     }
