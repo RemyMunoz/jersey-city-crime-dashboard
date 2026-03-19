@@ -1,0 +1,103 @@
+{
+  "meta": {
+    "status": "awaiting_upload",
+    "updated": null,
+    "updatedLabel": "CompStat comparison data awaiting first upload",
+    "source": "JCPD CompStat / RMS export",
+    "comparisonNote": "WTD, 28 Day, and YTD versus the same period last year"
+  },
+  "crime": {
+    "Homicides": {
+      "wtd": { "current": null, "previous": null },
+      "day28": { "current": null, "previous": null },
+      "ytd": { "current": null, "previous": null }
+    },
+    "Shooting Incidents": {
+      "wtd": { "current": null, "previous": null },
+      "day28": { "current": null, "previous": null },
+      "ytd": { "current": null, "previous": null }
+    },
+    "Shooting Victims": {
+      "wtd": { "current": null, "previous": null },
+      "day28": { "current": null, "previous": null },
+      "ytd": { "current": null, "previous": null }
+    },
+    "Robbery Incidents": {
+      "wtd": { "current": null, "previous": null },
+      "day28": { "current": null, "previous": null },
+      "ytd": { "current": null, "previous": null }
+    },
+    "Robbery Victims": {
+      "wtd": { "current": null, "previous": null },
+      "day28": { "current": null, "previous": null },
+      "ytd": { "current": null, "previous": null }
+    },
+    "Aggravated Assault Incidents": {
+      "wtd": { "current": null, "previous": null },
+      "day28": { "current": null, "previous": null },
+      "ytd": { "current": null, "previous": null }
+    },
+    "Aggravated Assault Victims": {
+      "wtd": { "current": null, "previous": null },
+      "day28": { "current": null, "previous": null },
+      "ytd": { "current": null, "previous": null }
+    },
+    "Burglary": {
+      "wtd": { "current": null, "previous": null },
+      "day28": { "current": null, "previous": null },
+      "ytd": { "current": null, "previous": null }
+    },
+    "Theft From Auto": {
+      "wtd": { "current": null, "previous": null },
+      "day28": { "current": null, "previous": null },
+      "ytd": { "current": null, "previous": null }
+    },
+    "Theft": {
+      "wtd": { "current": null, "previous": null },
+      "day28": { "current": null, "previous": null },
+      "ytd": { "current": null, "previous": null }
+    },
+    "Motor Vehicle Theft": {
+      "wtd": { "current": null, "previous": null },
+      "day28": { "current": null, "previous": null },
+      "ytd": { "current": null, "previous": null }
+    },
+    "Criminal Mischief": {
+      "wtd": { "current": null, "previous": null },
+      "day28": { "current": null, "previous": null },
+      "ytd": { "current": null, "previous": null }
+    },
+    "Sex Offenses": {
+      "wtd": { "current": null, "previous": null },
+      "day28": { "current": null, "previous": null },
+      "ytd": { "current": null, "previous": null }
+    },
+    "Shots Fired": {
+      "wtd": { "current": null, "previous": null },
+      "day28": { "current": null, "previous": null },
+      "ytd": { "current": null, "previous": null }
+    }
+  },
+  "firearmsAndArrests": {
+    "Arrests for Firearms Unlawful Purpose": {
+      "wtd": { "current": null, "previous": null },
+      "day28": { "current": null, "previous": null },
+      "ytd": { "current": null, "previous": null }
+    },
+    "Arrests for Firearms Unlawful Possession Handgun": {
+      "wtd": { "current": null, "previous": null },
+      "day28": { "current": null, "previous": null },
+      "ytd": { "current": null, "previous": null }
+    },
+    "Arrests for Firearms Possession by Minor": {
+      "wtd": { "current": null, "previous": null },
+      "day28": { "current": null, "previous": null },
+      "ytd": { "current": null, "previous": null }
+    },
+    "Guns Recovered": {
+      "wtd": { "current": null, "previous": null },
+      "day28": { "current": null, "previous": null },
+      "ytd": { "current": null, "previous": null }
+    }
+  }
+}
