@@ -653,9 +653,10 @@
     border-radius:10px;
     background:rgba(255,255,255,0.025);
     box-shadow:0 12px 36px rgba(0,0,0,0.2);
-    overflow:hidden;
+    overflow:auto;
     display:flex;
     flex-direction:column;
+    gap:8px;
   }
   #compstat-sidecar{
     display:flex;
@@ -677,6 +678,9 @@
     grid-template-columns:1fr 1fr;
     gap:12px;
     min-width:0;
+  }
+  .compstat-sidecar-row.single-panel{
+    grid-template-columns:1fr;
   }
   .compstat-sidecar-panel{
     border:1px solid rgba(30,34,41,0.9);
@@ -713,10 +717,27 @@
     letter-spacing:1.8px;
     margin-bottom:8px;
   }
-  #compstat-strip .compstat-table-wrap{
-    flex:1;
-    min-height:0;
+  #compstat-strip .compstat-block{
+    display:flex;
+    flex-direction:column;
+    min-height:auto;
+    flex:0 0 auto;
+  }
+  #compstat-strip .compstat-crime-block{
+    flex:0 0 auto;
+  }
+  #compstat-strip .compstat-firearms-block{
+    flex:0 0 auto;
+  }
+  #compstatCrimeTableWrap{
+    flex:0 0 auto;
+    min-height:auto;
     overflow:auto;
+  }
+  #compstatFirearmsTableWrap{
+    flex:0 0 auto;
+    overflow:visible;
+    max-height:none;
   }
   .compstat-sidecar-panel .compstat-table-wrap{
     overflow:auto;
@@ -1891,12 +1912,7 @@
   <div id="map-stage">
     <div id="map-topbar">
       <div id="compstat-sidecar">
-        <div class="compstat-sidecar-row">
-          <div class="compstat-sidecar-panel table-panel">
-            <div class="compstat-block-title">Firearms &amp; Arrests</div>
-            <div class="compstat-table-wrap" id="compstatFirearmsTableWrap"></div>
-          </div>
-
+        <div class="compstat-sidecar-row single-panel">
           <div class="compstat-sidecar-panel chart-panel">
             <div class="chart-header">
               <div class="compstat-block-title" style="margin-bottom:0;">Monthly Crime Trends</div>
@@ -1997,8 +2013,14 @@
 
   <div id="compstat-strip">
     <div class="compstat-strip-main">
-      <div class="compstat-block-title">Crime Categories</div>
-      <div class="compstat-table-wrap" id="compstatCrimeTableWrap"></div>
+      <div class="compstat-block compstat-crime-block">
+        <div class="compstat-block-title">Crime Categories</div>
+        <div class="compstat-table-wrap" id="compstatCrimeTableWrap"></div>
+      </div>
+      <div class="compstat-block compstat-firearms-block">
+        <div class="compstat-block-title">Firearms &amp; Arrests</div>
+        <div class="compstat-table-wrap" id="compstatFirearmsTableWrap"></div>
+      </div>
     </div>
   </div>
 </div>
@@ -2051,9 +2073,7 @@ const COMPSTAT_SECTION_ORDER = {
     'Shooting Incidents',
     'Shooting Victims',
     'Robbery Incidents',
-    'Robbery Victims',
     'Aggravated Assault Incidents',
-    'Aggravated Assault Victims',
     'Burglary',
     'Theft From Auto',
     'Theft',
