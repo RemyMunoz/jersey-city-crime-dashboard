@@ -1,0 +1,1461 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>District Detail | BlockIQ JC</title>
+  <meta name="description" content="JCPD police district detail for Jersey City: district-level counts from BlockIQ data.json and the same district safety score as the dashboard.">
+  <link rel="icon" href="data:,">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Bebas+Neue&family=DM+Sans:wght@400;500;700&family=Space+Mono:wght@400;700&display=swap" rel="stylesheet">
+  <style>
+    :root {
+      --bg: #0a0c10;
+      --panel: #111318;
+      --panel-soft: rgba(17, 19, 24, 0.9);
+      --border: #1e2229;
+      --text: #e8eaed;
+      --muted: #6b7280;
+      --accent: #e8571a;
+      --accent-soft: rgba(232, 87, 26, 0.16);
+      --blue: #4a90d9;
+      --green: #4ade80;
+      --yellow: #facc15;
+      --orange: #fb923c;
+      --red: #ef4444;
+      --shadow: 0 24px 80px rgba(0, 0, 0, 0.35);
+    }
+
+    * { box-sizing: border-box; }
+    html, body { margin: 0; padding: 0; background: radial-gradient(circle at top, rgba(74, 144, 217, 0.12), transparent 32%), var(--bg); color: var(--text); font-family: 'DM Sans', sans-serif; }
+    body { min-height: 100vh; }
+    a { color: inherit; }
+
+    .page-shell {
+      max-width: 1180px;
+      margin: 0 auto;
+      padding: 28px 24px 56px;
+    }
+
+    .topbar {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      gap: 18px;
+      margin-bottom: 26px;
+      padding: 12px 16px;
+      border: 1px solid var(--border);
+      border-radius: 16px;
+      background: rgba(10, 12, 16, 0.85);
+      backdrop-filter: blur(14px);
+      box-shadow: var(--shadow);
+    }
+
+    .brand {
+      display: flex;
+      flex-direction: column;
+      gap: 4px;
+    }
+
+    .brand-mark {
+      font-family: 'Bebas Neue', sans-serif;
+      font-size: 2rem;
+      letter-spacing: 2px;
+      line-height: 1;
+    }
+
+    .brand-mark .iq { color: var(--accent); }
+    .brand-sub {
+      font-family: 'Space Mono', monospace;
+      font-size: 0.72rem;
+      letter-spacing: 2px;
+      color: var(--muted);
+      text-transform: uppercase;
+    }
+
+    .top-links {
+      display: flex;
+      gap: 10px;
+      flex-wrap: wrap;
+      justify-content: flex-end;
+    }
+
+    .ghost-link,
+    .primary-link {
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      min-height: 42px;
+      padding: 0 16px;
+      border-radius: 999px;
+      border: 1px solid var(--border);
+      text-decoration: none;
+      font-size: 0.86rem;
+      transition: transform 0.2s ease, border-color 0.2s ease, background 0.2s ease;
+    }
+
+    .ghost-link {
+      background: rgba(255, 255, 255, 0.02);
+      color: var(--muted);
+    }
+
+    .ghost-link:hover {
+      transform: translateY(-1px);
+      color: var(--text);
+      border-color: rgba(74, 144, 217, 0.45);
+    }
+
+    .primary-link {
+      background: var(--accent-soft);
+      border-color: rgba(232, 87, 26, 0.4);
+      color: #ffd8c9;
+    }
+
+    .primary-link:hover {
+      transform: translateY(-1px);
+      background: rgba(232, 87, 26, 0.22);
+    }
+
+    .hero {
+      display: grid;
+      grid-template-columns: minmax(0, 1.3fr) minmax(320px, 0.7fr);
+      gap: 22px;
+      margin-bottom: 22px;
+    }
+
+    .hero-card,
+    .panel,
+    .metric-card,
+    .crime-table-wrap,
+    .sources-card,
+    .empty-state {
+      border: 1px solid var(--border);
+      border-radius: 22px;
+      background: linear-gradient(180deg, rgba(17, 19, 24, 0.96), rgba(10, 12, 16, 0.98));
+      box-shadow: var(--shadow);
+    }
+
+    .hero-card {
+      position: relative;
+      overflow: hidden;
+      padding: 32px;
+    }
+
+    .hero-card::after {
+      content: '';
+      position: absolute;
+      inset: auto -12% -38% auto;
+      width: 320px;
+      height: 320px;
+      border-radius: 50%;
+      background: radial-gradient(circle, rgba(232, 87, 26, 0.18), rgba(232, 87, 26, 0));
+      pointer-events: none;
+    }
+
+    .eyebrow {
+      display: inline-flex;
+      align-items: center;
+      gap: 8px;
+      min-height: 30px;
+      padding: 0 12px;
+      margin-bottom: 18px;
+      border: 1px solid rgba(232, 87, 26, 0.3);
+      border-radius: 999px;
+      background: rgba(232, 87, 26, 0.08);
+      color: #ffbb9e;
+      font-family: 'Space Mono', monospace;
+      font-size: 0.72rem;
+      letter-spacing: 1.5px;
+      text-transform: uppercase;
+    }
+
+    .hero h1 {
+      margin: 0;
+      font-family: 'Bebas Neue', sans-serif;
+      font-size: clamp(3rem, 7vw, 5.6rem);
+      line-height: 0.94;
+      letter-spacing: 1px;
+    }
+
+    .hero h1 span { color: var(--accent); }
+
+    .hero-copy {
+      max-width: 620px;
+      margin: 16px 0 0;
+      color: #c4cad2;
+      font-size: 1rem;
+      line-height: 1.75;
+    }
+
+    .hero-meta {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 10px;
+      margin-top: 20px;
+    }
+
+    .meta-chip {
+      display: inline-flex;
+      align-items: center;
+      gap: 8px;
+      min-height: 36px;
+      padding: 0 12px;
+      border-radius: 999px;
+      border: 1px solid rgba(255, 255, 255, 0.06);
+      background: rgba(255, 255, 255, 0.03);
+      color: var(--muted);
+      font-size: 0.84rem;
+    }
+
+    .score-panel {
+      padding: 28px;
+      display: flex;
+      flex-direction: column;
+      justify-content: space-between;
+      gap: 18px;
+    }
+
+    .score-ring {
+      --score: 50;
+      --ring-color: var(--orange);
+      width: 178px;
+      height: 178px;
+      margin: 0 auto;
+      border-radius: 50%;
+      background: conic-gradient(var(--ring-color) calc(var(--score) * 1%), rgba(255, 255, 255, 0.08) 0);
+      display: grid;
+      place-items: center;
+      position: relative;
+      box-shadow: 0 0 0 1px rgba(255,255,255,0.04) inset;
+    }
+
+    .score-ring::before {
+      content: '';
+      position: absolute;
+      inset: 12px;
+      border-radius: 50%;
+      background: linear-gradient(180deg, rgba(17, 19, 24, 0.95), rgba(10, 12, 16, 0.98));
+      border: 1px solid rgba(255,255,255,0.05);
+    }
+
+    .score-ring-inner {
+      position: relative;
+      z-index: 1;
+      text-align: center;
+    }
+
+    .score-value {
+      font-family: 'Bebas Neue', sans-serif;
+      font-size: 4rem;
+      line-height: 0.9;
+      letter-spacing: 1px;
+    }
+
+    .score-label {
+      margin-top: 6px;
+      font-family: 'Space Mono', monospace;
+      font-size: 0.78rem;
+      letter-spacing: 1.6px;
+      color: var(--muted);
+      text-transform: uppercase;
+    }
+
+    .score-tier {
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      min-height: 34px;
+      padding: 0 12px;
+      border-radius: 999px;
+      font-family: 'Space Mono', monospace;
+      font-size: 0.76rem;
+      letter-spacing: 1px;
+      text-transform: uppercase;
+      color: #111;
+      font-weight: 700;
+      margin: 0 auto;
+    }
+
+    .score-summary {
+      display: grid;
+      grid-template-columns: repeat(3, minmax(0, 1fr));
+      gap: 12px;
+      margin-top: 6px;
+    }
+
+    .summary-card {
+      border: 1px solid rgba(255, 255, 255, 0.05);
+      border-radius: 16px;
+      padding: 14px;
+      background: rgba(255, 255, 255, 0.03);
+    }
+
+    .summary-label {
+      font-family: 'Space Mono', monospace;
+      font-size: 0.68rem;
+      letter-spacing: 1.5px;
+      text-transform: uppercase;
+      color: var(--muted);
+      margin-bottom: 8px;
+    }
+
+    .summary-value {
+      font-size: 1rem;
+      font-weight: 700;
+      line-height: 1.3;
+    }
+
+    .summary-note {
+      margin-top: 4px;
+      color: var(--muted);
+      font-size: 0.82rem;
+      line-height: 1.5;
+    }
+
+    .content-grid {
+      display: grid;
+      grid-template-columns: minmax(0, 1.05fr) minmax(320px, 0.95fr);
+      gap: 22px;
+      align-items: start;
+    }
+
+    .panel {
+      padding: 26px;
+    }
+
+    .section-kicker {
+      font-family: 'Space Mono', monospace;
+      font-size: 0.76rem;
+      letter-spacing: 2px;
+      color: var(--accent);
+      text-transform: uppercase;
+      margin-bottom: 12px;
+    }
+
+    .section-title {
+      margin: 0 0 12px;
+      font-family: 'Bebas Neue', sans-serif;
+      font-size: 2.3rem;
+      letter-spacing: 1px;
+      line-height: 1;
+    }
+
+    .section-copy {
+      margin: 0 0 18px;
+      color: #c4cad2;
+      line-height: 1.75;
+      font-size: 0.96rem;
+    }
+
+    .method-note {
+      margin: 14px 0 0;
+      padding: 12px 14px;
+      border-radius: 14px;
+      background: rgba(74, 144, 217, 0.08);
+      border: 1px solid rgba(74, 144, 217, 0.18);
+      color: #c9d8eb;
+      font-size: 0.85rem;
+      line-height: 1.7;
+    }
+
+    .crime-table-wrap {
+      overflow-x: auto;
+      -webkit-overflow-scrolling: touch;
+    }
+
+    .crime-table {
+      width: 100%;
+      border-collapse: collapse;
+      font-size: 0.94rem;
+      min-width: 360px;
+    }
+
+    .crime-table th,
+    .crime-table td {
+      padding: 13px 14px;
+      border-bottom: 1px solid rgba(255, 255, 255, 0.06);
+      text-align: left;
+    }
+
+    .crime-table th {
+      background: rgba(255, 255, 255, 0.03);
+      font-family: 'Space Mono', monospace;
+      font-size: 0.72rem;
+      letter-spacing: 1.4px;
+      color: var(--muted);
+      text-transform: uppercase;
+    }
+
+    .crime-table td:last-child,
+    .crime-table th:last-child { text-align: right; }
+
+    .crime-table tr.signal-row td:first-child {
+      color: #ffd6c7;
+      font-weight: 700;
+    }
+
+    .signal-badge {
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      min-height: 22px;
+      padding: 0 8px;
+      margin-left: 8px;
+      border-radius: 999px;
+      font-family: 'Space Mono', monospace;
+      font-size: 0.62rem;
+      letter-spacing: 1px;
+      text-transform: uppercase;
+      background: rgba(232, 87, 26, 0.14);
+      color: #ffbb9e;
+      border: 1px solid rgba(232, 87, 26, 0.28);
+      vertical-align: middle;
+    }
+
+    .crime-count {
+      font-family: 'Space Mono', monospace;
+      font-weight: 700;
+      color: #f7f8fa;
+    }
+
+    .metrics-grid {
+      display: grid;
+      grid-template-columns: repeat(2, minmax(0, 1fr));
+      gap: 14px;
+    }
+
+    .metric-card {
+      padding: 18px;
+      background: linear-gradient(180deg, rgba(17, 19, 24, 0.95), rgba(13, 15, 20, 0.98));
+    }
+
+    .metric-card h3 {
+      margin: 0 0 10px;
+      font-family: 'Bebas Neue', sans-serif;
+      font-size: 1.55rem;
+      letter-spacing: 1px;
+    }
+
+    .metric-value {
+      font-family: 'Space Mono', monospace;
+      font-size: 1.3rem;
+      font-weight: 700;
+      color: #f7f8fa;
+      margin-bottom: 6px;
+    }
+
+    .metric-caption {
+      color: #c4cad2;
+      font-size: 0.9rem;
+      line-height: 1.65;
+      margin: 0;
+    }
+
+    .detail-list {
+      display: flex;
+      flex-direction: column;
+      gap: 8px;
+      margin-top: 12px;
+    }
+
+    .detail-item {
+      display: flex;
+      align-items: flex-start;
+      gap: 10px;
+      color: var(--muted);
+      font-size: 0.86rem;
+      line-height: 1.6;
+    }
+
+    .detail-item::before {
+      content: '•';
+      color: var(--accent);
+      font-size: 1rem;
+      line-height: 1.2;
+      margin-top: 1px;
+    }
+
+    .sources-card {
+      margin-top: 22px;
+      padding: 18px 22px;
+      color: var(--muted);
+      font-size: 0.82rem;
+      line-height: 1.8;
+    }
+
+    .sources-card a {
+      color: #8fb8d3;
+      text-decoration: none;
+    }
+
+    .sources-card a:hover { text-decoration: underline; }
+
+    .empty-state {
+      padding: 34px;
+      text-align: center;
+    }
+
+    .empty-state h1 {
+      margin: 0 0 10px;
+      font-family: 'Bebas Neue', sans-serif;
+      font-size: 2.8rem;
+      letter-spacing: 1px;
+    }
+
+    .empty-state p {
+      max-width: 560px;
+      margin: 0 auto 18px;
+      color: #c4cad2;
+      line-height: 1.75;
+    }
+
+    @media (max-width: 1024px) {
+      .hero,
+      .content-grid {
+        grid-template-columns: 1fr;
+      }
+
+      .score-summary,
+      .metrics-grid {
+        grid-template-columns: 1fr;
+      }
+    }
+
+    @media (max-width: 768px) {
+      .page-shell {
+        padding: calc(18px + env(safe-area-inset-top, 0px)) 16px calc(42px + env(safe-area-inset-bottom, 0px));
+      }
+
+      .topbar {
+        align-items: flex-start;
+        flex-direction: column;
+      }
+
+      .top-links {
+        width: 100%;
+      }
+
+      .ghost-link,
+      .primary-link {
+        flex: 1 1 100%;
+        min-height: 44px;
+      }
+
+      .hero-card,
+      .score-panel,
+      .panel {
+        padding: 22px;
+      }
+
+      .hero h1 {
+        font-size: clamp(2.7rem, 14vw, 4rem);
+      }
+
+      .hero-meta {
+        flex-direction: column;
+      }
+
+      .meta-chip {
+        width: 100%;
+        justify-content: flex-start;
+        min-height: 44px;
+      }
+
+      .score-ring {
+        width: 156px;
+        height: 156px;
+      }
+    }
+
+    @media (max-width: 480px) {
+      .hero-copy,
+      .section-copy,
+      .metric-caption,
+      .detail-item,
+      .sources-card {
+        font-size: 0.88rem;
+      }
+
+      .top-links {
+        width: 100%;
+      }
+
+      .ghost-link,
+      .primary-link {
+        flex: 1 1 auto;
+      }
+    }
+  
+    .hero-copy code { font-size: 0.85em; background: rgba(255,255,255,0.06); padding: 2px 6px; border-radius: 6px; }
+    .sources-card code { font-size: 0.85em; }
+
+    .crime-viz-panel {
+      margin-bottom: 22px;
+    }
+    .crime-viz-panel .section-title { margin-bottom: 8px; }
+    .crime-viz-note {
+      font-size: 0.82rem;
+      color: var(--muted);
+      line-height: 1.55;
+      margin: 0 0 18px;
+    }
+    .district-charts-grid {
+      display: grid;
+      grid-template-columns: minmax(260px, 1fr) minmax(280px, 1.1fr);
+      gap: 24px;
+      align-items: start;
+    }
+    @media (max-width: 900px) {
+      .district-charts-grid { grid-template-columns: 1fr; }
+    }
+    .district-chart-card {
+      border: 1px solid var(--border);
+      border-radius: 16px;
+      background: rgba(10, 12, 16, 0.65);
+      padding: 16px 18px 20px;
+    }
+    .district-chart-card h3 {
+      margin: 0 0 6px;
+      font-size: 1rem;
+      font-weight: 600;
+    }
+    .district-chart-caption {
+      font-size: 0.78rem;
+      color: var(--muted);
+      margin: 0 0 14px;
+      line-height: 1.45;
+    }
+    .district-chart-wrap {
+      position: relative;
+      height: min(320px, 52vw);
+      max-height: 340px;
+    }
+    .district-chart-wrap--pie { max-height: 300px; }
+    .district-week-controls {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 10px;
+      align-items: center;
+      margin-bottom: 14px;
+    }
+    .district-week-controls label {
+      font-size: 0.78rem;
+      color: var(--muted);
+      font-family: 'Space Mono', monospace;
+      text-transform: uppercase;
+      letter-spacing: 0.06em;
+    }
+    .district-week-select {
+      background: var(--bg);
+      border: 1px solid var(--border);
+      color: var(--text);
+      border-radius: 8px;
+      padding: 8px 12px;
+      font-family: 'DM Sans', sans-serif;
+      font-size: 0.9rem;
+      min-width: 200px;
+    }
+    .crime-viz-empty {
+      padding: 20px;
+      border: 1px dashed var(--border);
+      border-radius: 14px;
+      color: var(--muted);
+      font-size: 0.9rem;
+      line-height: 1.5;
+    }
+  </style>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/4.4.0/chart.umd.min.js" crossorigin="anonymous"></script>
+  <script>
+(function () {
+  var h = (location.hostname || '').toLowerCase();
+  if (h === 'localhost' || h === '127.0.0.1' || h === '[::1]') return;
+  window.location.replace('maintenance.html');
+})();
+  </script>
+</head>
+<body>
+  <div class="page-shell" id="pageShell"></div>
+  <script>
+    const wardData = {
+      'A':{ description:'Greenville', incidents:312, level:'High', topCrime:'Assault', safetyScore:45 },
+      'B':{ description:'West Side', incidents:245, level:'High', topCrime:'Robbery', safetyScore:57 },
+      'C':{ description:'Journal Square', incidents:198, level:'Medium-High', topCrime:'Larceny', safetyScore:65 },
+      'D':{ description:'The Heights', incidents:176, level:'Medium', topCrime:'Burglary', safetyScore:69 },
+      'E':{ description:'Historic Downtown', incidents:142, level:'Lower', topCrime:'Theft', safetyScore:75 },
+      'F':{ description:'Bergen-Lafayette', incidents:118, level:'Lower', topCrime:'Vandalism', safetyScore:79 }
+    };
+
+    const districtWardGroups = [
+      { id:'north', name:'North District', wards:['D'] },
+      { id:'east',  name:'East District',  wards:['E'] },
+      { id:'west',  name:'West District',  wards:['C','B'] },
+      { id:'south', name:'South District', wards:['A','F'] }
+    ];
+
+    const districtStyle = {
+      north:{ name:'North District', color:'#4CC9F0' },
+      south:{ name:'South District', color:'#F72585' },
+      east:{ name:'East District', color:'#7B61FF' },
+      west:{ name:'West District', color:'#FF9F1C' }
+    };
+
+    const precinctInfo = {
+      north:{ address:'282 Central Ave, JC 07307', phone:'(201) 547-5350', coverage:'Wards C, D (Journal Square / The Heights)' },
+      south:{ address:'191 Bergen Ave, JC 07305', phone:'(201) 547-5456', coverage:'Wards A, B (Greenville / West Side)' },
+      east:{ address:'Temporary Trailer Unit, 465 Marin Blvd, JC 07302', phone:'(201) 547-5408', coverage:'Ward E (Historic Downtown)' },
+      west:{ address:'1 Jackson St, JC 07304', phone:'(201) 547-5450', coverage:'Ward F (Bergen-Lafayette)' }
+    };
+
+    const METRIC_ROWS = [
+      ['homicide', 'Homicide'],
+      ['robbery', 'Robbery'],
+      ['robberyWithWeapon', 'Robbery w/ weapon'],
+      ['aggravatedAssault', 'Aggravated assault'],
+      ['assault', 'Assault (total)'],
+      ['burglary', 'Burglary (total)'],
+      ['burglaryResidential', 'Burglary — residential'],
+      ['burglaryCommercial', 'Burglary — commercial'],
+      ['burglaryAutoTheftFromAuto', 'Burglary — auto (theft from auto)'],
+      ['theft', 'Theft'],
+      ['theftOfAutoParts', 'Theft of auto parts'],
+      ['stolenVehicles', 'Stolen vehicles'],
+      ['criminalMischief', 'Criminal mischief'],
+      ['sexOffenses', 'Sex offenses'],
+      ['stabbings', 'Stabbings'],
+      ['drugArrests', 'Drug arrests'],
+      ['shoplifting', 'Shoplifting'],
+      ['arrests', 'Total arrests'],
+      ['gunsRecovered', 'Guns recovered']
+    ];
+
+    const MONTH_TABLE_KEYS = [
+      'assault', 'aggravatedAssault', 'robbery', 'robberyWithWeapon', 'burglary', 'theft', 'theftOfAutoParts',
+      'stolenVehicles', 'stabbings', 'arrests', 'gunsRecovered'
+    ];
+
+    const DISTRICT_PIE_COLORS = [
+      '#ef4444', '#fb923c', '#facc15', '#4ade80', '#4a90d9',
+      '#7B61FF', '#F72585', '#06b6d4', '#a78bfa'
+    ];
+
+    const PSEUDO_WEEK_LABELS = ['Days 1–7', 'Days 8–14', 'Days 15–21', 'Days 22–end'];
+
+    let districtPieChart = null;
+    let districtBarChart = null;
+
+    function escapeHTML(value) {
+      return String(value ?? '')
+        .replace(/&/g, '&amp;')
+        .replace(/</g, '&lt;')
+        .replace(/>/g, '&gt;')
+        .replace(/"/g, '&quot;')
+        .replace(/'/g, '&#39;');
+    }
+
+    function formatNumber(value) {
+      return Number(value || 0).toLocaleString();
+    }
+
+    function calculateSafetyScore(ward){
+      const cityAvg = 198;
+      const incidents = ward.incidents;
+      const ratio = incidents / cityAvg;
+      let score = Math.round(100 - (ratio * 35));
+      score = Math.max(10, Math.min(95, score));
+      return score;
+    }
+
+    function getSafetyTier(score){
+      if(score >= 80) return { label:'Great', color:'#4ade80' };
+      if(score >= 65) return { label:'Good', color:'#facc15' };
+      if(score >= 50) return { label:'Fair', color:'#fb923c' };
+      return { label:'Caution', color:'#e63946' };
+    }
+
+    function getWardSafetyScoreById(wardId){
+      const details = wardData[wardId];
+      if(!details) return 0;
+      return Number(details.safetyScore || calculateSafetyScore(details)) || 0;
+    }
+
+    function buildDistrictProfile(districtId){
+      const group = districtWardGroups.find((g)=>g.id === districtId);
+      if(!group) return null;
+      let weightedScoreTotal = 0;
+      let totalIncidents = 0;
+      const topCrimeCounts = {};
+      const coverageParts = [];
+      group.wards.forEach((wardId)=>{
+        const details = wardData[wardId];
+        if(!details) return;
+        const incidents = Number(details.incidents) || 0;
+        const score = getWardSafetyScoreById(wardId);
+        const topCrime = String(details.topCrime || 'N/A');
+        weightedScoreTotal += score * incidents;
+        totalIncidents += incidents;
+        topCrimeCounts[topCrime] = (topCrimeCounts[topCrime] || 0) + incidents;
+        coverageParts.push(`Ward ${wardId} (${details.description})`);
+      });
+      const score = totalIncidents > 0 ? Math.round(weightedScoreTotal / totalIncidents) : 0;
+      const topCrime = Object.entries(topCrimeCounts)
+        .sort((a, b)=> (b[1] - a[1]) || a[0].localeCompare(b[0]))[0]?.[0] || 'N/A';
+      const color = (districtStyle[districtId] || {}).color || '#4CC9F0';
+      return {
+        id: districtId,
+        name: group.name,
+        score,
+        totalIncidents,
+        topCrime,
+        coverage: coverageParts.join(' + '),
+        color
+      };
+    }
+
+    const DISTRICT_COMPSTAT_TOP_CRIME_ROWS = [
+      ['homicide', 'Homicide'],
+      ['robbery', 'Robbery'],
+      ['aggravatedAssault', 'Aggravated assault'],
+      ['assault', 'Assault'],
+      ['burglary', 'Burglary'],
+      ['theft', 'Theft'],
+      ['stolenVehicles', 'Stolen vehicles'],
+      ['criminalMischief', 'Criminal mischief'],
+      ['sexOffenses', 'Sex offenses']
+    ];
+
+    function districtCompstatBurden(sums){
+      return (
+        (Number(sums.homicide) || 0) * 50 +
+        (Number(sums.robbery) || 0) * 4 +
+        (Number(sums.aggravatedAssault) || 0) * 3 +
+        (Number(sums.assault) || 0) * 0.8 +
+        (Number(sums.burglary) || 0) * 2 +
+        (Number(sums.stolenVehicles) || 0) * 2 +
+        (Number(sums.theft) || 0) * 0.4 +
+        (Number(sums.criminalMischief) || 0) * 0.5 +
+        (Number(sums.sexOffenses) || 0) * 3
+      );
+    }
+
+    function districtCompstatIncidentTotal(sums){
+      return (
+        (Number(sums.assault) || 0) +
+        (Number(sums.aggravatedAssault) || 0) +
+        (Number(sums.robbery) || 0) +
+        (Number(sums.burglary) || 0) +
+        (Number(sums.theft) || 0) +
+        (Number(sums.stolenVehicles) || 0) +
+        (Number(sums.criminalMischief) || 0)
+      );
+    }
+
+    function districtCompstatTopCrimeLabel(sums){
+      const ranked = DISTRICT_COMPSTAT_TOP_CRIME_ROWS.map(([key, label])=>({
+        key,
+        label,
+        n: Number(sums[key]) || 0
+      }))
+        .filter((x)=>x.n > 0)
+        .sort((a, b)=> (b.n - a.n) || a.key.localeCompare(b.key));
+      return ranked[0]?.label || 'N/A';
+    }
+
+    function districtCompstatSafetyScore(burden, avgBurden){
+      if(!(avgBurden > 0)) return null;
+      let score = Math.round(100 - (burden / avgBurden) * 35);
+      score = Math.max(10, Math.min(95, score));
+      return score;
+    }
+
+    function buildDistrictCompstatScorePatch(byMonth){
+      if(!Array.isArray(byMonth) || byMonth.length === 0) return null;
+      const rows = districtWardGroups.map((g)=>{
+        const sums = aggregateYtd(byMonth, g.id);
+        return { id: g.id, sums, burden: districtCompstatBurden(sums) };
+      });
+      const avgBurden = rows.reduce((s, x)=> s + x.burden, 0) / rows.length;
+      if(!(avgBurden > 0)) return null;
+      const patch = {};
+      rows.forEach(({ id, sums, burden })=>{
+        const score = districtCompstatSafetyScore(burden, avgBurden);
+        if(score === null) return;
+        patch[id] = {
+          score,
+          totalIncidents: districtCompstatIncidentTotal(sums),
+          topCrime: districtCompstatTopCrimeLabel(sums)
+        };
+      });
+      return Object.keys(patch).length === districtWardGroups.length ? patch : null;
+    }
+
+    function mergeProfileWithCompstat(profile, byMonth){
+      const patch = buildDistrictCompstatScorePatch(byMonth);
+      if(!patch || !patch[profile.id]) return { ...profile, scoringFromCompstat: false };
+      const p = patch[profile.id];
+      return {
+        ...profile,
+        score: p.score,
+        totalIncidents: p.totalIncidents,
+        topCrime: p.topCrime,
+        scoringFromCompstat: true
+      };
+    }
+
+    function aggregateYtd(byMonth, districtKey){
+      const sums = {};
+      (byMonth || []).forEach((row)=>{
+        const block = row[districtKey];
+        if(!block || typeof block !== 'object') return;
+        Object.keys(block).forEach((k)=>{
+          const v = block[k];
+          if(typeof v === 'number' && Number.isFinite(v)){
+            sums[k] = (sums[k] || 0) + v;
+          }
+        });
+      });
+      return sums;
+    }
+
+    function daysInCalendarMonth(year, month1to12){
+      return new Date(year, month1to12, 0).getDate();
+    }
+
+    function pseudoWeekLengths(dim){
+      const w1 = Math.min(7, dim);
+      const w2 = Math.min(7, Math.max(0, dim - 7));
+      const w3 = Math.min(7, Math.max(0, dim - 14));
+      const w4 = Math.max(0, dim - 21);
+      return [w1, w2, w3, w4];
+    }
+
+    function sumBlockPieKeys(block, pieKeys){
+      if(!block || typeof block !== 'object') return 0;
+      return pieKeys.reduce((s, k)=> s + (Number(block[k]) || 0), 0);
+    }
+
+    function pseudoWeekValuesForMonth(block, year, month1to12, pieKeys){
+      const total = sumBlockPieKeys(block, pieKeys);
+      const dim = daysInCalendarMonth(year, month1to12);
+      if(!(dim > 0) || !(total > 0)) return [0, 0, 0, 0];
+      return pseudoWeekLengths(dim).map((len)=> total * (len / dim));
+    }
+
+    function findWeeklyScopeForDistrict(wi, districtId, year, month){
+      if(!wi || !Array.isArray(wi.months)) return null;
+      const m = wi.months.find((x)=> Number(x.year) === Number(year) && Number(x.month) === Number(month));
+      if(!m || !m.scopes || !m.scopes[districtId]) return null;
+      return { weekLabels: m.weekLabels || [], rows: m.scopes[districtId].rows || [] };
+    }
+
+    function computeDistrictWeeklyBarSeries(scopeWrap, metricKey, wiRoot){
+      const rows = scopeWrap.rows || [];
+      const byK = Object.fromEntries(rows.map((r)=>[r.k, r]));
+      const wl = scopeWrap.weekLabels || [];
+      const n = wl.length;
+      if(n === 0){
+        return { labels: [], values: [], datasetLabel: '—' };
+      }
+      if(metricKey === '__mix__'){
+        const keys = (wiRoot && wiRoot.mixKeys) || [];
+        const vals = new Array(n).fill(0);
+        keys.forEach((k)=>{
+          const r = byK[k];
+          if(!r || !Array.isArray(r.weeks)) return;
+          r.weeks.forEach((v, i)=>{
+            if(i < n) vals[i] += Number(v) || 0;
+          });
+        });
+        return {
+          labels: wl,
+          values: vals,
+          datasetLabel: (wiRoot && wiRoot.mixLabel) || '8-category mix'
+        };
+      }
+      const r = byK[metricKey];
+      if(!r || !Array.isArray(r.weeks)){
+        return { labels: wl, values: new Array(n).fill(0), datasetLabel: '—' };
+      }
+      return {
+        labels: wl,
+        values: r.weeks.map((v)=> Number(v) || 0),
+        datasetLabel: r.label || metricKey
+      };
+    }
+
+    function buildDistrictChartsModel(districtId, byMonth, weeklyImpact){
+      const pieKeys = DISTRICT_COMPSTAT_TOP_CRIME_ROWS.map(([k])=>k);
+      const ytd = aggregateYtd(byMonth, districtId);
+      const pieLabels = [];
+      const pieData = [];
+      const pieColors = [];
+      DISTRICT_COMPSTAT_TOP_CRIME_ROWS.forEach(([key, label], i)=>{
+        const n = Number(ytd[key]) || 0;
+        if(n > 0){
+          pieLabels.push(label);
+          pieData.push(n);
+          pieColors.push(DISTRICT_PIE_COLORS[i % DISTRICT_PIE_COLORS.length]);
+        }
+      });
+      const months = [...(byMonth || [])].sort((a, b)=> (Number(a.year) - Number(b.year)) || (Number(a.month) - Number(b.month)));
+      const monthOptions = months
+        .map((row)=>{
+          const block = row[districtId];
+          return {
+            key: `${row.year}-${row.month}`,
+            label: row.label || `${row.month}/${row.year}`,
+            year: Number(row.year),
+            month: Number(row.month),
+            block: block && typeof block === 'object' ? block : null
+          };
+        })
+        .filter((m)=> m.block && sumBlockPieKeys(m.block, pieKeys) > 0);
+      const hasOfficialWeeks = Boolean(
+        weeklyImpact && Array.isArray(weeklyImpact.months) &&
+        weeklyImpact.months.some((mo)=> mo.scopes && mo.scopes[districtId])
+      );
+      return {
+        pieLabels,
+        pieData,
+        pieColors,
+        monthOptions,
+        pieKeys,
+        weeklyImpact: weeklyImpact || null,
+        districtId,
+        hasOfficialWeeks
+      };
+    }
+
+    function mountDistrictCharts(model){
+      if(typeof Chart === 'undefined') return;
+
+      const pieCanvas = document.getElementById('district-pie-canvas');
+      const barCanvas = document.getElementById('district-week-bars-canvas');
+      const weekSelect = document.getElementById('district-week-month-select');
+      const metricSelect = document.getElementById('district-week-metric-select');
+      if(!pieCanvas || !barCanvas) return;
+
+      if(districtPieChart){
+        districtPieChart.destroy();
+        districtPieChart = null;
+      }
+      if(districtBarChart){
+        districtBarChart.destroy();
+        districtBarChart = null;
+      }
+
+      const tickColor = '#9ca3af';
+      const gridColor = 'rgba(255,255,255,0.06)';
+
+      if(model.pieData.length > 0){
+        districtPieChart = new Chart(pieCanvas.getContext('2d'), {
+          type: 'pie',
+          data: {
+            labels: model.pieLabels,
+            datasets: [{
+              data: model.pieData,
+              backgroundColor: model.pieColors,
+              borderColor: 'rgba(10,12,16,0.9)',
+              borderWidth: 1
+            }]
+          },
+          options: {
+            responsive: true,
+            maintainAspectRatio: false,
+            plugins: {
+              legend: {
+                position: 'bottom',
+                labels: { color: tickColor, boxWidth: 12, font: { size: 11 } }
+              },
+              tooltip: {
+                callbacks: {
+                  label(ctx){
+                    const v = ctx.parsed;
+                    const sum = ctx.dataset.data.reduce((a, b)=> a + b, 0);
+                    const pct = sum > 0 ? ((v / sum) * 100).toFixed(1) : '0';
+                    return `${ctx.label}: ${formatNumber(v)} (${pct}%)`;
+                  }
+                }
+              }
+            }
+          }
+        });
+      }
+
+      function repopulateDistrictMetricSelect(entry){
+        if(!metricSelect || !model.hasOfficialWeeks || !model.weeklyImpact || !entry){
+          return;
+        }
+        const ow = findWeeklyScopeForDistrict(model.weeklyImpact, model.districtId, entry.year, entry.month);
+        if(!ow || !ow.rows || ow.rows.length === 0){
+          metricSelect.innerHTML = '';
+          metricSelect.disabled = true;
+          return;
+        }
+        metricSelect.disabled = false;
+        const wi = model.weeklyImpact;
+        let html = `<option value="__mix__">${escapeHTML((wi && wi.mixLabel) || '8-category mix')}</option>`;
+        ow.rows.forEach((r)=>{
+          html += `<option value="${escapeHTML(r.k)}">${escapeHTML(r.label)}</option>`;
+        });
+        metricSelect.innerHTML = html;
+      }
+
+      function updateBarForMonth(entry, opts){
+        const repopulateMetrics = Boolean(opts && opts.repopulateMetrics);
+        if(districtBarChart){
+          districtBarChart.destroy();
+          districtBarChart = null;
+        }
+        if(repopulateMetrics){
+          repopulateDistrictMetricSelect(entry);
+        }
+
+        const ow = model.weeklyImpact && entry
+          ? findWeeklyScopeForDistrict(model.weeklyImpact, model.districtId, entry.year, entry.month)
+          : null;
+        const useOfficial = Boolean(ow && ow.rows && ow.rows.length);
+
+        let labels;
+        let values;
+        let datasetLabel;
+        let formatBarTooltip;
+        if(useOfficial){
+          const mk = metricSelect && !metricSelect.disabled && metricSelect.value
+            ? metricSelect.value
+            : '__mix__';
+          const ser = computeDistrictWeeklyBarSeries(ow, mk, model.weeklyImpact);
+          labels = ser.labels;
+          values = ser.values;
+          datasetLabel = ser.datasetLabel;
+          formatBarTooltip = (n)=>`${formatNumber(Math.round(n * 10) / 10)} incidents`;
+        }else{
+          labels = PSEUDO_WEEK_LABELS;
+          values = entry
+            ? pseudoWeekValuesForMonth(entry.block, entry.year, entry.month, model.pieKeys)
+            : [0, 0, 0, 0];
+          datasetLabel = 'Share of month total';
+          formatBarTooltip = (n)=>`${formatNumber(Math.round(n * 10) / 10)} est. incidents`;
+        }
+
+        districtBarChart = new Chart(barCanvas.getContext('2d'), {
+          type: 'bar',
+          data: {
+            labels,
+            datasets: [{
+              label: datasetLabel,
+              data: values,
+              backgroundColor: 'rgba(232, 87, 26, 0.55)',
+              borderColor: 'rgba(232, 87, 26, 0.9)',
+              borderWidth: 1,
+              borderRadius: 6
+            }]
+          },
+          options: {
+            responsive: true,
+            maintainAspectRatio: false,
+            scales: {
+              x: {
+                ticks: { color: tickColor, maxRotation: 0, font: { size: 11 } },
+                grid: { color: gridColor }
+              },
+              y: {
+                beginAtZero: true,
+                ticks: {
+                  color: tickColor,
+                  callback: (v)=>{
+                    const n = Number(v);
+                    if(!Number.isFinite(n)) return '';
+                    return Math.abs(n - Math.round(n)) < 1e-6 ? formatNumber(Math.round(n)) : n.toFixed(1);
+                  }
+                },
+                grid: { color: gridColor }
+              }
+            },
+            plugins: {
+              legend: { display: false },
+              tooltip: {
+                callbacks: {
+                  label(ctx){
+                    return formatBarTooltip(ctx.parsed.y);
+                  }
+                }
+              }
+            }
+          }
+        });
+      }
+
+      if(metricSelect && model.hasOfficialWeeks){
+        metricSelect.onchange = ()=>{
+          if(!weekSelect) return;
+          const key = weekSelect.value;
+          const entry = model.monthOptions.find((m)=> m.key === key);
+          updateBarForMonth(entry || null, { repopulateMetrics: false });
+        };
+      }
+
+      if(weekSelect && model.monthOptions.length > 0){
+        weekSelect.innerHTML = model.monthOptions.map((m)=>
+          `<option value="${escapeHTML(m.key)}">${escapeHTML(m.label)}</option>`
+        ).join('');
+        const last = model.monthOptions[model.monthOptions.length - 1];
+        weekSelect.value = last.key;
+        weekSelect.disabled = false;
+        weekSelect.onchange = ()=>{
+          const key = weekSelect.value;
+          const entry = model.monthOptions.find((m)=> m.key === key);
+          updateBarForMonth(entry || null, { repopulateMetrics: true });
+        };
+        updateBarForMonth(last, { repopulateMetrics: true });
+      }else if(weekSelect){
+        weekSelect.innerHTML = '<option value="">No monthly rows</option>';
+        weekSelect.disabled = true;
+        if(metricSelect && model.hasOfficialWeeks){
+          metricSelect.innerHTML = '';
+          metricSelect.disabled = true;
+        }
+        updateBarForMonth(null, { repopulateMetrics: true });
+      }
+    }
+
+    function getDistrictFromUrl(){
+      const params = new URLSearchParams(window.location.search);
+      const raw = String(params.get('district') || '').trim().toLowerCase();
+      return ['north','east','south','west'].includes(raw) ? raw : null;
+    }
+
+    function renderDistrictPage(profile, sums, monthlyRows, metaText, chartModel){
+      const tier = getSafetyTier(profile.score);
+      const p = precinctInfo[profile.id] || {};
+      const fromCompstat = Boolean(profile.scoringFromCompstat);
+      const heroScoreExplain = fromCompstat
+        ? 'The <strong>safety score</strong> matches the dashboard: weighted CompStat counts from <code>data.json</code> (summed across every month in <code>districts.byMonth</code>), scaled relative to the other three districts.'
+        : 'The <strong>safety score</strong> uses the dashboard fallback when district monthly rows are missing: ward-weighted from static ward snapshots.';
+      const incidentsNum = formatNumber(profile.totalIncidents);
+      const incidentsRest = fromCompstat
+        ? 'incident tally (major Part I–style categories summed)'
+        : 'ward incidents (static basis for score)';
+      const topCrimeRest = fromCompstat
+        ? 'highest-volume category in district totals'
+        : 'top crime (ward-weighted)';
+      const topCrimeSummaryLabel = fromCompstat ? 'Top category (district)' : 'Top crime (wards)';
+      const topCrimeSummaryNote = fromCompstat
+        ? 'Largest count among key CompStat fields in summed district rows.'
+        : 'Weighted by ward incidents in this district.';
+      const tableBody = METRIC_ROWS.map(([key, label])=>{
+        const val = sums[key];
+        const display = val === undefined || val === null ? '—' : formatNumber(val);
+        const signal = (key === 'homicide' || key === 'robbery' || key === 'aggravatedAssault') && Number(val) > 0;
+        const cls = signal ? 'signal-row' : '';
+        return `<tr class="${cls}"><td>${escapeHTML(label)}</td><td><span class="crime-count">${escapeHTML(display)}</span></td></tr>`;
+      }).join('');
+
+      const monthHeader = `<tr><th>Month</th>${MONTH_TABLE_KEYS.map((k)=>{
+        const lab = METRIC_ROWS.find((r)=>r[0]===k);
+        return `<th>${escapeHTML(lab ? lab[1].replace(' (total)','') : k)}</th>`;
+      }).join('')}</tr>`;
+
+      const monthBody = monthlyRows.map((mr)=>{
+        const cells = MONTH_TABLE_KEYS.map((k)=>{
+          const v = mr.stats[k];
+          const d = v === undefined || v === null ? '—' : formatNumber(v);
+          return `<td><span class="crime-count">${d}</span></td>`;
+        }).join('');
+        return `<tr><td>${escapeHTML(mr.label)}</td>${cells}</tr>`;
+      }).join('');
+
+      const hasOw = Boolean(chartModel && chartModel.hasOfficialWeeks);
+      const vizTitle = hasOw ? 'YTD mix &amp; CompStat week buckets' : 'YTD mix &amp; pseudo-week split';
+      const vizNote = hasOw
+        ? 'The pie uses the same nine CompStat-style categories as the dashboard district score. The bar chart uses <strong>official IMPACT week ranges</strong> from <code>data.json</code> → <code>weeklyImpact</code> when this district has rows for the chosen month; otherwise it falls back to four proportional <strong>calendar</strong> segments (not WTD).'
+        : 'Bar segments divide the calendar month into four day ranges and allocate this district’s monthly total proportionally — they are <strong>not</strong> official JCPD week-to-date (WTD) buckets. Pie and bars use the same nine CompStat-style categories as the dashboard district score (homicide through sex offenses).';
+      const weekCardTitle = hasOw ? 'Month × CompStat weeks (or calendar fallback)' : 'Month × four calendar segments';
+      const weekCardCaption = hasOw
+        ? 'Pick a month and metric. When weekly IMPACT data exists for this district and month, bars match official week labels; if not, bars use estimated four calendar segments.'
+        : 'Pick a month; bars show estimated counts per segment after splitting the month’s total across 1–7, 8–14, 15–21, and 22–end.';
+      const weekMetricRow = hasOw
+        ? '<label for="district-week-metric-select">Metric</label><select class="district-week-select" id="district-week-metric-select" aria-label="Weekly metric"></select>'
+        : '';
+
+      document.getElementById('pageShell').innerHTML = `
+        <header class="topbar">
+          <div class="brand">
+            <div class="brand-mark">BLOCK<span class="iq">IQ</span> JC</div>
+            <div class="brand-sub">Police district profile</div>
+          </div>
+          <div class="top-links">
+            <a class="ghost-link" href="index.html">← Back to Home</a>
+            <a class="primary-link" href="dashboard.html">Back to Dashboard</a>
+          </div>
+        </header>
+
+        <section class="hero">
+          <article class="hero-card">
+            <div class="eyebrow">District detail · Jersey City · JCPD data</div>
+            <h1>${escapeHTML(profile.name)} <span>— ${escapeHTML(profile.coverage)}</span></h1>
+            <p class="hero-copy">Counts below are <strong>district-level</strong> figures from your CompStat-style export in <code>data.json</code> (summed across every month row in <code>districts.byMonth</code>). ${heroScoreExplain}</p>
+            <div class="hero-meta">
+              <div class="meta-chip"><strong>${incidentsNum}</strong>&nbsp;${incidentsRest}</div>
+              <div class="meta-chip"><strong>${escapeHTML(profile.topCrime)}</strong>&nbsp;${topCrimeRest}</div>
+              <div class="meta-chip"><strong>${escapeHTML(p.coverage || '')}</strong>&nbsp;precinct coverage</div>
+            </div>
+          </article>
+
+          <aside class="score-panel hero-card">
+            <div class="score-ring" style="--score:${profile.score}; --ring-color:${profile.color};">
+              <div class="score-ring-inner">
+                <div class="score-value">${profile.score}</div>
+                <div class="score-label">District safety score</div>
+              </div>
+            </div>
+            <div class="score-tier" style="background:${tier.color};color:#111;">${escapeHTML(tier.label.toUpperCase())}</div>
+            <div class="score-summary">
+              <div class="summary-card">
+                <div class="summary-label">${escapeHTML(topCrimeSummaryLabel)}</div>
+                <div class="summary-value">${escapeHTML(profile.topCrime)}</div>
+                <div class="summary-note">${escapeHTML(topCrimeSummaryNote)}</div>
+              </div>
+              <div class="summary-card">
+                <div class="summary-label">Precinct HQ</div>
+                <div class="summary-value">${escapeHTML(p.address || '—')}</div>
+                <div class="summary-note">${escapeHTML(p.phone || '')}</div>
+              </div>
+              <div class="summary-card">
+                <div class="summary-label">Data refresh</div>
+                <div class="summary-value">${escapeHTML(metaText || '—')}</div>
+                <div class="summary-note">Source: data.json → districts.byMonth</div>
+              </div>
+            </div>
+          </aside>
+        </section>
+
+        <section class="crime-viz-panel">
+          <div class="section-kicker">Visual summary</div>
+          <h2 class="section-title">${vizTitle}</h2>
+          <p class="crime-viz-note">${vizNote}</p>
+          <div class="district-charts-grid">
+            <div class="district-chart-card">
+              <h3>YTD category mix</h3>
+              <p class="district-chart-caption">Summed across every month in <code>districts.byMonth</code> for this district. Categories with zero YTD are omitted from the pie.</p>
+              ${chartModel && chartModel.pieData.length
+                ? '<div class="district-chart-wrap district-chart-wrap--pie"><canvas id="district-pie-canvas" aria-label="YTD district crime mix pie chart"></canvas></div>'
+                : '<div class="crime-viz-empty">No non-zero totals in those categories for this district in the loaded <code>data.json</code> months.</div>'}
+            </div>
+            <div class="district-chart-card">
+              <h3>${weekCardTitle}</h3>
+              <p class="district-chart-caption">${weekCardCaption}</p>
+              <div class="district-week-controls">
+                <label for="district-week-month-select">Month</label>
+                <select class="district-week-select" id="district-week-month-select" aria-label="Select month for bar chart"></select>
+                ${weekMetricRow}
+              </div>
+              <div class="district-chart-wrap"><canvas id="district-week-bars-canvas" aria-label="District weekly bar chart"></canvas></div>
+            </div>
+          </div>
+        </section>
+
+        <section class="content-grid">
+          <div class="panel">
+            <div class="section-kicker">2026 district activity</div>
+            <h2 class="section-title">YTD-style totals (summed months)</h2>
+            <p class="section-copy">Each value is the sum of that metric across every month row in districts.byMonth for this district. Add more months to data.json to extend the period.</p>
+            <div class="crime-table-wrap">
+              <table class="crime-table">
+                <thead><tr><th>Metric</th><th>Sum</th></tr></thead>
+                <tbody>${tableBody}</tbody>
+              </table>
+            </div>
+            <div class="method-note">District breakdowns from your dataset; citywide NIBRS figures live on the main dashboard.</div>
+          </div>
+
+          <div class="panel">
+            <div class="section-kicker">Month-by-month</div>
+            <h2 class="section-title">Per-month detail</h2>
+            <p class="section-copy">Each row is one entry in districts.byMonth for this district.</p>
+            <div class="crime-table-wrap">
+              <table class="crime-table">
+                <thead>${monthHeader}</thead>
+                <tbody>${monthBody}</tbody>
+              </table>
+            </div>
+          </div>
+        </section>
+
+        <section class="sources-card">
+          ${escapeHTML(metaText || '')} · District keys: north, east, south, west. Open from the dashboard with <strong>By District</strong> selected.
+        </section>
+      `;
+      document.title = `${profile.name} | BlockIQ JC`;
+      requestAnimationFrame(()=> mountDistrictCharts(chartModel || {
+        pieLabels: [],
+        pieData: [],
+        pieColors: [],
+        monthOptions: [],
+        pieKeys: [],
+        weeklyImpact: null,
+        districtId: 'north',
+        hasOfficialWeeks: false
+      }));
+    }
+
+    function renderInvalidState(){
+      document.title = 'District Detail | BlockIQ JC';
+      document.getElementById('pageShell').innerHTML = `
+        <div class="empty-state">
+          <h1>District not found</h1>
+          <p>Use a valid district link: district.html?district=north (or east, south, west).</p>
+          <div class="top-links" style="justify-content:center;">
+            <a class="ghost-link" href="index.html">Back to Home</a>
+            <a class="primary-link" href="dashboard.html">Back to Dashboard</a>
+          </div>
+        </div>
+      `;
+    }
+
+    function renderErrorState(msg){
+      document.getElementById('pageShell').innerHTML = `
+        <div class="empty-state">
+          <h1>Could not load data</h1>
+          <p>${escapeHTML(msg)}</p>
+          <div class="top-links" style="justify-content:center;">
+            <a class="primary-link" href="dashboard.html">Back to Dashboard</a>
+          </div>
+        </div>
+      `;
+    }
+
+    (async function init(){
+      const id = getDistrictFromUrl();
+      if(!id){
+        renderInvalidState();
+        return;
+      }
+      const profile = buildDistrictProfile(id);
+      if(!profile){
+        renderInvalidState();
+        return;
+      }
+      try{
+        const res = await fetch(new URL('data.json', window.location.href), { cache: 'no-store' });
+        if(!res.ok) throw new Error('HTTP ' + res.status);
+        const data = await res.json();
+        const byMonth = data && data.districts && Array.isArray(data.districts.byMonth) ? data.districts.byMonth : [];
+        const sums = aggregateYtd(byMonth, id);
+        const profileMerged = mergeProfileWithCompstat(profile, byMonth);
+        const monthlyRows = byMonth.map((row)=>{
+          const block = row[id];
+          return { label: row.label || (row.month + '/' + row.year), stats: block && typeof block === 'object' ? block : {} };
+        }).filter((r)=>Object.keys(r.stats).length);
+        const metaText = (data.meta && (data.meta.lastUpdated || data.meta.updated)) ? String(data.meta.lastUpdated || data.meta.updated) : '';
+        const chartModel = buildDistrictChartsModel(id, byMonth, data.weeklyImpact || null);
+        renderDistrictPage(profileMerged, sums, monthlyRows, metaText, chartModel);
+      }catch(e){
+        console.warn(e);
+        renderErrorState(e.message || 'Failed to fetch data.json');
+      }
+    })();
+
+  </script>
+</body>
+</html>

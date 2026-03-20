@@ -1,93 +1,2946 @@
 {
   "meta": {
-    "status": "awaiting_upload",
-    "updated": null,
-    "updatedLabel": "CompStat comparison data awaiting first upload",
+    "lastUpdated": "2026-03-19",
+    "updated": "2026-03-19",
+    "preparedBy": "Geremy Munoz",
+    "dataStatus": "Preliminary \u2014 subject to change",
+    "status": "preliminary",
     "source": "JCPD CompStat / RMS export",
-    "comparisonNote": "WTD, 28 Day, and YTD versus the same period last year"
+    "comparisonNote": "WTD and 28-day vs prior year \u2014 update weekly; YTD column uses 2026 YTD vs 2025 same-period where noted",
+    "ytdNote": "YTD through February 2026 vs same period 2025 for CompStat table comparisons"
   },
   "crime": {
     "Homicides": {
-      "wtd": { "current": null, "previous": null },
-      "day28": { "current": null, "previous": null },
-      "ytd": { "current": null, "previous": null }
+      "wtd": {
+        "current": null,
+        "previous": null
+      },
+      "day28": {
+        "current": null,
+        "previous": null
+      },
+      "ytd": {
+        "current": 0,
+        "previous": 5
+      }
     },
     "Shooting Incidents": {
-      "wtd": { "current": null, "previous": null },
-      "day28": { "current": null, "previous": null },
-      "ytd": { "current": null, "previous": null }
+      "wtd": {
+        "current": null,
+        "previous": null
+      },
+      "day28": {
+        "current": null,
+        "previous": null
+      },
+      "ytd": {
+        "current": 4,
+        "previous": 5
+      }
     },
     "Shooting Victims": {
-      "wtd": { "current": null, "previous": null },
-      "day28": { "current": null, "previous": null },
-      "ytd": { "current": null, "previous": null }
+      "wtd": {
+        "current": null,
+        "previous": null
+      },
+      "day28": {
+        "current": null,
+        "previous": null
+      },
+      "ytd": {
+        "current": 4,
+        "previous": null
+      }
     },
     "Robbery Incidents": {
-      "wtd": { "current": null, "previous": null },
-      "day28": { "current": null, "previous": null },
-      "ytd": { "current": null, "previous": null }
+      "wtd": {
+        "current": null,
+        "previous": null
+      },
+      "day28": {
+        "current": null,
+        "previous": null
+      },
+      "ytd": {
+        "current": 44,
+        "previous": 69
+      }
     },
     "Aggravated Assault Incidents": {
-      "wtd": { "current": null, "previous": null },
-      "day28": { "current": null, "previous": null },
-      "ytd": { "current": null, "previous": null }
+      "wtd": {
+        "current": null,
+        "previous": null
+      },
+      "day28": {
+        "current": null,
+        "previous": null
+      },
+      "ytd": {
+        "current": 152,
+        "previous": 166
+      }
     },
     "Burglary": {
-      "wtd": { "current": null, "previous": null },
-      "day28": { "current": null, "previous": null },
-      "ytd": { "current": null, "previous": null }
+      "wtd": {
+        "current": null,
+        "previous": null
+      },
+      "day28": {
+        "current": null,
+        "previous": null
+      },
+      "ytd": {
+        "current": 122,
+        "previous": 223
+      }
     },
     "Theft From Auto": {
-      "wtd": { "current": null, "previous": null },
-      "day28": { "current": null, "previous": null },
-      "ytd": { "current": null, "previous": null }
+      "wtd": {
+        "current": null,
+        "previous": null
+      },
+      "day28": {
+        "current": null,
+        "previous": null
+      },
+      "ytd": {
+        "current": 72,
+        "previous": null
+      }
     },
     "Theft": {
-      "wtd": { "current": null, "previous": null },
-      "day28": { "current": null, "previous": null },
-      "ytd": { "current": null, "previous": null }
+      "wtd": {
+        "current": null,
+        "previous": null
+      },
+      "day28": {
+        "current": null,
+        "previous": null
+      },
+      "ytd": {
+        "current": 407,
+        "previous": 420
+      }
     },
     "Motor Vehicle Theft": {
-      "wtd": { "current": null, "previous": null },
-      "day28": { "current": null, "previous": null },
-      "ytd": { "current": null, "previous": null }
+      "wtd": {
+        "current": null,
+        "previous": null
+      },
+      "day28": {
+        "current": null,
+        "previous": null
+      },
+      "ytd": {
+        "current": 104,
+        "previous": 119
+      }
     },
     "Criminal Mischief": {
-      "wtd": { "current": null, "previous": null },
-      "day28": { "current": null, "previous": null },
-      "ytd": { "current": null, "previous": null }
+      "wtd": {
+        "current": null,
+        "previous": null
+      },
+      "day28": {
+        "current": null,
+        "previous": null
+      },
+      "ytd": {
+        "current": 172,
+        "previous": 246
+      }
     },
     "Sex Offenses": {
-      "wtd": { "current": null, "previous": null },
-      "day28": { "current": null, "previous": null },
-      "ytd": { "current": null, "previous": null }
+      "wtd": {
+        "current": null,
+        "previous": null
+      },
+      "day28": {
+        "current": null,
+        "previous": null
+      },
+      "ytd": {
+        "current": 31,
+        "previous": 38
+      }
     },
     "Shots Fired": {
-      "wtd": { "current": null, "previous": null },
-      "day28": { "current": null, "previous": null },
-      "ytd": { "current": null, "previous": null }
+      "wtd": {
+        "current": null,
+        "previous": null
+      },
+      "day28": {
+        "current": null,
+        "previous": null
+      },
+      "ytd": {
+        "current": 4,
+        "previous": null
+      }
     }
   },
   "firearmsAndArrests": {
     "Arrests for Firearms Unlawful Purpose": {
-      "wtd": { "current": null, "previous": null },
-      "day28": { "current": null, "previous": null },
-      "ytd": { "current": null, "previous": null }
+      "wtd": {
+        "current": null,
+        "previous": null
+      },
+      "day28": {
+        "current": null,
+        "previous": null
+      },
+      "ytd": {
+        "current": null,
+        "previous": null
+      }
     },
     "Arrests for Firearms Unlawful Possession Handgun": {
-      "wtd": { "current": null, "previous": null },
-      "day28": { "current": null, "previous": null },
-      "ytd": { "current": null, "previous": null }
+      "wtd": {
+        "current": null,
+        "previous": null
+      },
+      "day28": {
+        "current": null,
+        "previous": null
+      },
+      "ytd": {
+        "current": null,
+        "previous": null
+      }
     },
     "Arrests for Firearms Possession by Minor": {
-      "wtd": { "current": null, "previous": null },
-      "day28": { "current": null, "previous": null },
-      "ytd": { "current": null, "previous": null }
+      "wtd": {
+        "current": null,
+        "previous": null
+      },
+      "day28": {
+        "current": null,
+        "previous": null
+      },
+      "ytd": {
+        "current": null,
+        "previous": null
+      }
     },
     "Guns Recovered": {
-      "wtd": { "current": null, "previous": null },
-      "day28": { "current": null, "previous": null },
-      "ytd": { "current": null, "previous": null }
+      "wtd": {
+        "current": null,
+        "previous": null
+      },
+      "day28": {
+        "current": null,
+        "previous": null
+      },
+      "ytd": {
+        "current": 18,
+        "previous": null
+      }
     }
+  },
+  "citywide": {
+    "description": "Citywide counts by calendar month (JCPD)",
+    "year": 2026,
+    "byMonth": [
+      {
+        "year": 2026,
+        "month": 1,
+        "label": "January 2026",
+        "homicide": 0,
+        "rapeSexOffenses": 14,
+        "robberyTotal": 26,
+        "robberyWithWeapon": 9,
+        "aggravatedAssault": 75,
+        "assaultTotal": 167,
+        "burglaryTotal": 67,
+        "residentialBurglary": 16,
+        "commercialBurglary": 9,
+        "theftFromAuto": 40,
+        "theft": 218,
+        "theftOfAutoParts": 36,
+        "autoTheft": 51,
+        "shootingIncidents": 3,
+        "shootingVictims": 3,
+        "shotsFired": 3,
+        "stabbings": 5,
+        "criminalMischief": 89,
+        "drugArrests": 44,
+        "shoplifting": 26,
+        "biasIncidents": 0,
+        "totalArrests": 191,
+        "gunsRecovered": 8,
+        "movingSummonses": 465,
+        "parkingSummonses": 1170,
+        "cityOrdinanceSummonses": 51,
+        "missingPersonsAdult": 11,
+        "missingPersonsJuvenile": 21
+      },
+      {
+        "year": 2026,
+        "month": 2,
+        "label": "February 2026",
+        "homicide": 0,
+        "rapeSexOffenses": 17,
+        "robberyTotal": 18,
+        "robberyWithWeapon": 6,
+        "aggravatedAssault": 77,
+        "assaultTotal": 182,
+        "burglaryTotal": 55,
+        "residentialBurglary": 14,
+        "commercialBurglary": 9,
+        "theftFromAuto": 32,
+        "theft": 189,
+        "theftOfAutoParts": 19,
+        "autoTheft": 53,
+        "shootingIncidents": 1,
+        "shootingVictims": 1,
+        "shotsFired": 1,
+        "stabbings": 7,
+        "criminalMischief": 83,
+        "drugArrests": 40,
+        "shoplifting": 17,
+        "biasIncidents": 1,
+        "totalArrests": 198,
+        "gunsRecovered": 10,
+        "movingSummonses": 804,
+        "parkingSummonses": 1345,
+        "cityOrdinanceSummonses": 130,
+        "missingPersonsAdult": 5,
+        "missingPersonsJuvenile": 11
+      }
+    ]
+  },
+  "districts": {
+    "description": "Counts by JCPD district (North, East, South, West); includes JC IMPACT district breakdown fields (burglary subtypes, theft of auto parts, robbery w/ weapon, stabbings) where published.",
+    "byMonth": [
+      {
+        "year": 2026,
+        "month": 1,
+        "label": "January 2026",
+        "north": {
+          "assault": 31,
+          "aggravatedAssault": 12,
+          "stolenVehicles": 11,
+          "burglary": 15,
+          "burglaryResidential": 6,
+          "burglaryCommercial": 0,
+          "burglaryAutoTheftFromAuto": 9,
+          "theft": 28,
+          "theftOfAutoParts": 9,
+          "robbery": 4,
+          "robberyWithWeapon": 0,
+          "sexOffenses": 4,
+          "homicide": 0,
+          "stabbings": 0,
+          "criminalMischief": 19,
+          "drugArrests": 0,
+          "shoplifting": 9,
+          "arrests": 27,
+          "gunsRecovered": 0
+        },
+        "east": {
+          "assault": 26,
+          "aggravatedAssault": 11,
+          "stolenVehicles": 10,
+          "burglary": 12,
+          "burglaryResidential": 3,
+          "burglaryCommercial": 3,
+          "burglaryAutoTheftFromAuto": 5,
+          "theft": 67,
+          "theftOfAutoParts": 11,
+          "robbery": 3,
+          "robberyWithWeapon": 1,
+          "sexOffenses": 5,
+          "homicide": 0,
+          "stabbings": 1,
+          "criminalMischief": 17,
+          "drugArrests": 0,
+          "shoplifting": 12,
+          "arrests": 27,
+          "gunsRecovered": 2
+        },
+        "south": {
+          "assault": 63,
+          "aggravatedAssault": 30,
+          "stolenVehicles": 15,
+          "burglary": 22,
+          "burglaryResidential": 4,
+          "burglaryCommercial": 0,
+          "burglaryAutoTheftFromAuto": 18,
+          "theft": 55,
+          "theftOfAutoParts": 7,
+          "robbery": 7,
+          "robberyWithWeapon": 4,
+          "sexOffenses": 2,
+          "homicide": 0,
+          "stabbings": 3,
+          "criminalMischief": 26,
+          "drugArrests": 37,
+          "shoplifting": 0,
+          "arrests": 76,
+          "gunsRecovered": 5
+        },
+        "west": {
+          "assault": 47,
+          "aggravatedAssault": 22,
+          "stolenVehicles": 15,
+          "burglary": 18,
+          "burglaryResidential": 3,
+          "burglaryCommercial": 6,
+          "burglaryAutoTheftFromAuto": 8,
+          "theft": 68,
+          "theftOfAutoParts": 9,
+          "robbery": 12,
+          "robberyWithWeapon": 4,
+          "sexOffenses": 3,
+          "homicide": 0,
+          "stabbings": 1,
+          "criminalMischief": 27,
+          "drugArrests": 7,
+          "shoplifting": 5,
+          "arrests": 61,
+          "gunsRecovered": 1
+        }
+      },
+      {
+        "year": 2026,
+        "month": 2,
+        "label": "February 2026",
+        "north": {
+          "assault": 31,
+          "aggravatedAssault": 12,
+          "stolenVehicles": 7,
+          "burglary": 6,
+          "burglaryResidential": 1,
+          "burglaryCommercial": 2,
+          "burglaryAutoTheftFromAuto": 3,
+          "theft": 26,
+          "theftOfAutoParts": 2,
+          "robbery": 4,
+          "robberyWithWeapon": 2,
+          "sexOffenses": 4,
+          "homicide": 0,
+          "stabbings": 1,
+          "criminalMischief": 12,
+          "drugArrests": 0,
+          "shoplifting": 0,
+          "arrests": 25,
+          "gunsRecovered": 0
+        },
+        "east": {
+          "assault": 35,
+          "aggravatedAssault": 12,
+          "stolenVehicles": 17,
+          "burglary": 22,
+          "burglaryResidential": 4,
+          "burglaryCommercial": 5,
+          "burglaryAutoTheftFromAuto": 13,
+          "theft": 54,
+          "theftOfAutoParts": 5,
+          "robbery": 2,
+          "robberyWithWeapon": 1,
+          "sexOffenses": 3,
+          "homicide": 0,
+          "stabbings": 1,
+          "criminalMischief": 23,
+          "drugArrests": 0,
+          "shoplifting": 12,
+          "arrests": 31,
+          "gunsRecovered": 1
+        },
+        "south": {
+          "assault": 71,
+          "aggravatedAssault": 30,
+          "stolenVehicles": 19,
+          "burglary": 14,
+          "burglaryResidential": 4,
+          "burglaryCommercial": 1,
+          "burglaryAutoTheftFromAuto": 9,
+          "theft": 58,
+          "theftOfAutoParts": 4,
+          "robbery": 7,
+          "robberyWithWeapon": 1,
+          "sexOffenses": 6,
+          "homicide": 0,
+          "stabbings": 2,
+          "criminalMischief": 30,
+          "drugArrests": 12,
+          "shoplifting": 0,
+          "arrests": 60,
+          "gunsRecovered": 2
+        },
+        "west": {
+          "assault": 45,
+          "aggravatedAssault": 23,
+          "stolenVehicles": 10,
+          "burglary": 13,
+          "burglaryResidential": 5,
+          "burglaryCommercial": 1,
+          "burglaryAutoTheftFromAuto": 7,
+          "theft": 51,
+          "theftOfAutoParts": 8,
+          "robbery": 5,
+          "robberyWithWeapon": 2,
+          "sexOffenses": 4,
+          "homicide": 0,
+          "stabbings": 3,
+          "criminalMischief": 18,
+          "drugArrests": 28,
+          "shoplifting": 5,
+          "arrests": 82,
+          "gunsRecovered": 7
+        }
+      }
+    ]
+  },
+  "trends": {
+    "description": "YTD 2026 vs 2025 (same period through February), citywide key trends",
+    "asOf": "2026-03-19",
+    "rows": [
+      {
+        "metric": "Assault Total",
+        "y2026": 349,
+        "y2025": 415,
+        "changePercent": -16
+      },
+      {
+        "metric": "Aggravated Assault",
+        "y2026": 152,
+        "y2025": 166,
+        "changePercent": -8.4
+      },
+      {
+        "metric": "Robbery",
+        "y2026": 44,
+        "y2025": 69,
+        "changePercent": -36
+      },
+      {
+        "metric": "Burglary",
+        "y2026": 122,
+        "y2025": 223,
+        "changePercent": -45
+      },
+      {
+        "metric": "Theft",
+        "y2026": 407,
+        "y2025": 420,
+        "changePercent": -3
+      },
+      {
+        "metric": "Theft of Auto Parts",
+        "y2026": 55,
+        "y2025": 73,
+        "changePercent": -24.7
+      },
+      {
+        "metric": "Drug Arrests",
+        "y2026": 84,
+        "y2025": 96,
+        "changePercent": -12.5
+      },
+      {
+        "metric": "Auto Theft",
+        "y2026": 104,
+        "y2025": 119,
+        "changePercent": -13
+      },
+      {
+        "metric": "Homicide",
+        "y2026": 0,
+        "y2025": 5,
+        "changePercent": -100
+      },
+      {
+        "metric": "Sex Offenses",
+        "y2026": 31,
+        "y2025": 38,
+        "changePercent": -18
+      },
+      {
+        "metric": "Criminal Mischief",
+        "y2026": 172,
+        "y2025": 246,
+        "changePercent": -30
+      },
+      {
+        "metric": "Shooting Incidents",
+        "y2026": 4,
+        "y2025": 5,
+        "changePercent": null,
+        "note": "Counts only; percent change not provided"
+      },
+      {
+        "metric": "Guns Recovered",
+        "y2026": 18,
+        "y2025": null,
+        "changePercent": null,
+        "note": "2026 YTD only"
+      },
+      {
+        "metric": "Total Arrests",
+        "y2026": 389,
+        "y2025": null,
+        "changePercent": null,
+        "note": "2026 YTD only"
+      },
+      {
+        "metric": "Shoplifting",
+        "y2026": 43,
+        "y2025": 34,
+        "changePercent": 26,
+        "note": "Increase vs prior year same period"
+      },
+      {
+        "metric": "Stabbings",
+        "y2026": 12,
+        "y2025": null,
+        "changePercent": null,
+        "note": "2026 YTD only"
+      }
+    ],
+    "analysisNote": "Citywide tracking is below 2025 across most categories through February. Burglary down sharply YTD; robbery down. Theft of auto parts and drug arrests are down vs same period 2025. Shoplifting is up \u2014 the main IMPACT-adjacent increase. South shows elevated theft YTD; West leads gun recoveries citywide. See JC IMPACT Monthly Tracker for full district context."
+  },
+  "baseline2025": {
+    "description": "2025 citywide monthly baselines (12 months) for charting and YoY context",
+    "year": 2025,
+    "monthLabels": [
+      "Jan",
+      "Feb",
+      "Mar",
+      "Apr",
+      "May",
+      "Jun",
+      "Jul",
+      "Aug",
+      "Sep",
+      "Oct",
+      "Nov",
+      "Dec"
+    ],
+    "series": {
+      "robbery": [
+        47,
+        35,
+        18,
+        37,
+        31,
+        30,
+        37,
+        26,
+        33,
+        33,
+        34,
+        27
+      ],
+      "aggravatedAssault": [
+        82,
+        65,
+        101,
+        86,
+        73,
+        95,
+        81,
+        65,
+        94,
+        87,
+        67,
+        60
+      ],
+      "burglary": [
+        69,
+        25,
+        38,
+        44,
+        48,
+        32,
+        31,
+        46,
+        42,
+        36,
+        27,
+        24
+      ],
+      "theft": [
+        329,
+        250,
+        353,
+        369,
+        387,
+        342,
+        333,
+        336,
+        320,
+        388,
+        336,
+        294
+      ],
+      "motorVehicleTheft": [
+        60,
+        66,
+        58,
+        68,
+        70,
+        83,
+        85,
+        77,
+        81,
+        66,
+        75,
+        54
+      ],
+      "criminalMischief": [
+        173,
+        132,
+        247,
+        198,
+        171,
+        203,
+        202,
+        202,
+        178,
+        174,
+        121,
+        131
+      ],
+      "homicides": [
+        5,
+        0,
+        0,
+        2,
+        0,
+        1,
+        1,
+        0,
+        1,
+        1,
+        0,
+        1
+      ],
+      "shootingIncidents": [
+        2,
+        3,
+        2,
+        4,
+        8,
+        5,
+        1,
+        2,
+        4,
+        2,
+        0,
+        3
+      ]
+    }
+  },
+  "weeklyImpact": {
+    "asOf": "2026-03-19",
+    "sourceNote": "Official JCPD CompStat week ranges from JC IMPACT Weekly Breakdown (not equal calendar segments).",
+    "mixKeys": [
+      "homicide",
+      "robberyTotal",
+      "burglaryTotal",
+      "theft",
+      "stolenVehicles",
+      "criminalMischief",
+      "sexOffenses",
+      "assaultTotal"
+    ],
+    "mixLabel": "8-category mix (no double-count)",
+    "months": [
+      {
+        "year": 2026,
+        "month": 1,
+        "label": "January 2026",
+        "rangeLabel": "01/01 \u2013 01/31",
+        "weekLabels": [
+          "1/1-1/3",
+          "1/4-1/10",
+          "1/11-1/17",
+          "1/18-1/24",
+          "1/25-1/31"
+        ],
+        "scopes": {
+          "citywide": {
+            "rows": [
+              {
+                "k": "assaultTotal",
+                "label": "Assault Total",
+                "note": "Incl. all assault",
+                "weeks": [
+                  20,
+                  30,
+                  38,
+                  40,
+                  39
+                ],
+                "monthTotal": 167
+              },
+              {
+                "k": "aggravatedAssault",
+                "label": "Aggravated Assault",
+                "note": "Incl. police/prot.",
+                "weeks": [
+                  9,
+                  12,
+                  14,
+                  17,
+                  23
+                ],
+                "monthTotal": 75
+              },
+              {
+                "k": "stolenVehicles",
+                "label": "Stolen Vehicles",
+                "note": "All thefts+attempts",
+                "weeks": [
+                  1,
+                  12,
+                  14,
+                  13,
+                  11
+                ],
+                "monthTotal": 51
+              },
+              {
+                "k": "burglaryTotal",
+                "label": "Burglary Total",
+                "note": "Structure only",
+                "weeks": [
+                  7,
+                  23,
+                  16,
+                  9,
+                  12
+                ],
+                "monthTotal": 67
+              },
+              {
+                "k": "burglaryResidential",
+                "label": "Residential",
+                "note": null,
+                "weeks": [
+                  1,
+                  7,
+                  4,
+                  3,
+                  1
+                ],
+                "monthTotal": 16
+              },
+              {
+                "k": "burglaryCommercial",
+                "label": "Commercial",
+                "note": null,
+                "weeks": [
+                  2,
+                  1,
+                  1,
+                  2,
+                  3
+                ],
+                "monthTotal": 9
+              },
+              {
+                "k": "burglaryAutoTheftFromAuto",
+                "label": "Auto (Theft F/A)",
+                "note": null,
+                "weeks": [
+                  3,
+                  14,
+                  11,
+                  4,
+                  8
+                ],
+                "monthTotal": 40
+              },
+              {
+                "k": "criminalMischief",
+                "label": "Criminal Mischief",
+                "note": "Not IMPACT cat.",
+                "weeks": [
+                  6,
+                  20,
+                  22,
+                  23,
+                  18
+                ],
+                "monthTotal": 89
+              },
+              {
+                "k": "homicide",
+                "label": "Homicide",
+                "note": "2C:11-3 only",
+                "weeks": [
+                  0,
+                  0,
+                  0,
+                  0,
+                  0
+                ],
+                "monthTotal": 0
+              },
+              {
+                "k": "theft",
+                "label": "Theft",
+                "note": "Excl.<$500 shoplift",
+                "weeks": [
+                  14,
+                  62,
+                  61,
+                  44,
+                  37
+                ],
+                "monthTotal": 218
+              },
+              {
+                "k": "theftOfAutoParts",
+                "label": "Theft of Auto Parts",
+                "note": null,
+                "weeks": [
+                  3,
+                  10,
+                  10,
+                  6,
+                  7
+                ],
+                "monthTotal": 36
+              },
+              {
+                "k": "sexOffenses",
+                "label": "Sex Offenses",
+                "note": "UCR Forcible Rape",
+                "weeks": [
+                  0,
+                  3,
+                  1,
+                  8,
+                  2
+                ],
+                "monthTotal": 14
+              },
+              {
+                "k": "robberyTotal",
+                "label": "Robbery Total",
+                "note": "Incl. carjacking",
+                "weeks": [
+                  3,
+                  4,
+                  8,
+                  7,
+                  4
+                ],
+                "monthTotal": 26
+              },
+              {
+                "k": "robberyWithWeapon",
+                "label": "w/ Weapon",
+                "note": null,
+                "weeks": [
+                  2,
+                  0,
+                  5,
+                  2,
+                  0
+                ],
+                "monthTotal": 9
+              },
+              {
+                "k": "biasIncidents",
+                "label": "Bias Incidents",
+                "note": null,
+                "weeks": [
+                  0,
+                  0,
+                  0,
+                  0,
+                  0
+                ],
+                "monthTotal": 0
+              },
+              {
+                "k": "drugArrests",
+                "label": "Drug Arrests",
+                "note": "Arrest-generated",
+                "weeks": [
+                  4,
+                  17,
+                  8,
+                  8,
+                  7
+                ],
+                "monthTotal": 44
+              },
+              {
+                "k": "shoplifting",
+                "label": "Shoplifting",
+                "note": "Arrest-generated",
+                "weeks": [
+                  2,
+                  10,
+                  5,
+                  3,
+                  6
+                ],
+                "monthTotal": 26
+              }
+            ]
+          },
+          "north": {
+            "rows": [
+              {
+                "k": "assaultTotal",
+                "label": "Assault Total",
+                "note": "Incl. all assault",
+                "weeks": [
+                  5,
+                  8,
+                  1,
+                  9,
+                  8
+                ],
+                "monthTotal": 31
+              },
+              {
+                "k": "aggravatedAssault",
+                "label": "Aggravated Assault",
+                "note": "Incl. police/prot.",
+                "weeks": [
+                  3,
+                  2,
+                  0,
+                  2,
+                  5
+                ],
+                "monthTotal": 12
+              },
+              {
+                "k": "stolenVehicles",
+                "label": "Stolen Vehicles",
+                "note": "All thefts+attempts",
+                "weeks": [
+                  0,
+                  5,
+                  1,
+                  2,
+                  3
+                ],
+                "monthTotal": 11
+              },
+              {
+                "k": "burglaryTotal",
+                "label": "Burglary Total",
+                "note": "Structure only",
+                "weeks": [
+                  1,
+                  7,
+                  2,
+                  3,
+                  2
+                ],
+                "monthTotal": 15
+              },
+              {
+                "k": "burglaryResidential",
+                "label": "Residential",
+                "note": null,
+                "weeks": [
+                  0,
+                  2,
+                  1,
+                  2,
+                  1
+                ],
+                "monthTotal": 6
+              },
+              {
+                "k": "burglaryCommercial",
+                "label": "Commercial",
+                "note": null,
+                "weeks": [
+                  0,
+                  0,
+                  0,
+                  0,
+                  0
+                ],
+                "monthTotal": 0
+              },
+              {
+                "k": "burglaryAutoTheftFromAuto",
+                "label": "Auto (Theft F/A)",
+                "note": null,
+                "weeks": [
+                  1,
+                  5,
+                  1,
+                  1,
+                  1
+                ],
+                "monthTotal": 9
+              },
+              {
+                "k": "criminalMischief",
+                "label": "Criminal Mischief",
+                "note": "Not IMPACT cat.",
+                "weeks": [
+                  1,
+                  6,
+                  6,
+                  5,
+                  1
+                ],
+                "monthTotal": 19
+              },
+              {
+                "k": "homicide",
+                "label": "Homicide",
+                "note": "2C:11-3 only",
+                "weeks": [
+                  0,
+                  0,
+                  0,
+                  0,
+                  0
+                ],
+                "monthTotal": 0
+              },
+              {
+                "k": "theft",
+                "label": "Theft",
+                "note": "Excl.<$500 shoplift",
+                "weeks": [
+                  2,
+                  12,
+                  5,
+                  7,
+                  2
+                ],
+                "monthTotal": 28
+              },
+              {
+                "k": "theftOfAutoParts",
+                "label": "Theft of Auto Parts",
+                "note": null,
+                "weeks": [
+                  0,
+                  1,
+                  4,
+                  2,
+                  2
+                ],
+                "monthTotal": 9
+              },
+              {
+                "k": "sexOffenses",
+                "label": "Sex Offenses",
+                "note": "UCR Forcible Rape",
+                "weeks": [
+                  0,
+                  0,
+                  1,
+                  2,
+                  1
+                ],
+                "monthTotal": 4
+              },
+              {
+                "k": "robberyTotal",
+                "label": "Robbery Total",
+                "note": "Incl. carjacking",
+                "weeks": [
+                  0,
+                  2,
+                  0,
+                  2,
+                  0
+                ],
+                "monthTotal": 4
+              },
+              {
+                "k": "robberyWithWeapon",
+                "label": "w/ Weapon",
+                "note": null,
+                "weeks": [
+                  0,
+                  0,
+                  0,
+                  0,
+                  0
+                ],
+                "monthTotal": 0
+              },
+              {
+                "k": "biasIncidents",
+                "label": "Bias Incidents",
+                "note": null,
+                "weeks": [
+                  0,
+                  0,
+                  0,
+                  0,
+                  0
+                ],
+                "monthTotal": 0
+              },
+              {
+                "k": "drugArrests",
+                "label": "Drug Arrests",
+                "note": "Arrest-generated",
+                "weeks": [
+                  0,
+                  0,
+                  0,
+                  0,
+                  0
+                ],
+                "monthTotal": 0
+              },
+              {
+                "k": "shoplifting",
+                "label": "Shoplifting",
+                "note": "Arrest-generated",
+                "weeks": [
+                  0,
+                  4,
+                  4,
+                  1,
+                  0
+                ],
+                "monthTotal": 9
+              }
+            ]
+          },
+          "east": {
+            "rows": [
+              {
+                "k": "assaultTotal",
+                "label": "Assault Total",
+                "note": "Incl. all assault",
+                "weeks": [
+                  2,
+                  4,
+                  8,
+                  5,
+                  7
+                ],
+                "monthTotal": 26
+              },
+              {
+                "k": "aggravatedAssault",
+                "label": "Aggravated Assault",
+                "note": "Incl. police/prot.",
+                "weeks": [
+                  1,
+                  2,
+                  1,
+                  3,
+                  4
+                ],
+                "monthTotal": 11
+              },
+              {
+                "k": "stolenVehicles",
+                "label": "Stolen Vehicles",
+                "note": "All thefts+attempts",
+                "weeks": [
+                  0,
+                  2,
+                  3,
+                  2,
+                  3
+                ],
+                "monthTotal": 10
+              },
+              {
+                "k": "burglaryTotal",
+                "label": "Burglary Total",
+                "note": "Structure only",
+                "weeks": [
+                  5,
+                  3,
+                  3,
+                  0,
+                  1
+                ],
+                "monthTotal": 12
+              },
+              {
+                "k": "burglaryResidential",
+                "label": "Residential",
+                "note": null,
+                "weeks": [
+                  1,
+                  2,
+                  0,
+                  0,
+                  0
+                ],
+                "monthTotal": 3
+              },
+              {
+                "k": "burglaryCommercial",
+                "label": "Commercial",
+                "note": null,
+                "weeks": [
+                  2,
+                  0,
+                  0,
+                  0,
+                  1
+                ],
+                "monthTotal": 3
+              },
+              {
+                "k": "burglaryAutoTheftFromAuto",
+                "label": "Auto (Theft F/A)",
+                "note": null,
+                "weeks": [
+                  1,
+                  1,
+                  3,
+                  0,
+                  0
+                ],
+                "monthTotal": 5
+              },
+              {
+                "k": "criminalMischief",
+                "label": "Criminal Mischief",
+                "note": "Not IMPACT cat.",
+                "weeks": [
+                  1,
+                  4,
+                  5,
+                  4,
+                  3
+                ],
+                "monthTotal": 17
+              },
+              {
+                "k": "homicide",
+                "label": "Homicide",
+                "note": "2C:11-3 only",
+                "weeks": [
+                  0,
+                  0,
+                  0,
+                  0,
+                  0
+                ],
+                "monthTotal": 0
+              },
+              {
+                "k": "theft",
+                "label": "Theft",
+                "note": "Excl.<$500 shoplift",
+                "weeks": [
+                  5,
+                  21,
+                  21,
+                  8,
+                  12
+                ],
+                "monthTotal": 67
+              },
+              {
+                "k": "theftOfAutoParts",
+                "label": "Theft of Auto Parts",
+                "note": null,
+                "weeks": [
+                  1,
+                  2,
+                  3,
+                  3,
+                  2
+                ],
+                "monthTotal": 11
+              },
+              {
+                "k": "sexOffenses",
+                "label": "Sex Offenses",
+                "note": "UCR Forcible Rape",
+                "weeks": [
+                  0,
+                  3,
+                  0,
+                  2,
+                  0
+                ],
+                "monthTotal": 5
+              },
+              {
+                "k": "robberyTotal",
+                "label": "Robbery Total",
+                "note": "Incl. carjacking",
+                "weeks": [
+                  0,
+                  1,
+                  0,
+                  2,
+                  0
+                ],
+                "monthTotal": 3
+              },
+              {
+                "k": "robberyWithWeapon",
+                "label": "w/ Weapon",
+                "note": null,
+                "weeks": [
+                  0,
+                  0,
+                  0,
+                  1,
+                  0
+                ],
+                "monthTotal": 1
+              },
+              {
+                "k": "biasIncidents",
+                "label": "Bias Incidents",
+                "note": null,
+                "weeks": [
+                  0,
+                  0,
+                  0,
+                  0,
+                  0
+                ],
+                "monthTotal": 0
+              },
+              {
+                "k": "drugArrests",
+                "label": "Drug Arrests",
+                "note": "Arrest-generated",
+                "weeks": [
+                  0,
+                  0,
+                  0,
+                  0,
+                  0
+                ],
+                "monthTotal": 0
+              },
+              {
+                "k": "shoplifting",
+                "label": "Shoplifting",
+                "note": "Arrest-generated",
+                "weeks": [
+                  0,
+                  5,
+                  1,
+                  2,
+                  4
+                ],
+                "monthTotal": 12
+              }
+            ]
+          },
+          "south": {
+            "rows": [
+              {
+                "k": "assaultTotal",
+                "label": "Assault Total",
+                "note": "Incl. all assault",
+                "weeks": [
+                  6,
+                  12,
+                  18,
+                  13,
+                  14
+                ],
+                "monthTotal": 63
+              },
+              {
+                "k": "aggravatedAssault",
+                "label": "Aggravated Assault",
+                "note": "Incl. police/prot.",
+                "weeks": [
+                  4,
+                  6,
+                  7,
+                  6,
+                  7
+                ],
+                "monthTotal": 30
+              },
+              {
+                "k": "stolenVehicles",
+                "label": "Stolen Vehicles",
+                "note": "All thefts+attempts",
+                "weeks": [
+                  1,
+                  3,
+                  5,
+                  5,
+                  1
+                ],
+                "monthTotal": 15
+              },
+              {
+                "k": "burglaryTotal",
+                "label": "Burglary Total",
+                "note": "Structure only",
+                "weeks": [
+                  1,
+                  7,
+                  6,
+                  3,
+                  5
+                ],
+                "monthTotal": 22
+              },
+              {
+                "k": "burglaryResidential",
+                "label": "Residential",
+                "note": null,
+                "weeks": [
+                  0,
+                  1,
+                  2,
+                  1,
+                  0
+                ],
+                "monthTotal": 4
+              },
+              {
+                "k": "burglaryCommercial",
+                "label": "Commercial",
+                "note": null,
+                "weeks": [
+                  0,
+                  0,
+                  0,
+                  0,
+                  0
+                ],
+                "monthTotal": 0
+              },
+              {
+                "k": "burglaryAutoTheftFromAuto",
+                "label": "Auto (Theft F/A)",
+                "note": null,
+                "weeks": [
+                  1,
+                  6,
+                  4,
+                  2,
+                  5
+                ],
+                "monthTotal": 18
+              },
+              {
+                "k": "criminalMischief",
+                "label": "Criminal Mischief",
+                "note": "Not IMPACT cat.",
+                "weeks": [
+                  4,
+                  6,
+                  5,
+                  5,
+                  6
+                ],
+                "monthTotal": 26
+              },
+              {
+                "k": "homicide",
+                "label": "Homicide",
+                "note": "2C:11-3 only",
+                "weeks": [
+                  0,
+                  0,
+                  0,
+                  0,
+                  0
+                ],
+                "monthTotal": 0
+              },
+              {
+                "k": "theft",
+                "label": "Theft",
+                "note": "Excl.<$500 shoplift",
+                "weeks": [
+                  2,
+                  16,
+                  14,
+                  18,
+                  5
+                ],
+                "monthTotal": 55
+              },
+              {
+                "k": "theftOfAutoParts",
+                "label": "Theft of Auto Parts",
+                "note": null,
+                "weeks": [
+                  0,
+                  3,
+                  1,
+                  1,
+                  2
+                ],
+                "monthTotal": 7
+              },
+              {
+                "k": "sexOffenses",
+                "label": "Sex Offenses",
+                "note": "UCR Forcible Rape",
+                "weeks": [
+                  0,
+                  0,
+                  0,
+                  1,
+                  1
+                ],
+                "monthTotal": 2
+              },
+              {
+                "k": "robberyTotal",
+                "label": "Robbery Total",
+                "note": "Incl. carjacking",
+                "weeks": [
+                  2,
+                  0,
+                  2,
+                  1,
+                  2
+                ],
+                "monthTotal": 7
+              },
+              {
+                "k": "robberyWithWeapon",
+                "label": "w/ Weapon",
+                "note": null,
+                "weeks": [
+                  1,
+                  0,
+                  2,
+                  1,
+                  0
+                ],
+                "monthTotal": 4
+              },
+              {
+                "k": "biasIncidents",
+                "label": "Bias Incidents",
+                "note": null,
+                "weeks": [
+                  0,
+                  0,
+                  0,
+                  0,
+                  0
+                ],
+                "monthTotal": 0
+              },
+              {
+                "k": "drugArrests",
+                "label": "Drug Arrests",
+                "note": "Arrest-generated",
+                "weeks": [
+                  2,
+                  17,
+                  3,
+                  8,
+                  7
+                ],
+                "monthTotal": 37
+              },
+              {
+                "k": "shoplifting",
+                "label": "Shoplifting",
+                "note": "Arrest-generated",
+                "weeks": [
+                  0,
+                  0,
+                  0,
+                  0,
+                  0
+                ],
+                "monthTotal": 0
+              }
+            ]
+          },
+          "west": {
+            "rows": [
+              {
+                "k": "assaultTotal",
+                "label": "Assault Total",
+                "note": "Incl. all assault",
+                "weeks": [
+                  7,
+                  6,
+                  11,
+                  13,
+                  10
+                ],
+                "monthTotal": 47
+              },
+              {
+                "k": "aggravatedAssault",
+                "label": "Aggravated Assault",
+                "note": "Incl. police/prot.",
+                "weeks": [
+                  1,
+                  2,
+                  6,
+                  6,
+                  7
+                ],
+                "monthTotal": 22
+              },
+              {
+                "k": "stolenVehicles",
+                "label": "Stolen Vehicles",
+                "note": "All thefts+attempts",
+                "weeks": [
+                  0,
+                  2,
+                  5,
+                  4,
+                  4
+                ],
+                "monthTotal": 15
+              },
+              {
+                "k": "burglaryTotal",
+                "label": "Burglary Total",
+                "note": "Structure only",
+                "weeks": [
+                  0,
+                  6,
+                  5,
+                  3,
+                  4
+                ],
+                "monthTotal": 18
+              },
+              {
+                "k": "burglaryResidential",
+                "label": "Residential",
+                "note": null,
+                "weeks": [
+                  0,
+                  2,
+                  1,
+                  0,
+                  0
+                ],
+                "monthTotal": 3
+              },
+              {
+                "k": "burglaryCommercial",
+                "label": "Commercial",
+                "note": null,
+                "weeks": [
+                  0,
+                  1,
+                  1,
+                  2,
+                  2
+                ],
+                "monthTotal": 6
+              },
+              {
+                "k": "burglaryAutoTheftFromAuto",
+                "label": "Auto (Theft F/A)",
+                "note": null,
+                "weeks": [
+                  0,
+                  2,
+                  3,
+                  1,
+                  2
+                ],
+                "monthTotal": 8
+              },
+              {
+                "k": "criminalMischief",
+                "label": "Criminal Mischief",
+                "note": "Not IMPACT cat.",
+                "weeks": [
+                  0,
+                  4,
+                  6,
+                  9,
+                  8
+                ],
+                "monthTotal": 27
+              },
+              {
+                "k": "homicide",
+                "label": "Homicide",
+                "note": "2C:11-3 only",
+                "weeks": [
+                  0,
+                  0,
+                  0,
+                  0,
+                  0
+                ],
+                "monthTotal": 0
+              },
+              {
+                "k": "theft",
+                "label": "Theft",
+                "note": "Excl.<$500 shoplift",
+                "weeks": [
+                  5,
+                  13,
+                  21,
+                  11,
+                  18
+                ],
+                "monthTotal": 68
+              },
+              {
+                "k": "theftOfAutoParts",
+                "label": "Theft of Auto Parts",
+                "note": null,
+                "weeks": [
+                  2,
+                  4,
+                  2,
+                  0,
+                  1
+                ],
+                "monthTotal": 9
+              },
+              {
+                "k": "sexOffenses",
+                "label": "Sex Offenses",
+                "note": "UCR Forcible Rape",
+                "weeks": [
+                  0,
+                  0,
+                  0,
+                  3,
+                  0
+                ],
+                "monthTotal": 3
+              },
+              {
+                "k": "robberyTotal",
+                "label": "Robbery Total",
+                "note": "Incl. carjacking",
+                "weeks": [
+                  1,
+                  1,
+                  6,
+                  2,
+                  2
+                ],
+                "monthTotal": 12
+              },
+              {
+                "k": "robberyWithWeapon",
+                "label": "w/ Weapon",
+                "note": null,
+                "weeks": [
+                  1,
+                  0,
+                  3,
+                  0,
+                  0
+                ],
+                "monthTotal": 4
+              },
+              {
+                "k": "biasIncidents",
+                "label": "Bias Incidents",
+                "note": null,
+                "weeks": [
+                  0,
+                  0,
+                  0,
+                  0,
+                  0
+                ],
+                "monthTotal": 0
+              },
+              {
+                "k": "drugArrests",
+                "label": "Drug Arrests",
+                "note": "Arrest-generated",
+                "weeks": [
+                  2,
+                  0,
+                  5,
+                  0,
+                  0
+                ],
+                "monthTotal": 7
+              },
+              {
+                "k": "shoplifting",
+                "label": "Shoplifting",
+                "note": "Arrest-generated",
+                "weeks": [
+                  2,
+                  1,
+                  0,
+                  0,
+                  2
+                ],
+                "monthTotal": 5
+              }
+            ]
+          }
+        }
+      },
+      {
+        "year": 2026,
+        "month": 2,
+        "label": "February 2026",
+        "rangeLabel": "02/01 \u2013 02/28",
+        "weekLabels": [
+          "2/1-2/7",
+          "2/8-2/14",
+          "2/15-2/21",
+          "2/22-2/28"
+        ],
+        "scopes": {
+          "citywide": {
+            "rows": [
+              {
+                "k": "assaultTotal",
+                "label": "Assault Total",
+                "note": "Incl. all assault",
+                "weeks": [
+                  39,
+                  44,
+                  48,
+                  51
+                ],
+                "monthTotal": 182
+              },
+              {
+                "k": "aggravatedAssault",
+                "label": "Aggravated Assault",
+                "note": "Incl. police/prot.",
+                "weeks": [
+                  18,
+                  17,
+                  20,
+                  22
+                ],
+                "monthTotal": 77
+              },
+              {
+                "k": "stolenVehicles",
+                "label": "Stolen Vehicles",
+                "note": "All thefts+attempts",
+                "weeks": [
+                  19,
+                  10,
+                  13,
+                  11
+                ],
+                "monthTotal": 53
+              },
+              {
+                "k": "burglaryTotal",
+                "label": "Burglary Total",
+                "note": "Structure only",
+                "weeks": [
+                  13,
+                  12,
+                  19,
+                  11
+                ],
+                "monthTotal": 55
+              },
+              {
+                "k": "burglaryResidential",
+                "label": "Residential",
+                "note": null,
+                "weeks": [
+                  2,
+                  3,
+                  5,
+                  4
+                ],
+                "monthTotal": 14
+              },
+              {
+                "k": "burglaryCommercial",
+                "label": "Commercial",
+                "note": null,
+                "weeks": [
+                  1,
+                  2,
+                  2,
+                  4
+                ],
+                "monthTotal": 9
+              },
+              {
+                "k": "burglaryAutoTheftFromAuto",
+                "label": "Auto (Theft F/A)",
+                "note": null,
+                "weeks": [
+                  10,
+                  7,
+                  12,
+                  3
+                ],
+                "monthTotal": 32
+              },
+              {
+                "k": "criminalMischief",
+                "label": "Criminal Mischief",
+                "note": "Not IMPACT cat.",
+                "weeks": [
+                  16,
+                  19,
+                  20,
+                  28
+                ],
+                "monthTotal": 83
+              },
+              {
+                "k": "homicide",
+                "label": "Homicide",
+                "note": "2C:11-3 only",
+                "weeks": [
+                  0,
+                  0,
+                  0,
+                  0
+                ],
+                "monthTotal": 0
+              },
+              {
+                "k": "theft",
+                "label": "Theft",
+                "note": "Excl.<$500 shoplift",
+                "weeks": [
+                  30,
+                  62,
+                  49,
+                  48
+                ],
+                "monthTotal": 189
+              },
+              {
+                "k": "theftOfAutoParts",
+                "label": "Theft of Auto Parts",
+                "note": null,
+                "weeks": [
+                  4,
+                  7,
+                  3,
+                  5
+                ],
+                "monthTotal": 19
+              },
+              {
+                "k": "sexOffenses",
+                "label": "Sex Offenses",
+                "note": "UCR Forcible Rape",
+                "weeks": [
+                  5,
+                  2,
+                  5,
+                  5
+                ],
+                "monthTotal": 17
+              },
+              {
+                "k": "robberyTotal",
+                "label": "Robbery Total",
+                "note": "Incl. carjacking",
+                "weeks": [
+                  2,
+                  5,
+                  5,
+                  6
+                ],
+                "monthTotal": 18
+              },
+              {
+                "k": "robberyWithWeapon",
+                "label": "w/ Weapon",
+                "note": null,
+                "weeks": [
+                  2,
+                  3,
+                  1,
+                  0
+                ],
+                "monthTotal": 6
+              },
+              {
+                "k": "biasIncidents",
+                "label": "Bias Incidents",
+                "note": null,
+                "weeks": [
+                  0,
+                  0,
+                  0,
+                  1
+                ],
+                "monthTotal": 1
+              },
+              {
+                "k": "drugArrests",
+                "label": "Drug Arrests",
+                "note": "Arrest-generated",
+                "weeks": [
+                  5,
+                  8,
+                  12,
+                  15
+                ],
+                "monthTotal": 40
+              },
+              {
+                "k": "shoplifting",
+                "label": "Shoplifting",
+                "note": "Arrest-generated",
+                "weeks": [
+                  5,
+                  4,
+                  2,
+                  6
+                ],
+                "monthTotal": 17
+              }
+            ]
+          },
+          "north": {
+            "rows": [
+              {
+                "k": "assaultTotal",
+                "label": "Assault Total",
+                "note": "Incl. all assault",
+                "weeks": [
+                  7,
+                  7,
+                  7,
+                  10
+                ],
+                "monthTotal": 31
+              },
+              {
+                "k": "aggravatedAssault",
+                "label": "Aggravated Assault",
+                "note": "Incl. police/prot.",
+                "weeks": [
+                  3,
+                  2,
+                  1,
+                  6
+                ],
+                "monthTotal": 12
+              },
+              {
+                "k": "stolenVehicles",
+                "label": "Stolen Vehicles",
+                "note": "All thefts+attempts",
+                "weeks": [
+                  2,
+                  1,
+                  1,
+                  3
+                ],
+                "monthTotal": 7
+              },
+              {
+                "k": "burglaryTotal",
+                "label": "Burglary Total",
+                "note": "Structure only",
+                "weeks": [
+                  3,
+                  1,
+                  0,
+                  2
+                ],
+                "monthTotal": 6
+              },
+              {
+                "k": "burglaryResidential",
+                "label": "Residential",
+                "note": null,
+                "weeks": [
+                  1,
+                  0,
+                  0,
+                  0
+                ],
+                "monthTotal": 1
+              },
+              {
+                "k": "burglaryCommercial",
+                "label": "Commercial",
+                "note": null,
+                "weeks": [
+                  1,
+                  0,
+                  0,
+                  1
+                ],
+                "monthTotal": 2
+              },
+              {
+                "k": "burglaryAutoTheftFromAuto",
+                "label": "Auto (Theft F/A)",
+                "note": null,
+                "weeks": [
+                  1,
+                  1,
+                  0,
+                  1
+                ],
+                "monthTotal": 3
+              },
+              {
+                "k": "criminalMischief",
+                "label": "Criminal Mischief",
+                "note": "Not IMPACT cat.",
+                "weeks": [
+                  1,
+                  3,
+                  2,
+                  6
+                ],
+                "monthTotal": 12
+              },
+              {
+                "k": "homicide",
+                "label": "Homicide",
+                "note": "2C:11-3 only",
+                "weeks": [
+                  0,
+                  0,
+                  0,
+                  0
+                ],
+                "monthTotal": 0
+              },
+              {
+                "k": "theft",
+                "label": "Theft",
+                "note": "Excl.<$500 shoplift",
+                "weeks": [
+                  7,
+                  6,
+                  9,
+                  4
+                ],
+                "monthTotal": 26
+              },
+              {
+                "k": "theftOfAutoParts",
+                "label": "Theft of Auto Parts",
+                "note": null,
+                "weeks": [
+                  1,
+                  0,
+                  1,
+                  0
+                ],
+                "monthTotal": 2
+              },
+              {
+                "k": "sexOffenses",
+                "label": "Sex Offenses",
+                "note": "UCR Forcible Rape",
+                "weeks": [
+                  1,
+                  2,
+                  1,
+                  0
+                ],
+                "monthTotal": 4
+              },
+              {
+                "k": "robberyTotal",
+                "label": "Robbery Total",
+                "note": "Incl. carjacking",
+                "weeks": [
+                  1,
+                  2,
+                  0,
+                  1
+                ],
+                "monthTotal": 4
+              },
+              {
+                "k": "robberyWithWeapon",
+                "label": "w/ Weapon",
+                "note": null,
+                "weeks": [
+                  1,
+                  1,
+                  0,
+                  0
+                ],
+                "monthTotal": 2
+              },
+              {
+                "k": "biasIncidents",
+                "label": "Bias Incidents",
+                "note": null,
+                "weeks": [
+                  0,
+                  0,
+                  0,
+                  0
+                ],
+                "monthTotal": 0
+              },
+              {
+                "k": "drugArrests",
+                "label": "Drug Arrests",
+                "note": "Arrest-generated",
+                "weeks": [
+                  0,
+                  0,
+                  0,
+                  0
+                ],
+                "monthTotal": 0
+              },
+              {
+                "k": "shoplifting",
+                "label": "Shoplifting",
+                "note": "Arrest-generated",
+                "weeks": [
+                  0,
+                  0,
+                  0,
+                  0
+                ],
+                "monthTotal": 0
+              }
+            ]
+          },
+          "east": {
+            "rows": [
+              {
+                "k": "assaultTotal",
+                "label": "Assault Total",
+                "note": "Incl. all assault",
+                "weeks": [
+                  8,
+                  8,
+                  10,
+                  9
+                ],
+                "monthTotal": 35
+              },
+              {
+                "k": "aggravatedAssault",
+                "label": "Aggravated Assault",
+                "note": "Incl. police/prot.",
+                "weeks": [
+                  3,
+                  2,
+                  3,
+                  4
+                ],
+                "monthTotal": 12
+              },
+              {
+                "k": "stolenVehicles",
+                "label": "Stolen Vehicles",
+                "note": "All thefts+attempts",
+                "weeks": [
+                  5,
+                  2,
+                  5,
+                  5
+                ],
+                "monthTotal": 17
+              },
+              {
+                "k": "burglaryTotal",
+                "label": "Burglary Total",
+                "note": "Structure only",
+                "weeks": [
+                  3,
+                  4,
+                  10,
+                  5
+                ],
+                "monthTotal": 22
+              },
+              {
+                "k": "burglaryResidential",
+                "label": "Residential",
+                "note": null,
+                "weeks": [
+                  0,
+                  0,
+                  2,
+                  2
+                ],
+                "monthTotal": 4
+              },
+              {
+                "k": "burglaryCommercial",
+                "label": "Commercial",
+                "note": null,
+                "weeks": [
+                  0,
+                  1,
+                  2,
+                  2
+                ],
+                "monthTotal": 5
+              },
+              {
+                "k": "burglaryAutoTheftFromAuto",
+                "label": "Auto (Theft F/A)",
+                "note": null,
+                "weeks": [
+                  3,
+                  3,
+                  6,
+                  1
+                ],
+                "monthTotal": 13
+              },
+              {
+                "k": "criminalMischief",
+                "label": "Criminal Mischief",
+                "note": "Not IMPACT cat.",
+                "weeks": [
+                  6,
+                  6,
+                  6,
+                  5
+                ],
+                "monthTotal": 23
+              },
+              {
+                "k": "homicide",
+                "label": "Homicide",
+                "note": "2C:11-3 only",
+                "weeks": [
+                  0,
+                  0,
+                  0,
+                  0
+                ],
+                "monthTotal": 0
+              },
+              {
+                "k": "theft",
+                "label": "Theft",
+                "note": "Excl.<$500 shoplift",
+                "weeks": [
+                  11,
+                  12,
+                  12,
+                  19
+                ],
+                "monthTotal": 54
+              },
+              {
+                "k": "theftOfAutoParts",
+                "label": "Theft of Auto Parts",
+                "note": null,
+                "weeks": [
+                  0,
+                  1,
+                  1,
+                  3
+                ],
+                "monthTotal": 5
+              },
+              {
+                "k": "sexOffenses",
+                "label": "Sex Offenses",
+                "note": "UCR Forcible Rape",
+                "weeks": [
+                  1,
+                  0,
+                  0,
+                  2
+                ],
+                "monthTotal": 3
+              },
+              {
+                "k": "robberyTotal",
+                "label": "Robbery Total",
+                "note": "Incl. carjacking",
+                "weeks": [
+                  1,
+                  0,
+                  1,
+                  0
+                ],
+                "monthTotal": 2
+              },
+              {
+                "k": "robberyWithWeapon",
+                "label": "w/ Weapon",
+                "note": null,
+                "weeks": [
+                  1,
+                  0,
+                  0,
+                  0
+                ],
+                "monthTotal": 1
+              },
+              {
+                "k": "biasIncidents",
+                "label": "Bias Incidents",
+                "note": null,
+                "weeks": [
+                  0,
+                  0,
+                  0,
+                  1
+                ],
+                "monthTotal": 1
+              },
+              {
+                "k": "drugArrests",
+                "label": "Drug Arrests",
+                "note": "Arrest-generated",
+                "weeks": [
+                  0,
+                  0,
+                  0,
+                  0
+                ],
+                "monthTotal": 0
+              },
+              {
+                "k": "shoplifting",
+                "label": "Shoplifting",
+                "note": "Arrest-generated",
+                "weeks": [
+                  3,
+                  2,
+                  1,
+                  6
+                ],
+                "monthTotal": 12
+              }
+            ]
+          },
+          "south": {
+            "rows": [
+              {
+                "k": "assaultTotal",
+                "label": "Assault Total",
+                "note": "Incl. all assault",
+                "weeks": [
+                  18,
+                  16,
+                  17,
+                  20
+                ],
+                "monthTotal": 71
+              },
+              {
+                "k": "aggravatedAssault",
+                "label": "Aggravated Assault",
+                "note": "Incl. police/prot.",
+                "weeks": [
+                  6,
+                  7,
+                  8,
+                  9
+                ],
+                "monthTotal": 30
+              },
+              {
+                "k": "stolenVehicles",
+                "label": "Stolen Vehicles",
+                "note": "All thefts+attempts",
+                "weeks": [
+                  8,
+                  4,
+                  5,
+                  2
+                ],
+                "monthTotal": 19
+              },
+              {
+                "k": "burglaryTotal",
+                "label": "Burglary Total",
+                "note": "Structure only",
+                "weeks": [
+                  3,
+                  5,
+                  5,
+                  1
+                ],
+                "monthTotal": 14
+              },
+              {
+                "k": "burglaryResidential",
+                "label": "Residential",
+                "note": null,
+                "weeks": [
+                  0,
+                  2,
+                  2,
+                  0
+                ],
+                "monthTotal": 4
+              },
+              {
+                "k": "burglaryCommercial",
+                "label": "Commercial",
+                "note": null,
+                "weeks": [
+                  0,
+                  1,
+                  0,
+                  0
+                ],
+                "monthTotal": 1
+              },
+              {
+                "k": "burglaryAutoTheftFromAuto",
+                "label": "Auto (Theft F/A)",
+                "note": null,
+                "weeks": [
+                  3,
+                  2,
+                  3,
+                  1
+                ],
+                "monthTotal": 9
+              },
+              {
+                "k": "criminalMischief",
+                "label": "Criminal Mischief",
+                "note": "Not IMPACT cat.",
+                "weeks": [
+                  4,
+                  8,
+                  7,
+                  11
+                ],
+                "monthTotal": 30
+              },
+              {
+                "k": "homicide",
+                "label": "Homicide",
+                "note": "2C:11-3 only",
+                "weeks": [
+                  0,
+                  0,
+                  0,
+                  0
+                ],
+                "monthTotal": 0
+              },
+              {
+                "k": "theft",
+                "label": "Theft",
+                "note": "Excl.<$500 shoplift",
+                "weeks": [
+                  6,
+                  20,
+                  18,
+                  14
+                ],
+                "monthTotal": 58
+              },
+              {
+                "k": "theftOfAutoParts",
+                "label": "Theft of Auto Parts",
+                "note": null,
+                "weeks": [
+                  1,
+                  2,
+                  0,
+                  1
+                ],
+                "monthTotal": 4
+              },
+              {
+                "k": "sexOffenses",
+                "label": "Sex Offenses",
+                "note": "UCR Forcible Rape",
+                "weeks": [
+                  2,
+                  0,
+                  4,
+                  0
+                ],
+                "monthTotal": 6
+              },
+              {
+                "k": "robberyTotal",
+                "label": "Robbery Total",
+                "note": "Incl. carjacking",
+                "weeks": [
+                  0,
+                  1,
+                  4,
+                  2
+                ],
+                "monthTotal": 7
+              },
+              {
+                "k": "robberyWithWeapon",
+                "label": "w/ Weapon",
+                "note": null,
+                "weeks": [
+                  0,
+                  0,
+                  1,
+                  0
+                ],
+                "monthTotal": 1
+              },
+              {
+                "k": "biasIncidents",
+                "label": "Bias Incidents",
+                "note": null,
+                "weeks": [
+                  0,
+                  0,
+                  0,
+                  0
+                ],
+                "monthTotal": 0
+              },
+              {
+                "k": "drugArrests",
+                "label": "Drug Arrests",
+                "note": "Arrest-generated",
+                "weeks": [
+                  3,
+                  3,
+                  1,
+                  5
+                ],
+                "monthTotal": 12
+              },
+              {
+                "k": "shoplifting",
+                "label": "Shoplifting",
+                "note": "Arrest-generated",
+                "weeks": [
+                  0,
+                  0,
+                  0,
+                  0
+                ],
+                "monthTotal": 0
+              }
+            ]
+          },
+          "west": {
+            "rows": [
+              {
+                "k": "assaultTotal",
+                "label": "Assault Total",
+                "note": "Incl. all assault",
+                "weeks": [
+                  6,
+                  13,
+                  14,
+                  12
+                ],
+                "monthTotal": 45
+              },
+              {
+                "k": "aggravatedAssault",
+                "label": "Aggravated Assault",
+                "note": "Incl. police/prot.",
+                "weeks": [
+                  6,
+                  6,
+                  8,
+                  3
+                ],
+                "monthTotal": 23
+              },
+              {
+                "k": "stolenVehicles",
+                "label": "Stolen Vehicles",
+                "note": "All thefts+attempts",
+                "weeks": [
+                  4,
+                  3,
+                  2,
+                  1
+                ],
+                "monthTotal": 10
+              },
+              {
+                "k": "burglaryTotal",
+                "label": "Burglary Total",
+                "note": "Structure only",
+                "weeks": [
+                  4,
+                  2,
+                  4,
+                  3
+                ],
+                "monthTotal": 13
+              },
+              {
+                "k": "burglaryResidential",
+                "label": "Residential",
+                "note": null,
+                "weeks": [
+                  1,
+                  1,
+                  1,
+                  2
+                ],
+                "monthTotal": 5
+              },
+              {
+                "k": "burglaryCommercial",
+                "label": "Commercial",
+                "note": null,
+                "weeks": [
+                  0,
+                  0,
+                  0,
+                  1
+                ],
+                "monthTotal": 1
+              },
+              {
+                "k": "burglaryAutoTheftFromAuto",
+                "label": "Auto (Theft F/A)",
+                "note": null,
+                "weeks": [
+                  3,
+                  1,
+                  3,
+                  0
+                ],
+                "monthTotal": 7
+              },
+              {
+                "k": "criminalMischief",
+                "label": "Criminal Mischief",
+                "note": "Not IMPACT cat.",
+                "weeks": [
+                  5,
+                  2,
+                  5,
+                  6
+                ],
+                "monthTotal": 18
+              },
+              {
+                "k": "homicide",
+                "label": "Homicide",
+                "note": "2C:11-3 only",
+                "weeks": [
+                  0,
+                  0,
+                  0,
+                  0
+                ],
+                "monthTotal": 0
+              },
+              {
+                "k": "theft",
+                "label": "Theft",
+                "note": "Excl.<$500 shoplift",
+                "weeks": [
+                  6,
+                  24,
+                  10,
+                  11
+                ],
+                "monthTotal": 51
+              },
+              {
+                "k": "theftOfAutoParts",
+                "label": "Theft of Auto Parts",
+                "note": null,
+                "weeks": [
+                  2,
+                  4,
+                  1,
+                  1
+                ],
+                "monthTotal": 8
+              },
+              {
+                "k": "sexOffenses",
+                "label": "Sex Offenses",
+                "note": "UCR Forcible Rape",
+                "weeks": [
+                  1,
+                  0,
+                  0,
+                  3
+                ],
+                "monthTotal": 4
+              },
+              {
+                "k": "robberyTotal",
+                "label": "Robbery Total",
+                "note": "Incl. carjacking",
+                "weeks": [
+                  0,
+                  2,
+                  0,
+                  3
+                ],
+                "monthTotal": 5
+              },
+              {
+                "k": "robberyWithWeapon",
+                "label": "w/ Weapon",
+                "note": null,
+                "weeks": [
+                  0,
+                  2,
+                  0,
+                  0
+                ],
+                "monthTotal": 2
+              },
+              {
+                "k": "biasIncidents",
+                "label": "Bias Incidents",
+                "note": null,
+                "weeks": [
+                  0,
+                  0,
+                  0,
+                  0
+                ],
+                "monthTotal": 0
+              },
+              {
+                "k": "drugArrests",
+                "label": "Drug Arrests",
+                "note": "Arrest-generated",
+                "weeks": [
+                  2,
+                  5,
+                  11,
+                  10
+                ],
+                "monthTotal": 28
+              },
+              {
+                "k": "shoplifting",
+                "label": "Shoplifting",
+                "note": "Arrest-generated",
+                "weeks": [
+                  2,
+                  2,
+                  1,
+                  0
+                ],
+                "monthTotal": 5
+              }
+            ]
+          }
+        }
+      }
+    ]
   }
 }
