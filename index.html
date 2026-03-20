@@ -984,8 +984,111 @@ footer {
   gtag('js', new Date());
   gtag('config', 'G-VCRDDZBT59');
 </script>
-<meta http-equiv="refresh" content="0; url=maintenance.html">
-<script>window.location.replace('maintenance.html');</script>
+<script>
+(function(){
+  var BIQJC_SESSION_KEY = 'biqjc_session_auth_ok';
+  var BIQJC_PASSWORD = 'jcimpact1213';
+  var h = (location.hostname || '').toLowerCase();
+  var isLocal = h === 'localhost' || h === '127.0.0.1' || h === '[::1]';
+
+  var authed = isLocal;
+  try{
+    authed = authed || String(sessionStorage.getItem(BIQJC_SESSION_KEY)) === '1';
+  }catch(e){}
+
+  window.__biqjcGateAuthed = authed;
+  if(authed) return;
+
+  function mountGate(){
+    if(document.getElementById('biqjc-gate-overlay')) return;
+
+    var styleEl = document.getElementById('biqjc-gate-style');
+    if(!styleEl){
+      styleEl = document.createElement('style');
+      styleEl.id = 'biqjc-gate-style';
+      styleEl.textContent = "\
+#biqjc-gate-overlay{position:fixed;inset:0;z-index:999999;background:rgba(0,0,0,0.72);backdrop-filter:blur(12px);display:flex;align-items:center;justify-content:center;padding:24px;}\
+#biqjc-gate-shell{width:min(560px,100%);background:rgba(10,12,16,0.92);border:1px solid rgba(201,168,76,0.22);border-radius:20px;box-shadow:0 24px 80px rgba(0,0,0,0.45);padding:28px 24px;color:#e8eaed;text-align:center;}\
+#biqjc-gate-title{font-size:1.7rem;font-weight:800;letter-spacing:0.02em;margin:0 0 10px;}\
+#biqjc-gate-subtitle{margin:0 auto 18px;max-width:40rem;color:rgba(232,234,237,0.78);line-height:1.5;font-size:1rem;}\
+#biqjc-gate-form{display:flex;gap:12px;justify-content:center;flex-wrap:wrap;}\
+#biqjc-gate-input{flex:1 1 260px;background:rgba(255,255,255,0.06);border:1px solid rgba(244,247,251,0.18);color:#e8eaed;border-radius:12px;padding:12px 14px;font-size:1rem;outline:none;}\
+#biqjc-gate-input:focus{border-color:rgba(232,87,26,0.7);box-shadow:0 0 0 3px rgba(232,87,26,0.18);}\
+#biqjc-gate-btn{background:linear-gradient(90deg, rgba(232,87,26,0.85), rgba(201,168,76,0.35));border:1px solid rgba(232,87,26,0.55);color:#ffd8c9;border-radius:12px;padding:12px 18px;font-weight:800;cursor:pointer;}\
+#biqjc-gate-btn:active{transform:translateY(1px);}\
+#biqjc-gate-error{margin-top:12px;min-height:1.2em;color:#fca5a5;font-size:0.92rem;}\
+";
+      document.head.appendChild(styleEl);
+    }
+
+    var overlay = document.createElement('div');
+    overlay.id = 'biqjc-gate-overlay';
+    overlay.setAttribute('role', 'dialog');
+    overlay.setAttribute('aria-modal', 'true');
+
+    var shell = document.createElement('div');
+    shell.id = 'biqjc-gate-shell';
+
+    var title = document.createElement('div');
+    title.id = 'biqjc-gate-title';
+    title.textContent = 'Access restricted';
+
+    var subtitle = document.createElement('p');
+    subtitle.id = 'biqjc-gate-subtitle';
+    subtitle.textContent = 'Enter the password to view this site. This access lasts for this browser session.';
+
+    var form = document.createElement('form');
+    form.id = 'biqjc-gate-form';
+    form.setAttribute('autocomplete', 'off');
+
+    var input = document.createElement('input');
+    input.id = 'biqjc-gate-input';
+    input.type = 'password';
+    input.autocomplete = 'current-password';
+    input.placeholder = 'Password';
+    input.setAttribute('aria-label', 'Password');
+
+    var btn = document.createElement('button');
+    btn.id = 'biqjc-gate-btn';
+    btn.type = 'submit';
+    btn.textContent = 'Unlock';
+
+    var err = document.createElement('div');
+    err.id = 'biqjc-gate-error';
+    err.setAttribute('aria-live', 'polite');
+
+    form.appendChild(input);
+    form.appendChild(btn);
+    shell.appendChild(title);
+    shell.appendChild(subtitle);
+    shell.appendChild(form);
+    shell.appendChild(err);
+    overlay.appendChild(shell);
+    document.body.appendChild(overlay);
+
+    try{ input.focus(); }catch(e){}
+
+    form.addEventListener('submit', function(ev){
+      ev.preventDefault();
+      var v = String(input.value || '');
+      if(v === BIQJC_PASSWORD){
+        try{ sessionStorage.setItem(BIQJC_SESSION_KEY, '1'); }catch(e){}
+        window.__biqjcGateAuthed = true;
+        window.location.reload();
+        return;
+      }
+      err.textContent = 'Incorrect password.';
+      try{ input.select(); }catch(e){}
+    });
+  }
+
+  if(document.readyState === 'loading'){
+    document.addEventListener('DOMContentLoaded', mountGate);
+  }else{
+    mountGate();
+  }
+})();
+</script>
 </head>
 <body>
 
