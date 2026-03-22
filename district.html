@@ -762,10 +762,30 @@
     };
 
     const districtWardGroups = [
-      { id:'north', name:'North District', wards:['D'] },
-      { id:'east',  name:'East District',  wards:['E'] },
-      { id:'west',  name:'West District',  wards:['C','B'] },
-      { id:'south', name:'South District', wards:['A','F'] }
+      {
+        id:'north',
+        name:'North District',
+        wards:['D'],
+        publicDescription:'The North District stretches across The Heights and Journal Square — two of Jersey City’s most vibrant and culturally rich neighborhoods. From the busy storefronts of Central Avenue to the transit hub of Journal Square, this district is home to tens of thousands of residents, major schools, and some of the city’s most iconic street life. It’s a community with deep roots, real character, and a lot going on.'
+      },
+      {
+        id:'east',
+        name:'East District',
+        wards:['E'],
+        publicDescription:'The East District is where Jersey City meets the world. From the gleaming waterfront and Newport to Historic Downtown and the path to Hoboken, this is JC’s most fast-paced, high-density corridor — packed with commuters, restaurants, high-rises, and some of the most valuable real estate in New Jersey.'
+      },
+      {
+        id:'west',
+        name:'West District',
+        wards:['C','B'],
+        publicDescription:'The West District is the heart of Jersey City’s working neighborhoods. Anchored around Jackson Square and stretching toward the Hackensack River, this is a community-driven area with deep roots, diverse residents, and a culture that’s been the backbone of the city for generations.'
+      },
+      {
+        id:'south',
+        name:'South District',
+        wards:['A','F'],
+        publicDescription:'The South District runs from the edge of Liberty State Park all the way down to the Bayonne border, covering some of Jersey City’s most established residential blocks. It’s a quieter, more neighborhood-feel side of the city — but with Liberty State Park, the views of the Statue of Liberty, and Bergen Avenue’s busy commercial strip, there’s plenty going on.'
+      }
     ];
 
     const districtStyle = {
@@ -879,6 +899,7 @@
       return {
         id: districtId,
         name: group.name,
+        publicDescription: group.publicDescription || '',
         score,
         totalIncidents,
         topCrime,
@@ -1369,7 +1390,7 @@
           <article class="hero-card">
             <div class="eyebrow">District detail · Jersey City · JCPD data</div>
             <h1>${escapeHTML(profile.name)} <span>— ${escapeHTML(profile.coverage)}</span></h1>
-            <p class="hero-copy">Counts below are <strong>district-level</strong> figures from your CompStat-style export in <code>data.json</code> (summed across every month row in <code>districts.byMonth</code>). ${heroScoreExplain}</p>
+            <p class="hero-copy">${escapeHTML(profile.publicDescription || '')}</p>
             <div class="hero-meta">
               <div class="meta-chip"><strong>${incidentsNum}</strong>&nbsp;${incidentsRest}</div>
               <div class="meta-chip"><strong>${escapeHTML(profile.topCrime)}</strong>&nbsp;${topCrimeRest}</div>

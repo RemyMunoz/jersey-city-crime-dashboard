@@ -50,21 +50,23 @@
 <style>
   * { margin:0; padding:0; box-sizing:border-box; }
   :root {
-    --bg: #06060e;
-    --panel: #0d0d0d;
-    --border: rgba(232,87,26,0.15);
-    --border-dim: #1e2235;
-    --accent: #E8571A;
-    --accent-hover: #F5A623;
-    --blue: #E8571A;
-    --cyan: #F5A623;
-    --text: #f0f4ff;
-    --muted: #8892a4;
+    --bg: #09101d;
+    --panel: #0c1322;
+    --border: rgba(31,56,100,0.35);
+    --border-dim: #172240;
+    --accent: #C9A84C;
+    --accent-hover: #dfc06a;
+    --blue: #3b6cb5;
+    --cyan: #C9A84C;
+    --navy: #1F3864;
+    --navy-light: #2a4a7a;
+    --text: #f4f7fb;
+    --muted: #8a99b4;
     --trend-up: #e63946;
     --trend-down: #52b788;
     --trend-neutral: #e9c46a;
-    --card-bg: rgba(255,255,255,0.03);
-    --glow: 0 0 30px rgba(232,87,26,0.2);
+    --card-bg: rgba(31,56,100,0.08);
+    --glow: 0 0 30px rgba(201,168,76,0.15);
   }
   html, body {
     height: 100%;
@@ -102,8 +104,8 @@
     flex-direction:column;
   }
   #sidebar {
-    width: 360px;
-    min-width: 360px;
+    width: 400px;
+    min-width: 400px;
     background: var(--panel);
     border-right: 1px solid var(--border);
     display: flex;
@@ -113,11 +115,11 @@
   }
   #sidebar::-webkit-scrollbar { width: 4px; }
   #sidebar::-webkit-scrollbar-track { background: var(--bg); }
-  #sidebar::-webkit-scrollbar-thumb { background: rgba(232,87,26,0.35); border-radius: 2px; }
+  #sidebar::-webkit-scrollbar-thumb { background: rgba(201,168,76,0.3); border-radius: 2px; }
   #header {
     padding: 20px 20px 18px;
     border-bottom: 1px solid var(--border);
-    background: linear-gradient(180deg, rgba(232,87,26,0.06) 0%, transparent 100%);
+    background: linear-gradient(180deg, rgba(31,56,100,0.18) 0%, transparent 100%);
   }
   .biq-nav-logo {
     font-family: 'Bebas Neue', sans-serif;
@@ -144,8 +146,8 @@
     display: inline-flex;
     align-items: center;
     gap: 6px;
-    background: rgba(232,87,26,0.1);
-    border: 1px solid rgba(232,87,26,0.28);
+    background: rgba(31,56,100,0.22);
+    border: 1px solid rgba(201,168,76,0.28);
     border-radius: 100px;
     padding: 4px 12px;
     font-family: 'DM Mono', monospace;
@@ -199,7 +201,7 @@
   }
   .consumer-guide {
     padding: 14px 16px;
-    background: rgba(232,87,26,0.05);
+    background: rgba(31,56,100,0.12);
     border-bottom: 1px solid var(--border);
   }
   .guide-step {
@@ -245,7 +247,7 @@
   .safety-view-btn{
     flex:1;
     border:1px solid var(--border);
-    background:#0a0c10;
+    background:#0b1220;
     color:var(--muted);
     border-radius:999px;
     font-family:'DM Mono',monospace;
@@ -258,13 +260,13 @@
   }
   .safety-view-btn:hover{
     color:var(--text);
-    border-color:rgba(232,87,26,.4);
+    border-color:rgba(201,168,76,.4);
   }
   .safety-view-btn.is-active{
     color:var(--accent);
-    border-color:rgba(232,87,26,.65);
-    background:rgba(232,87,26,.12);
-    box-shadow:0 0 0 1px rgba(232,87,26,.25) inset;
+    border-color:rgba(201,168,76,.65);
+    background:rgba(201,168,76,.12);
+    box-shadow:0 0 0 1px rgba(201,168,76,.25) inset;
   }
   .stats-grid { display:grid; grid-template-columns:1fr 1fr; gap:10px; }
   .stat-card {
@@ -277,7 +279,7 @@
     transition: border-color 0.3s, box-shadow 0.3s;
   }
   .stat-card:hover {
-    border-color: rgba(232,87,26,0.3);
+    border-color: rgba(201,168,76,0.3);
     box-shadow: var(--glow);
   }
   .stat-card::before { content:''; position:absolute; top:0; left:0; right:0; height:2px; }
@@ -364,7 +366,7 @@
     align-items:center;
   }
   .chart-select{
-    background:#0a0c10;
+    background:#0b1220;
     border:1px solid #1e2229;
     color:#e8eaed;
     border-radius:6px;
@@ -514,6 +516,20 @@
     font-family:'Space Mono',monospace;
     font-size:10px;
     letter-spacing:.02em;
+    padding:2px 5px;
+    border-radius:3px;
+  }
+  .compstat-change.up{
+    background:rgba(230,57,70,0.18);
+    color:#ff6b6b;
+  }
+  .compstat-change.down{
+    background:rgba(82,183,136,0.18);
+    color:#52b788;
+  }
+  .compstat-change.neutral{
+    background:rgba(233,196,106,0.10);
+    color:var(--trend-neutral);
   }
   .compstat-cell.is-empty .compstat-current{ color:#6b7280; }
   .compstat-cell.is-empty .compstat-compare{ color:#6b7280; }
@@ -560,7 +576,7 @@
   .ward-list,.precinct-list { display:flex; flex-direction:column; gap:8px; }
   .ward-item { display:flex; align-items:flex-start; gap:10px; padding:8px 10px; background:var(--bg); border:1px solid var(--border); border-radius:5px; cursor:pointer; transition:border-color .2s; color:inherit; text-decoration:none; }
   .ward-item:hover { border-color:var(--blue); }
-  .ward-item.is-active { border-color: var(--accent); box-shadow: 0 0 0 1px rgba(232,87,26,0.35) inset; }
+  .ward-item.is-active { border-color: var(--accent); box-shadow: 0 0 0 1px rgba(201,168,76,0.35) inset; }
   .ward-dot { width:10px; height:10px; border-radius:50%; flex-shrink:0; }
   .ward-content{flex:1;}
   .ward-name { font-size:12px; font-weight:500; }
@@ -609,7 +625,10 @@
     font-family:'Space Mono',monospace;
     text-transform:uppercase;
     letter-spacing:.08em;
+    text-decoration:none;
+    display:inline-block;
   }
+  .ward-link-hint:hover{color:var(--accent) !important;}
   .ward-item:hover .ward-link-hint{color:#d6e7f6;}
   .district-coverage{
     margin-top:3px;
@@ -623,7 +642,7 @@
     border:1px solid #1e2229;
     border-radius:6px;
     padding:8px 10px;
-    background:#0a0c10;
+    background:#0b1220;
     text-align:center;
   }
   .score-value{
@@ -651,90 +670,298 @@
   .toggle input{opacity:0;width:0;height:0;}
   .slider{position:absolute;cursor:pointer;top:0;left:0;right:0;bottom:0;background:#2a2d35;border-radius:20px;transition:.3s;}
   .slider:before{position:absolute;content:"";height:14px;width:14px;left:3px;bottom:3px;background:#fff;border-radius:50%;transition:.3s;}
-  input:checked+.slider{background:var(--accent);}
+  input:checked+.slider{background:var(--navy-light);}
   input:checked+.slider:before{transform:translateX(16px);}
   .data-note { padding:16px 20px; font-size:10px; color:var(--muted); line-height:1.6; font-family:'Space Mono',monospace; }
+
+  /* ── Reporting Period Banner ── */
+  .reporting-period{
+    display:flex;
+    align-items:center;
+    justify-content:center;
+    gap:8px;
+    padding:8px 16px;
+    background:rgba(201,168,76,0.08);
+    border-bottom:1px solid rgba(201,168,76,0.18);
+    font-family:'DM Mono',monospace;
+    font-size:0.68rem;
+    letter-spacing:1.2px;
+    text-transform:uppercase;
+  }
+  .reporting-period-label{
+    color:var(--muted);
+  }
+  .reporting-period-value{
+    color:var(--accent);
+    font-weight:600;
+  }
+
+  /* ── KPI Hero Banner ── */
+  .kpi-banner{
+    display:grid;
+    grid-template-columns:repeat(4,1fr);
+    gap:1px;
+    background:var(--border);
+    border-bottom:1px solid var(--border);
+  }
+  .kpi-card{
+    background:var(--panel);
+    padding:14px 12px 12px;
+    text-align:center;
+    transition:background .2s;
+  }
+  .kpi-card:hover{ background:rgba(31,56,100,0.18); }
+  .kpi-value{
+    font-family:'Bebas Neue',sans-serif;
+    font-size:1.55rem;
+    letter-spacing:1px;
+    line-height:1.1;
+    color:var(--text);
+  }
+  .kpi-value.is-up{ color:var(--trend-up); }
+  .kpi-value.is-down{ color:var(--trend-down); }
+  .kpi-value.is-neutral{ color:var(--trend-neutral); }
+  .kpi-label{
+    font-family:'DM Mono',monospace;
+    font-size:0.58rem;
+    letter-spacing:1.8px;
+    text-transform:uppercase;
+    color:var(--muted);
+    margin-top:4px;
+  }
+
+  /* ── District Drill-down Slide-out ── */
+  .district-slideout{
+    position:absolute;
+    bottom:0; left:0; right:0;
+    max-height:55%;
+    background:rgba(9,16,29,0.96);
+    backdrop-filter:blur(16px);
+    border-top:2px solid var(--accent);
+    border-radius:14px 14px 0 0;
+    z-index:20;
+    transform:translateY(100%);
+    transition:transform .35s cubic-bezier(.4,0,.2,1);
+    overflow-y:auto;
+    box-shadow:0 -8px 40px rgba(0,0,0,0.5);
+  }
+  .district-slideout.is-open{ transform:translateY(0); }
+  .district-slideout-header{
+    display:flex;
+    align-items:center;
+    justify-content:space-between;
+    padding:16px 20px 12px;
+    border-bottom:1px solid var(--border);
+    position:sticky;
+    top:0;
+    background:rgba(9,16,29,0.98);
+    z-index:1;
+  }
+  .district-slideout-title{
+    font-family:'Bebas Neue',sans-serif;
+    font-size:1.2rem;
+    letter-spacing:1.5px;
+    color:var(--text);
+  }
+  .district-slideout-close{
+    background:none; border:none; color:var(--muted); font-size:1.4rem; cursor:pointer;
+    padding:4px 8px; border-radius:6px; transition:color .2s, background .2s;
+  }
+  .district-slideout-close:hover{ color:var(--text); background:rgba(255,255,255,0.08); }
+  .district-slideout-body{
+    padding:16px 20px 20px;
+  }
+  .district-slideout-kpis{
+    display:grid;
+    grid-template-columns:repeat(3,1fr);
+    gap:10px;
+    margin-bottom:16px;
+  }
+  .district-slideout-kpi{
+    text-align:center;
+    padding:10px 6px;
+    background:rgba(31,56,100,0.12);
+    border:1px solid var(--border);
+    border-radius:8px;
+  }
+  .district-slideout-kpi-val{
+    font-family:'Bebas Neue',sans-serif;
+    font-size:1.35rem;
+    color:var(--text);
+    line-height:1.1;
+  }
+  .district-slideout-kpi-label{
+    font-family:'DM Mono',monospace;
+    font-size:0.55rem;
+    letter-spacing:1.5px;
+    text-transform:uppercase;
+    color:var(--muted);
+    margin-top:3px;
+  }
+  .district-slideout-link{
+    display:inline-flex;
+    align-items:center;
+    gap:6px;
+    color:var(--accent);
+    font-size:0.82rem;
+    font-weight:600;
+    text-decoration:none;
+    transition:color .2s;
+    margin-top:10px;
+  }
+  .district-slideout-link:hover{ color:var(--accent-hover); }
+
+  /* ── Number count-up animation ── */
+  @keyframes kpiFadeIn{
+    from{ opacity:0; transform:translateY(4px); }
+    to{ opacity:1; transform:translateY(0); }
+  }
+  .kpi-value.is-animated{ animation:kpiFadeIn .35s ease-out; }
+
+  /* ── Print / Export styles ── */
+  @media print{
+    body{ overflow:visible !important; height:auto !important; background:#fff !important; color:#111 !important; }
+    #sidebar{ display:none !important; }
+    #compstat-strip{ display:none !important; }
+    .mobile-bottom-sheet, .mobile-sidebar-overlay, #mobile-sidebar-toggle, .mobile-top-actions,
+    .map-layer-fab, .map-layer-popover, #biqjc-gate-overlay, .district-slideout{ display:none !important; }
+    #main-stage, #map-stage, #map{ display:block !important; width:100% !important; height:auto !important; min-height:0 !important; }
+    #map-canvas{ height:500px !important; }
+    .print-report{ display:block !important; }
+  }
+  .print-report{ display:none; }
+  .export-btn{
+    display:inline-flex;
+    align-items:center;
+    gap:4px;
+    background:rgba(31,56,100,0.2);
+    border:1px solid var(--border);
+    color:var(--muted);
+    font-family:'DM Sans',sans-serif;
+    font-size:0.78rem;
+    padding:9px 18px;
+    border-radius:8px;
+    cursor:pointer;
+    transition:background .2s, color .2s, border-color .2s;
+  }
+  .export-btn:hover{
+    background:rgba(31,56,100,0.35);
+    color:var(--text);
+    border-color:var(--accent);
+  }
+  @media print{ .export-btn{ display:none !important; } }
+
   #compstat-strip{
     order:2;
     display:flex;
     flex-direction:column;
     gap:0;
-    flex:0 0 500px;
-    width:500px;
-    min-width:500px;
+    flex:0 0 470px;
+    width:470px;
+    min-width:470px;
     padding:12px;
     border-left:1px solid var(--border);
     background:
-      linear-gradient(180deg, rgba(232,87,26,0.08) 0%, rgba(232,87,26,0.02) 100%),
-      #09090f;
+      linear-gradient(180deg, rgba(31,56,100,0.18) 0%, rgba(31,56,100,0.04) 100%),
+      #09101d;
     overflow:hidden;
   }
   .compstat-strip-main{
     min-width:0;
     flex:1;
-    padding:12px 14px;
-    border:1px solid var(--border);
-    border-radius:10px;
-    background:rgba(255,255,255,0.025);
-    box-shadow:0 12px 36px rgba(0,0,0,0.2);
-    overflow:auto;
+    padding:0;
     display:flex;
     flex-direction:column;
-    gap:8px;
-  }
-  #compstat-sidecar{
-    display:flex;
-    flex-direction:column;
-    gap:12px;
-    min-width:0;
-    flex:1;
-    min-height:0;
-  }
-  #map-topbar{
-    flex:0 0 min(380px, 42vh);
-    padding:12px;
-    border-bottom:1px solid var(--border);
-    background:
-      linear-gradient(180deg, rgba(232,87,26,0.06) 0%, rgba(232,87,26,0.015) 100%),
-      #09090f;
+    gap:0;
     overflow:hidden;
   }
-  .compstat-sidecar-row{
-    display:grid;
-    grid-template-columns:1fr 1fr;
-    gap:12px;
-    min-width:0;
-  }
-  .compstat-sidecar-row.single-panel{
-    grid-template-columns:1fr;
-    grid-template-rows:1fr;
-    min-height:0;
-    align-items:stretch;
-  }
-  .compstat-sidecar-panel{
-    border:1px solid rgba(30,34,41,0.9);
-    border-radius:10px;
-    background:rgba(11, 13, 18, 0.92);
-    box-shadow:0 16px 36px rgba(0,0,0,0.28);
-    padding:12px 14px;
-    backdrop-filter:blur(12px);
+  .compstat-tab-bar{
     display:flex;
-    flex-direction:column;
-    min-height:0;
+    gap:0;
+    border-bottom:1px solid var(--border);
+    flex-shrink:0;
+    overflow-x:auto;
+    scrollbar-width:none;
   }
-  .compstat-sidecar-panel.chart-panel{
-    min-height:300px;
+  .compstat-tab-bar::-webkit-scrollbar{display:none;}
+  .compstat-tab-btn{
+    flex:1 1 0;
+    background:transparent;
+    border:none;
+    border-bottom:2px solid transparent;
+    color:var(--muted);
+    font-family:'DM Mono',monospace;
+    font-size:10px;
+    letter-spacing:0.1em;
+    text-transform:uppercase;
+    padding:10px 8px 8px;
+    cursor:pointer;
+    transition:color .2s, border-color .2s;
+    white-space:nowrap;
+  }
+  .compstat-tab-btn:hover{color:var(--text);}
+  .compstat-tab-btn.is-active{
+    color:var(--accent);
+    border-bottom-color:var(--accent);
+  }
+  .compstat-tab-panel{
+    display:none;
     flex:1;
+    min-height:0;
+    overflow:auto;
+    padding:12px 14px;
+    border:1px solid var(--border);
+    border-top:none;
+    border-radius:0 0 10px 10px;
+    background:rgba(255,255,255,0.025);
+    box-shadow:0 12px 36px rgba(0,0,0,0.2);
   }
-  .compstat-sidecar-panel.table-panel{
-    height:170px;
+  .compstat-tab-panel.is-active{display:flex;flex-direction:column;gap:8px;}
+  .map-layer-fab{
+    position:absolute;
+    bottom:32px;
+    left:12px;
+    z-index:5;
+    width:36px;
+    height:36px;
+    border-radius:8px;
+    border:1px solid var(--border);
+    background:rgba(10,12,16,0.88);
+    backdrop-filter:blur(10px);
+    color:var(--muted);
+    cursor:pointer;
+    display:flex;
+    align-items:center;
+    justify-content:center;
+    transition:background .2s, color .2s;
+    box-shadow:0 4px 16px rgba(0,0,0,0.35);
   }
-  #map-search-slot{
-    flex:0 0 auto;
+  .map-layer-fab:hover{background:rgba(30,34,41,0.95);color:var(--text);}
+  .map-layer-fab svg{width:18px;height:18px;}
+  .map-layer-popover{
+    position:absolute;
+    bottom:74px;
+    left:12px;
+    z-index:6;
+    width:240px;
+    background:rgba(10,12,16,0.94);
+    border:1px solid var(--border);
+    border-radius:10px;
+    backdrop-filter:blur(14px);
+    box-shadow:0 12px 36px rgba(0,0,0,0.4);
+    padding:12px 14px;
+    display:none;
   }
-  #map-search-slot .mapboxgl-ctrl-geocoder{
-    min-width:100% !important;
-    width:100% !important;
+  .map-layer-popover.is-open{display:block;}
+  .map-layer-popover .toggle-row{padding:6px 0;}
+  .map-layer-popover .toggle-label{font-size:11px;}
+  .map-layer-popover-title{
+    font-family:'DM Mono',monospace;
+    font-size:9px;
+    letter-spacing:1.5px;
+    text-transform:uppercase;
+    color:var(--accent);
+    margin-bottom:6px;
   }
   #compstat-strip .freshness-badge{
     margin-top:0;
@@ -760,14 +987,7 @@
     flex:0 0 auto;
   }
   #compstat-strip .compstat-trends-block{
-    margin-top:10px;
-    flex:0 0 auto;
-    max-height:min(320px,42vh);
-    overflow:auto;
-    padding:10px 12px;
-    border:1px solid var(--border);
-    border-radius:10px;
-    background:rgba(255,255,255,0.02);
+    flex:1;
   }
   .compstat-trends-table .compstat-trend-change.is-down{
     color:#4ade80;
@@ -791,14 +1011,7 @@
     margin-top:8px;
   }
   #compstat-strip .compstat-weekly-block{
-    margin-top:10px;
-    flex:0 0 auto;
-    max-height:min(380px,48vh);
-    overflow:auto;
-    padding:10px 12px;
-    border:1px solid var(--border);
-    border-radius:10px;
-    background:rgba(255,255,255,0.02);
+    flex:1;
   }
   .compstat-weekly-intro{
     font-size:11px;
@@ -847,7 +1060,7 @@
     padding:7px 10px;
     border-radius:8px;
     border:1px solid var(--border);
-    background:#0a0c10;
+    background:#0b1220;
     color:var(--text);
     font-family:'DM Sans',sans-serif;
   }
@@ -864,6 +1077,29 @@
     font-weight:600;
     color:var(--text);
   }
+  .compstat-total-row{
+    border-top:2px solid var(--accent);
+    background:rgba(201,168,76,0.06);
+  }
+  .compstat-total-row td{
+    font-weight:700 !important;
+    color:var(--text) !important;
+    font-size:12px;
+  }
+  .citywide-metrics-table th{
+    cursor:pointer;
+    user-select:none;
+    position:relative;
+    transition:color .2s;
+  }
+  .citywide-metrics-table th:hover{ color:var(--accent); }
+  .citywide-metrics-table th .sort-arrow{
+    font-size:8px;
+    margin-left:3px;
+    opacity:0.5;
+  }
+  .citywide-metrics-table th.sorted-asc .sort-arrow,
+  .citywide-metrics-table th.sorted-desc .sort-arrow{ opacity:1; color:var(--accent); }
   .compstat-citywide-caption{
     margin-top:8px;
     font-size:9px;
@@ -882,13 +1118,7 @@
     overflow:visible;
     max-height:none;
   }
-  .compstat-sidecar-panel .compstat-table-wrap{
-    overflow:auto;
-    min-height:0;
-    flex:1;
-  }
-  #compstat-strip .compstat-table,
-  .compstat-sidecar-panel .compstat-table{
+  #compstat-strip .compstat-table{
     width:100%;
     min-width:0;
     table-layout:fixed;
@@ -897,32 +1127,25 @@
     padding:8px 10px;
     font-size:10px;
   }
-  #compstat-strip .compstat-table td,
-  .compstat-sidecar-panel .compstat-table td{
+  #compstat-strip .compstat-table td{
     padding:8px 10px;
     font-size:12px;
   }
-  #compstat-strip .compstat-table th:first-child,
-  .compstat-sidecar-panel .compstat-table th:first-child{
+  #compstat-strip .compstat-table th:first-child{
     width:36%;
   }
-  #compstat-strip .compstat-table th:not(:first-child),
-  .compstat-sidecar-panel .compstat-table th:not(:first-child){
+  #compstat-strip .compstat-table th:not(:first-child){
     width:21.333%;
   }
   #compstat-strip .compstat-table th:first-child,
-  #compstat-strip .compstat-table td:first-child,
-  .compstat-sidecar-panel .compstat-table th:first-child,
-  .compstat-sidecar-panel .compstat-table td:first-child{
+  #compstat-strip .compstat-table td:first-child{
     min-width:0;
   }
-  #compstat-strip .compstat-name,
-  .compstat-sidecar-panel .compstat-name{
+  #compstat-strip .compstat-name{
     font-size:13px;
     line-height:1.3;
   }
-  #compstat-strip .compstat-cell,
-  .compstat-sidecar-panel .compstat-cell{
+  #compstat-strip .compstat-cell{
     display:grid;
     grid-template-columns:minmax(0,1fr) auto;
     grid-template-areas:
@@ -931,50 +1154,26 @@
     gap:2px 8px;
     min-width:0;
   }
-  #compstat-strip .compstat-current,
-  .compstat-sidecar-panel .compstat-current{
+  #compstat-strip .compstat-current{
     font-size:13px;
     grid-area:current;
   }
   #compstat-strip .compstat-compare,
-  #compstat-strip .compstat-change,
-  .compstat-sidecar-panel .compstat-compare,
-  .compstat-sidecar-panel .compstat-change{
+  #compstat-strip .compstat-change{
     font-size:10px;
   }
-  #compstat-strip .compstat-compare,
-  .compstat-sidecar-panel .compstat-compare{
+  #compstat-strip .compstat-compare{
     grid-area:compare;
   }
-  #compstat-strip .compstat-change,
-  .compstat-sidecar-panel .compstat-change{
+  #compstat-strip .compstat-change{
     grid-area:change;
     text-align:right;
   }
-  .compstat-sidecar-panel .chart-header{
-    margin-bottom:8px;
-  }
-  .compstat-sidecar-panel .chart-select-row{
-    flex:1;
-    justify-content:flex-end;
-    min-width:min(100%, 280px);
-  }
-  .compstat-sidecar-panel .chart-select{
-    min-width:118px;
-    font-size:12px;
-    padding:7px 10px;
-  }
-  .compstat-sidecar-panel .chart-wrap{
-    flex:1;
-    min-height:220px;
-    height:auto;
-    padding:10px 12px;
-  }
   @media (max-width: 1500px) {
     #compstat-strip{
-      flex-basis:440px;
-      width:440px;
-      min-width:440px;
+      flex-basis:490px;
+      width:490px;
+      min-width:490px;
     }
   }
   #map {
@@ -1127,13 +1326,6 @@
       display:none !important;
     }
 
-    #map-topbar{
-      display:none !important;
-    }
-
-    #compstat-sidecar{
-      display:none !important;
-    }
 
     /* Full-screen map background */
     #map {
@@ -1186,8 +1378,8 @@
     }
     .mobile-home-link:hover,
     .mobile-home-link:active {
-      background: #E8571A;
-      border-color: #E8571A;
+      background: var(--navy);
+      border-color: var(--accent);
       color: #fff;
     }
 
@@ -1230,12 +1422,12 @@
       width: 52px;
       height: 52px;
       border-radius: 50%;
-      background: #E8571A;
+      background: #C9A84C;
       border: none;
       color: #fff;
       font-size: 1.3rem;
       z-index: 300;
-      box-shadow: 0 4px 20px rgba(232, 87, 26, 0.55);
+      box-shadow: 0 4px 20px rgba(201, 168, 76, 0.45);
       cursor: pointer;
       transition: bottom 0.35s ease, transform 0.2s;
       -webkit-tap-highlight-color: transparent;
@@ -1274,7 +1466,7 @@
       backdrop-filter: blur(16px);
       -webkit-backdrop-filter: blur(16px);
       border-radius: 18px 18px 0 0;
-      border-top: 1px solid rgba(232, 87, 26, 0.25);
+      border-top: 1px solid rgba(31, 56, 100, 0.35);
       z-index: 200;
       height: 28vh;
       max-height: 90vh;
@@ -1313,7 +1505,7 @@
       color: #f0f4ff;
       line-height: 1;
     }
-    .sheet-logo span { color: #E8571A; }
+    .sheet-logo span { color: #C9A84C; }
 
     .sheet-back-link {
       display: inline-flex;
@@ -1333,11 +1525,11 @@
       -webkit-overflow-scrolling: touch;
       padding: 0 14px calc(28px + env(safe-area-inset-bottom, 0px));
       scrollbar-width: thin;
-      scrollbar-color: rgba(232,87,26,0.3) transparent;
+      scrollbar-color: rgba(201,168,76,0.3) transparent;
     }
     .sheet-content::-webkit-scrollbar { width: 3px; }
     .sheet-content::-webkit-scrollbar-thumb {
-      background: rgba(232,87,26,0.3);
+      background: rgba(201,168,76,0.3);
       border-radius: 2px;
     }
 
@@ -1347,9 +1539,9 @@
       font-size: 0.68rem;
       letter-spacing: 2px;
       text-transform: uppercase;
-      color: #E8571A;
+      color: #C9A84C;
       margin: 12px 0 8px;
-      border-top: 1px solid rgba(232,87,26,0.15);
+      border-top: 1px solid rgba(31,56,100,0.35);
       padding-top: 10px;
     }
     .sheet-section-title:first-of-type {
@@ -1380,9 +1572,9 @@
     }
     .sheet-safety-btn.is-active {
       color: #fff;
-      border-color: rgba(232,87,26,0.75);
-      background: rgba(232,87,26,0.2);
-      box-shadow: 0 0 0 1px rgba(232,87,26,0.3) inset;
+      border-color: rgba(201,168,76,0.75);
+      background: rgba(201,168,76,0.2);
+      box-shadow: 0 0 0 1px rgba(201,168,76,0.3) inset;
     }
 
     /* Ward score grid: 3 columns */
@@ -1439,8 +1631,8 @@
     }
     .sheet-pill:active { opacity: 0.7; }
     .sheet-pill.is-active {
-      border-color: rgba(232,87,26,0.85);
-      box-shadow: 0 0 0 1px rgba(232,87,26,0.35) inset;
+      border-color: rgba(201,168,76,0.85);
+      box-shadow: 0 0 0 1px rgba(201,168,76,0.35) inset;
       transform: translateY(-1px);
     }
     .sheet-pill.tier-caution {
@@ -1544,7 +1736,7 @@
       font-size: 0.58rem;
       letter-spacing: 2px;
       text-transform: uppercase;
-      color: #E8571A;
+      color: #C9A84C;
       padding: 8px 0 2px;
       opacity: 0.75;
     }
@@ -1730,7 +1922,7 @@
       font-size:0.72rem;
       letter-spacing:0.12em;
       text-transform:uppercase;
-      color:#E8571A;
+      color:#C9A84C;
       margin-bottom:8px;
     }
     .sheet-compstat-table-wrap{
@@ -1793,7 +1985,12 @@
       font-family:'Space Mono',monospace;
       font-size:0.68rem;
       letter-spacing:0.02em;
+      padding:2px 5px;
+      border-radius:3px;
     }
+    .sheet-compstat-change.up{ background:rgba(230,57,70,0.18); color:#ff6b6b; }
+    .sheet-compstat-change.down{ background:rgba(82,183,136,0.18); color:#52b788; }
+    .sheet-compstat-change.neutral{ background:rgba(233,196,106,0.10); color:var(--trend-neutral); }
     .sheet-compstat-cell.is-empty .sheet-compstat-current,
     .sheet-compstat-cell.is-empty .sheet-compstat-compare{
       color:#6b7280;
@@ -1823,8 +2020,8 @@
 
   @media (max-width: 1024px) {
     #sidebar {
-      width: 260px;
-      min-width: 260px;
+      width: 300px;
+      min-width: 300px;
     }
   }
 </style>
@@ -1864,8 +2061,8 @@
 #biqjc-gate-subtitle{margin:0 auto 18px;max-width:40rem;color:rgba(232,234,237,0.78);line-height:1.5;font-size:1rem;}\
 #biqjc-gate-form{display:flex;gap:12px;justify-content:center;flex-wrap:wrap;}\
 #biqjc-gate-input{flex:1 1 260px;background:rgba(255,255,255,0.06);border:1px solid rgba(244,247,251,0.18);color:#e8eaed;border-radius:12px;padding:12px 14px;font-size:1rem;outline:none;}\
-#biqjc-gate-input:focus{border-color:rgba(232,87,26,0.7);box-shadow:0 0 0 3px rgba(232,87,26,0.18);}\
-#biqjc-gate-btn{background:linear-gradient(90deg, rgba(232,87,26,0.85), rgba(201,168,76,0.35));border:1px solid rgba(232,87,26,0.55);color:#ffd8c9;border-radius:12px;padding:12px 18px;font-weight:800;cursor:pointer;}\
+#biqjc-gate-input:focus{border-color:rgba(201,168,76,0.7);box-shadow:0 0 0 3px rgba(201,168,76,0.18);}\
+#biqjc-gate-btn{background:linear-gradient(90deg, rgba(31,56,100,0.85), rgba(201,168,76,0.45));border:1px solid rgba(201,168,76,0.55);color:#f4f7fb;border-radius:12px;padding:12px 18px;font-weight:800;cursor:pointer;}\
 #biqjc-gate-btn:active{transform:translateY(1px);}\
 #biqjc-gate-error{margin-top:12px;min-height:1.2em;color:#fca5a5;font-size:0.92rem;}\
 ";
@@ -1943,124 +2140,82 @@
   <div id="header">
     <div class="biq-nav-logo">BLOCK<span>IQ</span> JC</div>
     <h1 class="biq-main-h1">Jersey City Crime &amp; Neighborhood Dashboard</h1>
-    <div class="biq-eyebrow">
+    <div class="biq-eyebrow" id="headerEyebrow">
       <span class="biq-dot"></span>
-      NIBRS · Jan–Dec 2025 · Updated 3/4/2026
+      <span id="headerEyebrowText">NIBRS · Jan–Dec 2025 · Updated 3/4/2026</span>
     </div>
     <div class="biq-back">
       <a href="index.html" class="biq-back-link">← Back to Home</a>
     </div>
   </div>
 
-  <div class="section consumer-guide">
-    <div class="guide-step">
-      <span class="guide-num">1</span>
-      <span class="guide-text">Browse the <strong>Ward Safety Scores</strong> below to compare neighborhoods</span>
+  <div class="reporting-period" id="reportingPeriod" style="display:none;">
+    <span class="reporting-period-label">CompStat Period</span>
+    <span class="reporting-period-value" id="reportingPeriodValue"></span>
+  </div>
+  <div class="kpi-banner" id="kpiBanner">
+    <div class="kpi-card" data-kpi="crime-change">
+      <div class="kpi-value" id="kpiCrimeChange">—</div>
+      <div class="kpi-label">YTD Crime Change</div>
     </div>
-    <div class="guide-step">
-      <span class="guide-num">2</span>
-      <span class="guide-text">Search an <strong>address</strong> using the bar on the map (top right)</span>
+    <div class="kpi-card" data-kpi="homicides">
+      <div class="kpi-value" id="kpiHomicides">—</div>
+      <div class="kpi-label">Homicides</div>
     </div>
-    <div class="guide-step">
-      <span class="guide-num">3</span>
-      <span class="guide-text">Toggle <strong>map layers</strong> for districts, wards &amp; precincts</span>
+    <div class="kpi-card" data-kpi="shootings">
+      <div class="kpi-value" id="kpiShootings">—</div>
+      <div class="kpi-label">Shootings</div>
+    </div>
+    <div class="kpi-card" data-kpi="arrests">
+      <div class="kpi-value" id="kpiArrests">—</div>
+      <div class="kpi-label">Total Arrests</div>
     </div>
   </div>
 
+  <div class="section section-collapsible" style="padding:0;">
+    <details class="collapse-panel" id="consumerGuidePanel">
+      <summary>How to use this dashboard</summary>
+      <div class="panel-content consumer-guide" style="padding:12px 16px;">
+        <div class="guide-step">
+          <span class="guide-num">1</span>
+          <span class="guide-text">Browse <strong>districts &amp; wards</strong> below to compare neighborhoods</span>
+        </div>
+        <div class="guide-step">
+          <span class="guide-num">2</span>
+          <span class="guide-text">Search an <strong>address</strong> using the bar on the map (top right)</span>
+        </div>
+        <div class="guide-step" style="margin-bottom:0;">
+          <span class="guide-num">3</span>
+          <span class="guide-text">Toggle <strong>map layers</strong> for districts, wards &amp; precincts</span>
+        </div>
+      </div>
+    </details>
+  </div>
+
   <div class="section">
-    <div class="section-label">Neighborhood Safety Scores</div>
-    <div class="score-explainer">Scores are 0-100. Higher = safer. Based on verified crime data.</div>
-    <div class="safety-view-toggle" role="tablist" aria-label="Neighborhood safety score view">
+    <div class="section-label">Neighborhoods</div>
+    <div class="safety-view-toggle" role="tablist" aria-label="Neighborhood view">
       <button type="button" class="safety-view-btn is-active" data-view="district" id="safety-view-district">By District</button>
       <button type="button" class="safety-view-btn" data-view="ward" id="safety-view-ward">By Ward</button>
     </div>
     <div class="ward-list" id="wardList"></div>
   </div>
 
-  <div class="section">
-    <div class="section-label">Explore the Map</div>
-    <div class="section-category-label category-default">Map Layers</div>
-    <div class="toggle-row">
-      <div class="toggle-label"><div class="toggle-swatch" style="background:linear-gradient(90deg,#e63946,#f4a261);opacity:.75;"></div>Ward Boundaries + Density</div>
-      <label class="toggle"><input type="checkbox" id="togWardBoundaries" data-layer="wardBoundaries" onchange="toggleLayer('wardBoundaries', this.checked)"><span class="slider"></span></label>
-    </div>
-    <div class="toggle-row">
-      <div class="toggle-label"><div class="toggle-swatch" style="background:#4CC9F0;opacity:.5;"></div>Police Districts</div>
-      <label class="toggle"><input type="checkbox" id="togDistricts" data-layer="districts" checked onchange="toggleLayer('districts', this.checked)"><span class="slider"></span></label>
-    </div>
-    <div class="toggle-row">
-      <div class="toggle-label"><div class="toggle-swatch" style="background:#7B61FF;border-radius:50%;width:14px;height:14px;"></div>Precinct Stations</div>
-      <label class="toggle"><input type="checkbox" id="togPrecincts" data-layer="precincts" checked onchange="toggleLayer('precincts', this.checked)"><span class="slider"></span></label>
-    </div>
-  </div>
+  <!-- Map layer toggles moved to floating control on the map -->
 
   <div class="section section-collapsible">
-    <details class="collapse-panel">
-      <summary>2025 Crime Numbers (Jan-Dec)</summary>
+    <details class="collapse-panel" id="sidebarCrimeDataPanel">
+      <summary>Crime Data by Year</summary>
       <div class="panel-content">
-        <div class="section-subtitle">Official full-year 2025 figures from JCPD NIBRS reporting</div>
-        <div class="stats-grid">
-          <div class="stat-card red"><div class="stat-label">Homicides</div><div class="stat-value">12</div><div class="stat-sub">2025 Total (Jan-Dec)</div></div>
-          <div class="stat-card yellow"><div class="stat-label">Shootings</div><div class="stat-value">36</div><div class="stat-sub">2025 Total (Jan-Dec)</div></div>
-          <div class="stat-card blue"><div class="stat-label">Theft</div><div class="stat-value">4,037</div><div class="stat-sub">2025 Total (Jan-Dec)</div></div>
-          <div class="stat-card yellow"><div class="stat-label">Stolen Vehicles</div><div class="stat-value">843</div><div class="stat-sub">2025 Total (Jan-Dec)</div></div>
+        <div style="display:flex;align-items:center;gap:10px;margin-bottom:10px;">
+          <label class="crime-categories-toolbar-label" for="sidebar-year-select" style="flex-shrink:0;">Year</label>
+          <select id="sidebar-year-select" class="compstat-crime-scope-select" style="min-width:140px;" aria-label="Select year">
+            <option value="2026">2026 YTD</option>
+            <option value="2025" selected>2025</option>
+            <option value="2024">2024</option>
+          </select>
         </div>
-        <div class="freshness-badge"><span class="freshness-dot"></span>NIBRS · Jan-Dec 2025 · Updated March 4, 2026</div>
-      </div>
-    </details>
-  </div>
-
-  <div class="section section-collapsible">
-    <details class="collapse-panel">
-      <summary>Full Crime Breakdown</summary>
-      <div class="panel-content">
-        <div class="summary-table-wrap">
-              <table class="summary-table">
-                <thead>
-                  <tr><th>Offense</th><th>2025 Total</th><th>2026 YTD*</th></tr>
-                </thead>
-                <tbody>
-                  <tr><td class="offense-critical">Homicides</td><td class="ytd-val">12</td><td class="proj-val">0<span class="proj-val-pct pct-down">−100.0%</span></td></tr>
-                  <tr><td class="offense-critical">Shooting Incidents</td><td class="ytd-val">36</td><td class="proj-val">4<span class="proj-val-pct pct-down">−88.9%</span></td></tr>
-                  <tr><td class="offense-critical">Shooting Victims</td><td class="ytd-val">45</td><td class="proj-val">4<span class="proj-val-pct pct-down">−91.1%</span></td></tr>
-                  <tr><td>Robbery</td><td class="ytd-val">388</td><td class="proj-val">44<span class="proj-val-pct pct-down">−88.7%</span></td></tr>
-                  <tr><td>Aggravated Assault</td><td class="ytd-val">956</td><td class="proj-val">152<span class="proj-val-pct pct-down">−84.1%</span></td></tr>
-                  <tr><td>Criminal Mischief</td><td class="ytd-val">2,132</td><td class="proj-val">172<span class="proj-val-pct pct-down">−91.9%</span></td></tr>
-                  <tr><td>Burglary</td><td class="ytd-val">462</td><td class="proj-val">122<span class="proj-val-pct pct-down">−73.6%</span></td></tr>
-                  <tr><td>Theft</td><td class="ytd-val">4,037</td><td class="proj-val">407<span class="proj-val-pct pct-down">−89.9%</span></td></tr>
-                  <tr><td>Stolen Vehicles</td><td class="ytd-val">843</td><td class="proj-val">104<span class="proj-val-pct pct-down">−87.7%</span></td></tr>
-                  <tr><td>Firearms Recovered</td><td class="ytd-val">—</td><td class="proj-val">18</td></tr>
-                </tbody>
-              </table>
-            </div>
-            <div class="summary-foot">Source: JCPD Official Stats · NIBRS · Updated March 4, 2026 · *2026 YTD from JCPD CompStat (through February 2026). Percent next to 2026 YTD = (2026 YTD − 2025 total) ÷ 2025 total. Green = lower than full-year 2025, red = higher. This is not same-period YoY (2026 is partial year vs 2025 annual).</div>
-          </div>
-        </details>
-      </div>
-
-  <div class="section section-collapsible">
-    <details class="collapse-panel">
-      <summary>2024 Annual Data</summary>
-      <div class="panel-content">
-        <div class="nibrs-note">⚠️ <strong>Data Note:</strong> JCPD switched to the NIBRS reporting system in January 2024, replacing the older UCR/CompStat format. Pre-2024 year-over-year comparisons may reflect methodology changes, not actual crime shifts. NIBRS captures more crime categories and greater detail than previous systems.</div>
-        <div class="crime-table-wrap">
-          <table class="crime-table">
-            <thead>
-              <tr><th>Crime Type</th><th style="text-align:right;">Count + Trend</th></tr>
-            </thead>
-            <tbody>
-              <tr><td>Violent Crime (total)</td><td class="crime-metric">609 <span class="down">↓ 47.8%</span></td></tr>
-              <tr><td>Property Crime (total)</td><td class="crime-metric">3,825 <span class="down">↓ 2.9%</span></td></tr>
-              <tr><td>Aggravated Assault</td><td class="crime-metric">986 <span class="up">↑ 25%</span></td></tr>
-              <tr><td>Total Thefts</td><td class="crime-metric">4,125 <span class="up">↑ 41%</span></td></tr>
-              <tr><td>Auto Theft</td><td class="crime-metric">806 <span class="up">↑ 28%</span></td></tr>
-              <tr><td>Robbery <span class="crime-type-note">(NJ Statewide)</span></td><td class="crime-metric">9,743 <span class="down">↓ 7%</span></td></tr>
-              <tr><td>Illegal Guns Recovered</td><td class="crime-metric">214 <span class="neutral">—</span></td></tr>
-            </tbody>
-          </table>
-        </div>
-        <div class="crime-note">Homicides (7) and shootings (29) reflect historic lows. Everyday property crime remains elevated.</div>
-        <div class="crime-source">Source: FBI UCR 2024 / jerseycitynj.gov</div>
+        <div id="sidebar-year-body"></div>
       </div>
     </details>
   </div>
@@ -2103,6 +2258,11 @@
     </details>
   </div>
 
+  <div class="section" style="text-align:center;">
+    <button type="button" class="export-btn" onclick="exportDashboardPDF()" aria-label="Print or export dashboard">
+      <svg viewBox="0 0 24 24" width="16" height="16" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" style="vertical-align:-2px;margin-right:6px;"><path d="M6 9V2h12v7"/><path d="M6 18H4a2 2 0 01-2-2v-5a2 2 0 012-2h16a2 2 0 012 2v5a2 2 0 01-2 2h-2"/><rect x="6" y="14" width="12" height="8"/></svg>Print / Export
+    </button>
+  </div>
   <p class="biq-disclaimer">Data from official government sources for informational purposes only. Not legal or financial advice. BlockIQ JC is not responsible for decisions made based on this information.</p>
 
   <div class="data-note">Source: FBI UCR 2024 · jerseycitynj.gov<br>Hover wards &amp; precincts for details<br>Ward &amp; district list rows open detail pages (map still clickable when viewing districts)</div>
@@ -2110,43 +2270,37 @@
 
 <div id="main-stage">
   <div id="map-stage">
-    <div id="map-topbar">
-      <div id="compstat-sidecar">
-        <div class="compstat-sidecar-row single-panel">
-          <div class="compstat-sidecar-panel chart-panel">
-            <div class="chart-header">
-              <div class="compstat-block-title" style="margin-bottom:0;">Monthly Crime Trends</div>
-              <div class="chart-select-row">
-                <select id="crime-year-select" class="chart-select" aria-label="Crime trend year">
-                  <option value="2024">2024</option>
-                  <option value="2025" selected>2025</option>
-                  <option value="2026">2026 (YTD)</option>
-                </select>
-                <select id="crime-category-select" class="chart-select" aria-label="Crime category">
-                  <option value="All" selected>All (combined)</option>
-                  <option value="Theft">Theft</option>
-                  <option value="Stolen Vehicles">Stolen Vehicles</option>
-                  <option value="Robbery">Robbery</option>
-                  <option value="Aggravated Assault">Aggravated Assault</option>
-                  <option value="Criminal Mischief">Criminal Mischief</option>
-                  <option value="Burglary">Burglary</option>
-                  <option value="Homicides">Homicides</option>
-                  <option value="Shooting Incidents">Shooting Incidents</option>
-                  <option value="Shooting Victims">Shooting Victims</option>
-                </select>
-              </div>
-            </div>
-            <p class="chart-trend-caption" id="crime-trend-caption"></p>
-            <div class="chart-wrap">
-              <canvas id="crime-trend-chart"></canvas>
-            </div>
-          </div>
-        </div>
-        <div id="map-search-slot"></div>
-      </div>
-    </div>
     <div id="map">
       <div id="map-canvas"></div>
+      <button type="button" class="map-layer-fab" id="mapLayerFab" aria-label="Toggle map layers">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+          <polygon points="12 2 2 7 12 12 22 7 12 2"></polygon>
+          <polyline points="2 17 12 22 22 17"></polyline>
+          <polyline points="2 12 12 17 22 12"></polyline>
+        </svg>
+      </button>
+      <div class="map-layer-popover" id="mapLayerPopover">
+        <div class="map-layer-popover-title">Map Layers</div>
+        <div class="toggle-row">
+          <div class="toggle-label"><div class="toggle-swatch" style="background:linear-gradient(90deg,#e63946,#f4a261);opacity:.75;"></div>Ward Boundaries</div>
+          <label class="toggle"><input type="checkbox" id="togWardBoundaries" data-layer="wardBoundaries" onchange="toggleLayer('wardBoundaries', this.checked)"><span class="slider"></span></label>
+        </div>
+        <div class="toggle-row">
+          <div class="toggle-label"><div class="toggle-swatch" style="background:#4CC9F0;opacity:.5;"></div>Police Districts</div>
+          <label class="toggle"><input type="checkbox" id="togDistricts" data-layer="districts" checked onchange="toggleLayer('districts', this.checked)"><span class="slider"></span></label>
+        </div>
+        <div class="toggle-row" style="border-bottom:none;">
+          <div class="toggle-label"><div class="toggle-swatch" style="background:#7B61FF;border-radius:50%;width:14px;height:14px;"></div>Precinct Stations</div>
+          <label class="toggle"><input type="checkbox" id="togPrecincts" data-layer="precincts" checked onchange="toggleLayer('precincts', this.checked)"><span class="slider"></span></label>
+        </div>
+      </div>
+      <div class="district-slideout" id="districtSlideout" aria-live="polite">
+        <div class="district-slideout-header">
+          <div class="district-slideout-title" id="slideoutTitle"></div>
+          <button type="button" class="district-slideout-close" id="slideoutClose" aria-label="Close district details">&times;</button>
+        </div>
+        <div class="district-slideout-body" id="slideoutBody"></div>
+      </div>
       <div id="ward-info-panel" aria-live="polite">
         <button type="button" class="ward-info-close" id="ward-info-close" aria-label="Close ward details">×</button>
         <div class="ward-info-title" id="ward-info-title"></div>
@@ -2179,35 +2333,85 @@
       <span id="compstatMetaDesktop"></span>
     </div>
     <div class="compstat-strip-main">
-      <div class="compstat-block compstat-crime-block">
-        <div class="compstat-block-title">Crime Categories</div>
-        <div class="compstat-table-wrap" id="compstatCrimeTableWrap"></div>
+      <div class="compstat-tab-bar" role="tablist" aria-label="CompStat data tabs">
+        <button type="button" class="compstat-tab-btn is-active" data-cstab="crime" role="tab" aria-selected="true" tabindex="0">Crime</button>
+        <button type="button" class="compstat-tab-btn" data-cstab="firearms" role="tab" aria-selected="false" tabindex="-1">Firearms</button>
+        <button type="button" class="compstat-tab-btn" data-cstab="trends" role="tab" aria-selected="false" tabindex="-1">Trends</button>
+        <button type="button" class="compstat-tab-btn" data-cstab="weekly" role="tab" aria-selected="false" tabindex="-1" id="compstatWeeklyTabBtn" style="display:none;">Weekly</button>
+        <button type="button" class="compstat-tab-btn" data-cstab="chart" role="tab" aria-selected="false" tabindex="-1">Chart</button>
       </div>
-      <div class="compstat-block compstat-firearms-block">
-        <div class="compstat-block-title">Firearms &amp; Arrests</div>
-        <div class="compstat-table-wrap" id="compstatFirearmsTableWrap"></div>
+      <div class="compstat-tab-panel is-active" data-cspanel="crime" role="tabpanel">
+        <div class="compstat-block compstat-crime-block">
+          <div class="compstat-block-title">Crime Categories</div>
+          <div class="compstat-table-wrap" id="compstatCrimeTableWrap"></div>
+        </div>
       </div>
-    </div>
-    <div class="compstat-block compstat-trends-block">
-      <div class="compstat-block-title">Key trends (YTD)</div>
-      <div class="compstat-table-wrap" id="compstatTrendsTableWrap"></div>
-    </div>
-    <div class="compstat-block compstat-weekly-block" id="compstatWeeklyBlock" style="display:none;">
-      <div class="compstat-block-title">CompStat weekly buckets</div>
-      <p class="compstat-weekly-intro">Official JCPD week ranges from <code>data.json</code> → <code>weeklyImpact</code> (citywide or by district). Not equal-length calendar slices.</p>
-      <div class="crime-categories-toolbar">
-        <label><span class="crime-categories-toolbar-label">Area</span>
-          <select class="compstat-crime-scope-select" data-weekly-field="scope" aria-label="Weekly breakdown area"></select>
-        </label>
-        <label><span class="crime-categories-toolbar-label">Month</span>
-          <select class="compstat-crime-scope-select" data-weekly-field="month" aria-label="Weekly breakdown month"></select>
-        </label>
-        <label><span class="crime-categories-toolbar-label">Metric</span>
-          <select class="compstat-crime-scope-select" data-weekly-field="metric" aria-label="Weekly breakdown metric"></select>
-        </label>
+      <div class="compstat-tab-panel" data-cspanel="firearms" role="tabpanel">
+        <div class="compstat-block compstat-firearms-block">
+          <div class="compstat-block-title">Firearms &amp; Arrests</div>
+          <div class="compstat-table-wrap" id="compstatFirearmsTableWrap"></div>
+        </div>
       </div>
-      <div class="compstat-weekly-chart-wrap">
-        <canvas id="weekly-impact-chart" aria-label="CompStat weekly bar chart"></canvas>
+      <div class="compstat-tab-panel" data-cspanel="trends" role="tabpanel">
+        <div class="compstat-block compstat-trends-block">
+          <div class="compstat-block-title">Key trends (YTD)</div>
+          <div class="compstat-table-wrap" id="compstatTrendsTableWrap"></div>
+        </div>
+      </div>
+      <div class="compstat-tab-panel" data-cspanel="weekly" role="tabpanel" id="compstatWeeklyBlock">
+        <div class="compstat-block compstat-weekly-block">
+          <div class="compstat-block-title">CompStat weekly buckets</div>
+          <p class="compstat-weekly-intro">Official JCPD week ranges (citywide or by district). Not equal-length calendar slices.</p>
+          <div class="crime-categories-toolbar">
+            <label><span class="crime-categories-toolbar-label">Area</span>
+              <select class="compstat-crime-scope-select" data-weekly-field="scope" aria-label="Weekly breakdown area"></select>
+            </label>
+            <label><span class="crime-categories-toolbar-label">Month</span>
+              <select class="compstat-crime-scope-select" data-weekly-field="month" aria-label="Weekly breakdown month"></select>
+            </label>
+            <label><span class="crime-categories-toolbar-label">Metric</span>
+              <select class="compstat-crime-scope-select" data-weekly-field="metric" aria-label="Weekly breakdown metric"></select>
+            </label>
+          </div>
+          <div class="compstat-weekly-chart-wrap">
+            <canvas id="weekly-impact-chart" aria-label="CompStat weekly bar chart"></canvas>
+          </div>
+        </div>
+      </div>
+      <div class="compstat-tab-panel" data-cspanel="chart" role="tabpanel">
+        <div class="compstat-block">
+          <div class="chart-header">
+            <div class="compstat-block-title" style="margin-bottom:0;">Monthly Crime Trends</div>
+            <div class="chart-select-row">
+              <select id="crime-year-select" class="chart-select" aria-label="Crime trend year">
+                <option value="2024">2024</option>
+                <option value="2025" selected>2025</option>
+                <option value="2026">2026 (YTD)</option>
+              </select>
+              <select id="crime-category-select" class="chart-select" aria-label="Crime category">
+                <option value="All" selected>All (combined)</option>
+                <option value="Theft">Theft</option>
+                <option value="Stolen Vehicles">Stolen Vehicles</option>
+                <option value="Robbery">Robbery</option>
+                <option value="Aggravated Assault">Aggravated Assault</option>
+                <option value="Criminal Mischief">Criminal Mischief</option>
+                <option value="Burglary">Burglary</option>
+                <option value="Homicides">Homicides</option>
+                <option value="Shooting Incidents">Shooting Incidents</option>
+                <option value="Shooting Victims">Shooting Victims</option>
+              </select>
+            </div>
+          </div>
+          <p class="chart-trend-caption" id="crime-trend-caption"></p>
+          <div class="chart-wrap">
+            <canvas id="crime-trend-chart"></canvas>
+          </div>
+          <div class="compstat-block-title" style="margin-top:16px;">Crime Distribution</div>
+          <p class="chart-trend-caption" id="donut-caption"></p>
+          <div class="chart-wrap" style="height:200px;min-height:180px;">
+            <canvas id="crime-donut-chart"></canvas>
+          </div>
+        </div>
       </div>
     </div>
   </div>
@@ -2362,6 +2566,18 @@ const DISTRICT_CRIME_CATEGORY_ROWS = [
   { key: 'gunsRecovered', label: 'Guns recovered' }
 ];
 
+function miniSparkSVG(values, w, h){
+  var pts = values.filter(function(v){ return v !== null && Number.isFinite(v); });
+  if(pts.length < 2) return '';
+  var mn = Math.min.apply(null, pts), mx = Math.max.apply(null, pts);
+  var range = mx - mn || 1;
+  var step = w / (pts.length - 1);
+  var coords = pts.map(function(v, i){ return (i * step).toFixed(1) + ',' + (h - ((v - mn) / range) * (h - 2) - 1).toFixed(1); });
+  var last = pts[pts.length - 1];
+  var stroke = last > pts[0] ? 'var(--trend-up)' : last < pts[0] ? 'var(--trend-down)' : 'var(--trend-neutral)';
+  return '<svg width="' + w + '" height="' + h + '" style="vertical-align:middle;"><polyline points="' + coords.join(' ') + '" fill="none" stroke="' + stroke + '" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/></svg>';
+}
+
 function buildDistrictCrimeTableMarkup(mobile, data, districtId){
   const d = data && data.districts;
   const months = d && Array.isArray(d.byMonth)
@@ -2379,19 +2595,29 @@ function buildDistrictCrimeTableMarkup(mobile, data, districtId){
     const h = m.label || `${m.year}-${String(m.month).padStart(2, '0')}`;
     return `<th class="${numClass}">${escapeHTML(h)}</th>`;
   }).join('');
+  const dMonthTotals = months.map(()=> 0);
+  let dGrandYtd = 0;
+  const dGrandMonthVals = months.map(()=> 0);
   const bodyRows = DISTRICT_CRIME_CATEGORY_ROWS.map(({ key, label }) => {
     let ytd = 0;
-    const cells = months.map((m) => {
+    const monthVals = [];
+    const cells = months.map((m, mi) => {
       const block = m[districtId];
       const raw = block && typeof block === 'object' ? block[key] : null;
       const n = raw === null || raw === undefined || raw === '' ? null : Number(raw);
-      if(n !== null && Number.isFinite(n)) ytd += n;
+      if(n !== null && Number.isFinite(n)){ ytd += n; dMonthTotals[mi] += n; dGrandMonthVals[mi] += n; }
+      monthVals.push(n);
       const display = n !== null && Number.isFinite(n) ? n.toLocaleString() : '—';
       return `<td class="${numClass}">${escapeHTML(display)}</td>`;
     }).join('');
+    dGrandYtd += ytd;
     const ytdDisplay = ytd.toLocaleString();
-    return `<tr><td class="${nameClass}">${escapeHTML(label)}</td>${cells}<td class="${numClass} citywide-ytd-cell">${escapeHTML(ytdDisplay)}</td></tr>`;
+    const spark = miniSparkSVG(monthVals, 48, 16);
+    return `<tr><td class="${nameClass}">${escapeHTML(label)}</td>${cells}<td class="${numClass} citywide-ytd-cell">${escapeHTML(ytdDisplay)}</td><td class="${numClass}" style="text-align:center;">${spark}</td></tr>`;
   }).join('');
+  const dTotalCells = dMonthTotals.map((t)=> `<td class="${numClass}" style="font-weight:700;">${t.toLocaleString()}</td>`).join('');
+  const dTotalSpark = miniSparkSVG(dGrandMonthVals, 48, 16);
+  const dTotalRow = `<tr class="compstat-total-row"><td class="${nameClass}" style="font-weight:700;">Total</td>${dTotalCells}<td class="${numClass} citywide-ytd-cell" style="font-weight:700;">${dGrandYtd.toLocaleString()}</td><td class="${numClass}" style="text-align:center;">${dTotalSpark}</td></tr>`;
   return `
     <table class="${tableClass}" aria-label="${escapeHTML(districtTitle)} crime categories by month">
       <thead>
@@ -2399,9 +2625,10 @@ function buildDistrictCrimeTableMarkup(mobile, data, districtId){
           <th>Category</th>
           ${headerCells}
           <th class="${numClass}">YTD</th>
+          <th class="${numClass}" style="width:56px;">Trend</th>
         </tr>
       </thead>
-      <tbody>${bodyRows}</tbody>
+      <tbody>${bodyRows}${dTotalRow}</tbody>
     </table>
     <p class="compstat-citywide-caption">${escapeHTML(districtTitle)} · <code>districts.byMonth</code> · YTD = sum of months shown (district CompStat fields; not citywide NIBRS totals)</p>
   `;
@@ -2422,18 +2649,28 @@ function buildCitywideCrimeTableMarkup(mobile, data){
     const h = m.label || `${m.year}-${String(m.month).padStart(2, '0')}`;
     return `<th class="${numClass}">${escapeHTML(h)}</th>`;
   }).join('');
+  const monthTotals = months.map(()=> 0);
+  let grandYtd = 0;
+  const grandMonthVals = months.map(()=> 0);
   const bodyRows = CITYWIDE_CRIME_ROWS.map(({ key, label }) => {
     let ytd = 0;
-    const cells = months.map((m) => {
+    const monthVals = [];
+    const cells = months.map((m, mi) => {
       const raw = m[key];
       const n = raw === null || raw === undefined || raw === '' ? null : Number(raw);
-      if(n !== null && Number.isFinite(n)) ytd += n;
+      if(n !== null && Number.isFinite(n)){ ytd += n; monthTotals[mi] += n; grandMonthVals[mi] += n; }
+      monthVals.push(n);
       const display = n !== null && Number.isFinite(n) ? n.toLocaleString() : '—';
       return `<td class="${numClass}">${escapeHTML(display)}</td>`;
     }).join('');
+    grandYtd += ytd;
     const ytdDisplay = ytd.toLocaleString();
-    return `<tr><td class="${nameClass}">${escapeHTML(label)}</td>${cells}<td class="${numClass} citywide-ytd-cell">${escapeHTML(ytdDisplay)}</td></tr>`;
+    const spark = miniSparkSVG(monthVals, 48, 16);
+    return `<tr><td class="${nameClass}">${escapeHTML(label)}</td>${cells}<td class="${numClass} citywide-ytd-cell">${escapeHTML(ytdDisplay)}</td><td class="${numClass}" style="text-align:center;">${spark}</td></tr>`;
   }).join('');
+  const totalCells = monthTotals.map((t)=> `<td class="${numClass}" style="font-weight:700;">${t.toLocaleString()}</td>`).join('');
+  const totalSpark = miniSparkSVG(grandMonthVals, 48, 16);
+  const totalRow = `<tr class="compstat-total-row"><td class="${nameClass}" style="font-weight:700;">Total</td>${totalCells}<td class="${numClass} citywide-ytd-cell" style="font-weight:700;">${grandYtd.toLocaleString()}</td><td class="${numClass}" style="text-align:center;">${totalSpark}</td></tr>`;
   return `
     <table class="${tableClass}" aria-label="Citywide crime categories by month">
       <thead>
@@ -2441,9 +2678,10 @@ function buildCitywideCrimeTableMarkup(mobile, data){
           <th>Category</th>
           ${headerCells}
           <th class="${numClass}">YTD</th>
+          <th class="${numClass}" style="width:56px;">Trend</th>
         </tr>
       </thead>
-      <tbody>${bodyRows}</tbody>
+      <tbody>${bodyRows}${totalRow}</tbody>
     </table>
     <p class="compstat-citywide-caption">Citywide counts · calendar months in data.json · YTD = sum of months shown</p>
   `;
@@ -2504,8 +2742,8 @@ function renderCrimeCategoriesSection(data){
   }
   const wrapDesktop = toolbarHtml + `<div class="crime-categories-table-shell">${htmlDesktop}</div>`;
   const wrapMobile = toolbarHtml + `<div class="crime-categories-table-shell">${htmlMobile}</div>`;
-  if(crimeWrap) crimeWrap.innerHTML = wrapDesktop;
-  if(mobileCrimeWrap) mobileCrimeWrap.innerHTML = wrapMobile;
+  if(crimeWrap){ crimeWrap.innerHTML = wrapDesktop; animateCells(crimeWrap); }
+  if(mobileCrimeWrap){ mobileCrimeWrap.innerHTML = wrapMobile; }
 
   if(toolbarHtml){
     document.querySelectorAll('.compstat-crime-scope-select').forEach((sel)=>{
@@ -2526,6 +2764,40 @@ function onCrimeCategoriesScopeChange(e){
   });
   renderCrimeCategoriesSection(__dashboardRawData || EMPTY_COMPSTAT_DATA);
 }
+
+document.addEventListener('click', function(e){
+  var th = e.target.closest('.citywide-metrics-table th');
+  if(!th) return;
+  var table = th.closest('table');
+  if(!table) return;
+  var allTh = Array.from(table.querySelectorAll('thead th'));
+  var colIdx = allTh.indexOf(th);
+  if(colIdx < 0) return;
+  var tbody = table.querySelector('tbody');
+  if(!tbody) return;
+  var rows = Array.from(tbody.querySelectorAll('tr:not(.compstat-total-row)'));
+  var totalRow = tbody.querySelector('.compstat-total-row');
+  var wasAsc = th.classList.contains('sorted-asc');
+  allTh.forEach(function(h){ h.classList.remove('sorted-asc','sorted-desc'); });
+
+  var dir = wasAsc ? -1 : 1;
+  th.classList.add(wasAsc ? 'sorted-desc' : 'sorted-asc');
+
+  rows.sort(function(a,b){
+    var cellsA = a.querySelectorAll('td');
+    var cellsB = b.querySelectorAll('td');
+    if(colIdx >= cellsA.length || colIdx >= cellsB.length) return 0;
+    var va = cellsA[colIdx].textContent.replace(/[^0-9.\-]/g,'');
+    var vb = cellsB[colIdx].textContent.replace(/[^0-9.\-]/g,'');
+    var na = parseFloat(va), nb = parseFloat(vb);
+    if(isNaN(na) && isNaN(nb)) return 0;
+    if(isNaN(na)) return 1;
+    if(isNaN(nb)) return -1;
+    return (na - nb) * dir;
+  });
+  rows.forEach(function(r){ tbody.appendChild(r); });
+  if(totalRow) tbody.appendChild(totalRow);
+});
 
 const CRIME_CHART_CATEGORY_TO_CITYWIDE = {
   'Theft': 'theft',
@@ -2812,8 +3084,8 @@ function initCrimeChart() {
         maintainAspectRatio: false,
         plugins: { legend: { display: false } },
         scales: {
-          x: { grid: { color: '#1e2229' }, ticks: { color: '#6b7280', font: { family: 'Space Mono', size: 11 } } },
-          y: { grid: { color: '#1e2229' }, ticks: { color: '#6b7280', font: { family: 'Space Mono', size: 11 } }, beginAtZero: true }
+          x: { grid: { color: '#172240' }, ticks: { color: '#8a99b4', font: { family: 'Space Mono', size: 11 } } },
+          y: { grid: { color: '#172240' }, ticks: { color: '#8a99b4', font: { family: 'Space Mono', size: 11 } }, beginAtZero: true }
         }
       }
     });
@@ -2828,48 +3100,130 @@ function initCrimeChart() {
     : CRIME_TREND_MONTH_SHORT.slice(0, values.length);
   const maxVal = Math.max(1, ...values);
 
+  const prevYear = year - 1;
+  const prevBundle = resolveCrimeTrendBundle(prevYear, __dashboardRawData);
+  let prevValues = null;
+  if(prevBundle && !prevBundle.isEmpty && prevBundle.categories[category]){
+    prevValues = prevBundle.categories[category];
+  }
+
   let cap = bundle.source || '';
   if(category === 'All'){
     cap = cap
       ? `${cap} · All = monthly sum of the nine offense types in this menu (not a separate citywide total).`
       : 'All = monthly sum of the nine offense types in this menu (not a separate citywide total).';
   }
+  if(prevValues) cap += ` Ghost bars = ${prevYear}.`;
   if(captionEl) captionEl.textContent = cap;
+
+  const datasets = [{
+    label: String(year),
+    data: values,
+    backgroundColor: values.map((v) => {
+      const i = v / maxVal;
+      if (i > 0.8) return 'rgba(201,168,76,0.9)';
+      if (i > 0.6) return 'rgba(59,108,181,0.85)';
+      if (i > 0.4) return 'rgba(42,74,122,0.8)';
+      return 'rgba(31,56,100,0.7)';
+    }),
+    borderRadius: 3,
+    borderSkipped: false
+  }];
+
+  if(prevValues){
+    const ghostVals = prevValues.slice(0, labels.length);
+    datasets.push({
+      label: String(prevYear),
+      data: ghostVals,
+      backgroundColor: 'rgba(138,153,180,0.18)',
+      borderColor: 'rgba(138,153,180,0.35)',
+      borderWidth: 1,
+      borderRadius: 3,
+      borderSkipped: false
+    });
+  }
 
   const ctx = canvas.getContext('2d');
   if (crimeChart) crimeChart.destroy();
   crimeChart = new Chart(ctx, {
     type: 'bar',
+    data: { labels, datasets },
+    options: {
+      responsive: true,
+      maintainAspectRatio: false,
+      plugins: {
+        legend: { display: datasets.length > 1, labels: { color: '#8a99b4', boxWidth: 12, font: { family: 'DM Sans', size: 11 } } },
+        tooltip: {
+          callbacks: {
+            label(ctx){ return `${ctx.dataset.label}: ${ctx.parsed.y.toLocaleString()}`; }
+          }
+        }
+      },
+      scales: {
+        x: {
+          grid: { color: '#172240' },
+          ticks: { color: '#8a99b4', font: { family: 'Space Mono', size: 11 } }
+        },
+        y: {
+          grid: { color: '#172240' },
+          ticks: { color: '#8a99b4', font: { family: 'Space Mono', size: 11 } },
+          beginAtZero: true
+        }
+      }
+    }
+  });
+}
+
+let crimeDonutChart = null;
+const DONUT_COLORS = ['#C9A84C','#3b6cb5','#2a4a7a','#52b788','#e63946','#7B61FF','#FF9F1C','#F72585','#4CC9F0'];
+function initDonutChart(){
+  const canvas = document.getElementById('crime-donut-chart');
+  const captionEl = document.getElementById('donut-caption');
+  if(!canvas || typeof Chart === 'undefined') return;
+  const yearSelect = document.getElementById('crime-year-select');
+  const year = yearSelect ? Number(yearSelect.value) || 2025 : 2025;
+  const bundle = resolveCrimeTrendBundle(year, __dashboardRawData);
+  if(!bundle || bundle.isEmpty){
+    if(crimeDonutChart) crimeDonutChart.destroy();
+    crimeDonutChart = null;
+    if(captionEl) captionEl.textContent = '';
+    return;
+  }
+  const cats = Object.keys(CRIME_CHART_CATEGORY_TO_CITYWIDE);
+  const values = cats.map(function(name){
+    var arr = bundle.categories[name];
+    if(!Array.isArray(arr)) return 0;
+    return arr.reduce(function(s,v){ return s + (Number(v)||0); }, 0);
+  });
+  var total = values.reduce(function(s,v){ return s+v; }, 0);
+  if(captionEl) captionEl.textContent = year + ' YTD distribution by offense type. Total: ' + total.toLocaleString();
+  if(crimeDonutChart) crimeDonutChart.destroy();
+  crimeDonutChart = new Chart(canvas.getContext('2d'), {
+    type: 'doughnut',
     data: {
-      labels,
+      labels: cats,
       datasets: [{
         data: values,
-        backgroundColor: values.map((v) => {
-          const i = v / maxVal;
-          if (i > 0.8) return 'rgba(230,57,70,0.85)';
-          if (i > 0.6) return 'rgba(251,146,60,0.85)';
-          if (i > 0.4) return 'rgba(250,204,21,0.85)';
-          return 'rgba(74,222,128,0.85)';
-        }),
-        borderRadius: 3,
-        borderSkipped: false
+        backgroundColor: DONUT_COLORS.slice(0, cats.length),
+        borderWidth: 0
       }]
     },
     options: {
       responsive: true,
       maintainAspectRatio: false,
+      cutout: '55%',
       plugins: {
-        legend: { display: false }
-      },
-      scales: {
-        x: {
-          grid: { color: '#1e2229' },
-          ticks: { color: '#6b7280', font: { family: 'Space Mono', size: 11 } }
+        legend: {
+          position: 'right',
+          labels: { color: '#8a99b4', boxWidth: 10, font: { family: 'DM Sans', size: 10 }, padding: 6 }
         },
-        y: {
-          grid: { color: '#1e2229' },
-          ticks: { color: '#6b7280', font: { family: 'Space Mono', size: 11 } },
-          beginAtZero: true
+        tooltip: {
+          callbacks: {
+            label: function(ctx){
+              var pct = total > 0 ? (ctx.parsed / total * 100).toFixed(1) : '0';
+              return ctx.label + ': ' + ctx.parsed.toLocaleString() + ' (' + pct + '%)';
+            }
+          }
         }
       }
     }
@@ -2881,8 +3235,9 @@ function setupCrimeTrendChart() {
   const yearSelect = document.getElementById('crime-year-select');
   if (!catSelect || !yearSelect) return;
   initCrimeChart();
+  initDonutChart();
   catSelect.addEventListener('change', initCrimeChart);
-  yearSelect.addEventListener('change', initCrimeChart);
+  yearSelect.addEventListener('change', function(){ initCrimeChart(); initDonutChart(); });
 }
 
 setupCrimeTrendChart();
@@ -3239,8 +3594,8 @@ function drawWeeklyImpactCharts(data){
       datasets: [{
         label: series.datasetLabel,
         data: series.values,
-        backgroundColor: 'rgba(74, 144, 217, 0.55)',
-        borderColor: 'rgba(74, 144, 217, 0.95)',
+        backgroundColor: 'rgba(31, 56, 100, 0.65)',
+        borderColor: 'rgba(201, 168, 76, 0.85)',
         borderWidth: 1,
         borderRadius: 6
       }]
@@ -3289,12 +3644,12 @@ function drawWeeklyImpactCharts(data){
 }
 
 function setupWeeklyImpactBlock(data){
-  const block = document.getElementById('compstatWeeklyBlock');
+  const tabBtn = document.getElementById('compstatWeeklyTabBtn');
   const mobAcc = document.getElementById('mobileWeeklyAccordion');
   const wi = data && data.weeklyImpact;
 
   if(!wi || !Array.isArray(wi.months) || !wi.months.length){
-    if(block) block.style.display = 'none';
+    if(tabBtn) tabBtn.style.display = 'none';
     if(mobAcc) mobAcc.style.display = 'none';
     [weeklyImpactChart, weeklyImpactChartMobile].forEach((ch)=>{ if(ch) ch.destroy(); });
     weeklyImpactChart = null;
@@ -3302,7 +3657,7 @@ function setupWeeklyImpactBlock(data){
     return;
   }
 
-  if(block) block.style.display = '';
+  if(tabBtn) tabBtn.style.display = '';
   if(mobAcc) mobAcc.style.display = '';
 
   const months = [...wi.months].sort((a, b)=> (Number(a.year) - Number(b.year)) || (Number(a.month) - Number(b.month)));
@@ -3368,6 +3723,136 @@ function repopulateWeeklyMetricSelect(data){
   });
 }
 
+function renderSidebarYearBody(year){
+  var el = document.getElementById('sidebar-year-body');
+  if(!el) return;
+  var rows;
+  if(String(year) === '2026'){
+    rows = [
+      ['Homicides', '0', 'pct-down', '\u2212100.0%'],
+      ['Shooting Incidents', '4', 'pct-down', '\u221288.9%'],
+      ['Shooting Victims', '4', 'pct-down', '\u221291.1%'],
+      ['Robbery', '44', 'pct-down', '\u221288.7%'],
+      ['Aggravated Assault', '152', 'pct-down', '\u221284.1%'],
+      ['Criminal Mischief', '172', 'pct-down', '\u221291.9%'],
+      ['Burglary', '122', 'pct-down', '\u221273.6%'],
+      ['Theft', '407', 'pct-down', '\u221289.9%'],
+      ['Stolen Vehicles', '104', 'pct-down', '\u221287.7%'],
+      ['Firearms Recovered', '18', '', '']
+    ];
+    var trs = rows.map(function(r){
+      var pct = r[3] ? ' <span class="proj-val-pct ' + escapeHTML(r[2]) + '">' + escapeHTML(r[3]) + '</span>' : '';
+      return '<tr><td>' + escapeHTML(r[0]) + '</td><td class="proj-val">' + escapeHTML(r[1]) + pct + '</td></tr>';
+    }).join('');
+    el.textContent = '';
+    var wrap = document.createElement('div');
+    wrap.className = 'summary-table-wrap';
+    var tbl = document.createElement('table');
+    tbl.className = 'summary-table';
+    tbl.innerHTML = '<thead><tr><th>Offense</th><th>2026 YTD</th></tr></thead><tbody>' + trs + '</tbody>';
+    wrap.appendChild(tbl);
+    el.appendChild(wrap);
+    var foot = document.createElement('div');
+    foot.className = 'summary-foot';
+    foot.textContent = 'Source: JCPD CompStat through Feb 2026. % vs 2025 full year (partial-vs-annual, not same-period YoY).';
+    el.appendChild(foot);
+  } else if(String(year) === '2025'){
+    rows = [
+      ['Homicides', '12'],
+      ['Shooting Incidents', '36'],
+      ['Shooting Victims', '45'],
+      ['Robbery', '388'],
+      ['Aggravated Assault', '956'],
+      ['Criminal Mischief', '2,132'],
+      ['Burglary', '462'],
+      ['Theft', '4,037'],
+      ['Stolen Vehicles', '843']
+    ];
+    var trs2 = rows.map(function(r){
+      return '<tr><td>' + escapeHTML(r[0]) + '</td><td class="ytd-val">' + escapeHTML(r[1]) + '</td></tr>';
+    }).join('');
+    el.textContent = '';
+    var wrap2 = document.createElement('div');
+    wrap2.className = 'summary-table-wrap';
+    var tbl2 = document.createElement('table');
+    tbl2.className = 'summary-table';
+    tbl2.innerHTML = '<thead><tr><th>Offense</th><th>2025 Total</th></tr></thead><tbody>' + trs2 + '</tbody>';
+    wrap2.appendChild(tbl2);
+    el.appendChild(wrap2);
+    var badge = document.createElement('div');
+    badge.className = 'freshness-badge';
+    badge.textContent = 'NIBRS \u00B7 Jan\u2013Dec 2025 \u00B7 Updated March 4, 2026';
+    el.appendChild(badge);
+  } else {
+    el.textContent = '';
+    var note = document.createElement('div');
+    note.className = 'nibrs-note';
+    note.innerHTML = '\u26A0\uFE0F <strong>Data Note:</strong> JCPD switched to NIBRS in Jan 2024. Pre-2024 comparisons may reflect methodology changes.';
+    el.appendChild(note);
+    rows = [
+      ['Violent Crime (total)', '609', 'down', '\u2193 47.8%'],
+      ['Property Crime (total)', '3,825', 'down', '\u2193 2.9%'],
+      ['Aggravated Assault', '986', 'up', '\u2191 25%'],
+      ['Total Thefts', '4,125', 'up', '\u2191 41%'],
+      ['Auto Theft', '806', 'up', '\u2191 28%'],
+      ['Illegal Guns Recovered', '214', 'neutral', '\u2014']
+    ];
+    var trs3 = rows.map(function(r){
+      return '<tr><td>' + escapeHTML(r[0]) + '</td><td class="crime-metric">' + escapeHTML(r[1]) + ' <span class="' + escapeHTML(r[2]) + '">' + escapeHTML(r[3]) + '</span></td></tr>';
+    }).join('');
+    var wrap3 = document.createElement('div');
+    wrap3.className = 'crime-table-wrap';
+    var tbl3 = document.createElement('table');
+    tbl3.className = 'crime-table';
+    tbl3.innerHTML = '<thead><tr><th>Crime Type</th><th style="text-align:right;">Count + Trend</th></tr></thead><tbody>' + trs3 + '</tbody>';
+    wrap3.appendChild(tbl3);
+    el.appendChild(wrap3);
+    var src = document.createElement('div');
+    src.className = 'crime-source';
+    src.textContent = 'Source: FBI UCR 2024 / jerseycitynj.gov. Homicides (7) and shootings (29) = historic lows.';
+    el.appendChild(src);
+  }
+}
+
+(function(){
+  var sel = document.getElementById('sidebar-year-select');
+  if(sel){
+    renderSidebarYearBody(sel.value);
+    sel.addEventListener('change', function(){ renderSidebarYearBody(sel.value); });
+  }
+  var guidePanel = document.getElementById('consumerGuidePanel');
+  if(guidePanel){
+    var seen = false;
+    try{ seen = sessionStorage.getItem('biqjc_guide_seen') === '1'; }catch(e){}
+    if(!seen){
+      guidePanel.open = true;
+      try{ sessionStorage.setItem('biqjc_guide_seen', '1'); }catch(e){}
+    }
+  }
+})();
+
+document.addEventListener('click', function(e){
+  var btn = e.target.closest('.compstat-tab-btn');
+  if(!btn) return;
+  var key = btn.getAttribute('data-cstab');
+  if(!key) return;
+  btn.closest('.compstat-tab-bar').querySelectorAll('.compstat-tab-btn').forEach(function(b){
+    b.classList.toggle('is-active', b === btn);
+    b.setAttribute('aria-selected', b === btn ? 'true' : 'false');
+    b.setAttribute('tabindex', b === btn ? '0' : '-1');
+  });
+  btn.closest('.compstat-strip-main').querySelectorAll('.compstat-tab-panel').forEach(function(p){
+    p.classList.toggle('is-active', p.getAttribute('data-cspanel') === key);
+  });
+  if(key === 'weekly' && typeof drawWeeklyImpactCharts === 'function' && __dashboardRawData){
+    drawWeeklyImpactCharts(__dashboardRawData);
+  }
+  if(key === 'chart'){
+    if(typeof initCrimeChart === 'function') setTimeout(initCrimeChart, 50);
+    if(typeof initDonutChart === 'function') setTimeout(initDonutChart, 50);
+  }
+});
+
 async function loadCompstatData(){
   window.__dashboardDataLoadError = '';
   __dashboardRawData = null;
@@ -3381,6 +3866,8 @@ async function loadCompstatData(){
     window.__dashboardDataLoadError = '';
     __dashboardRawData = data;
     renderCompstatSections(data);
+    updateHeaderFreshness(data);
+    updateKpiBanner(data);
     if(applyDistrictCompstatScores(data)){
       if(typeof renderSafetyScoreList === 'function') renderSafetyScoreList();
       if(mapHasLoaded && selectedFeatureKey && String(selectedFeatureKey).startsWith('district:')){
@@ -3390,6 +3877,7 @@ async function loadCompstatData(){
       }
     }
     if(typeof initCrimeChart === 'function') initCrimeChart();
+    restoreAppState();
   } catch (error) {
     console.warn('Unable to load CompStat data.json', error);
     window.__dashboardDataLoadError = error && error.message ? error.message : String(error);
@@ -3619,7 +4107,7 @@ function getDistrictFeatureAtLngLat(lng, lat) {
 })();
 const map = new mapboxgl.Map({
   container:'map-canvas', style:'mapbox://styles/mapbox/standard',
-  center:[-74.0776,40.7282], zoom:12.2
+  center:[-74.0706,40.7178], zoom:12.7
 });
 map.addControl(new mapboxgl.NavigationControl(),'top-right');
 
@@ -3761,6 +4249,7 @@ function hideWardInfoPanel() {
   setActiveMobileSafetyItem(null, null);
   clearWardSelectionVisuals();
   if (wardInfoPanelEl) wardInfoPanelEl.classList.remove('is-visible');
+  if(typeof closeDistrictSlideout === 'function') closeDistrictSlideout();
 }
 
 function showWardInfoPanel(wardId, councilName) {
@@ -3803,15 +4292,13 @@ function setSelectedWard(wardId, councilName) {
   if (map.getLayer('district-selected-outline')) {
     map.setFilter('district-selected-outline', ['==', ['get', 'id'], '__NONE__']);
   }
-  showWardInfoPanel(wardId, councilName);
 }
 
 function showDistrictInfoPanel(districtId, districtName, districtColor){
   const details = districtScoreData[districtId];
   if (!details || !wardInfoPanelEl) return;
-  const tier = getSafetyTier(details.score);
   const title = details.name || (districtName && /district/i.test(String(districtName)) ? String(districtName) : `${districtName || 'District'} District`);
-  if (wardInfoLabel1El) wardInfoLabel1El.textContent = 'Safety Score';
+  if (wardInfoLabel1El) wardInfoLabel1El.textContent = 'District';
   if (wardInfoLabel2El) {
     wardInfoLabel2El.textContent = districtIncidentYearLabel
       ? `${districtIncidentYearLabel} YTD incidents`
@@ -3821,13 +4308,14 @@ function showDistrictInfoPanel(districtId, districtName, districtColor){
   if (wardInfoLabel4El) wardInfoLabel4El.textContent = 'Ward Coverage';
   if (wardInfoTitleEl) wardInfoTitleEl.textContent = title;
   if (wardInfoScoreEl) {
-    wardInfoScoreEl.textContent = `${details.score} ${tier.label}`;
-    wardInfoScoreEl.style.color = safeColor(districtColor || tier.color, '#e8eaed');
+    wardInfoScoreEl.textContent = title;
+    wardInfoScoreEl.style.color = safeColor(districtColor, '#e8eaed');
   }
   if (wardInfoIncidentsEl) wardInfoIncidentsEl.textContent = `${details.totalIncidents}`;
   if (wardInfoTopCrimeEl) wardInfoTopCrimeEl.textContent = details.topCrime;
   if (wardInfoCouncilEl) wardInfoCouncilEl.textContent = details.coverage;
   wardInfoPanelEl.classList.add('is-visible');
+  if(typeof openDistrictSlideout === 'function') openDistrictSlideout(districtId);
 }
 
 function setSelectedDistrict(districtId, districtName, districtColor){
@@ -3963,31 +4451,37 @@ function renderWardSafetyList(){
     const f = entry.feature;
     const w = f.properties.ward.toUpperCase();
     const d = wardData[w] || {description:'',incidents:'N/A',dot:'#457b9d',safetyScore:50,topCrime:'N/A'};
-    const score = entry.score;
-    const tier = getSafetyTier(score);
     const wardCode = escapeHTML(w);
     const wardDescription = escapeHTML(d.description);
     const topCrime = escapeHTML(d.topCrime);
     const incidents = escapeHTML(d.incidents);
     const dotColor = safeColor(d.dot);
-    const tierColor = safeColor(tier.color, '#6b7280');
-    const tierLabel = escapeHTML(tier.label.toUpperCase());
-    const el = document.createElement('a');
+    const el = document.createElement('div');
     el.className = 'ward-item';
     el.dataset.ward = w;
-    el.href = getWardDetailUrl(w);
+    el.style.cursor = 'pointer';
     el.innerHTML = `
       <div class="ward-dot" style="background:${dotColor}"></div>
       <div class="ward-content">
         <div class="ward-main-row">
           <div class="ward-name">Ward ${wardCode} — ${wardDescription}</div>
-          <div class="ward-score-pill" style="background:${tierColor};">${score} ${tierLabel}</div>
         </div>
         <div class="ward-meta">
           <div class="ward-top-crime">Top crime: ${topCrime}</div>
           <div class="ward-incidents">${incidents} incidents</div>
         </div>
       </div>`;
+    el.addEventListener('click', ()=>{
+      const wf = wardsGeoJSON.features.find((x)=> x.properties.ward.toUpperCase() === w);
+      if(wf){
+        const coords = wf.geometry.coordinates[0];
+        let lngSum=0,latSum=0;
+        coords.forEach((c)=>{lngSum+=c[0];latSum+=c[1];});
+        const center = [lngSum/coords.length, latSum/coords.length];
+        map.flyTo({ center, zoom: 14, duration: 800 });
+      }
+      setSelectedWard(w, d.council || '');
+    });
     wardList.appendChild(el);
   });
 }
@@ -4002,27 +4496,43 @@ function renderMobileSafetyGrid(){
     const rows = getDistrictSafetyRows()
       .sort((a, b)=> (b.score - a.score) || (a.totalIncidents - b.totalIncidents) || a.name.localeCompare(b.name));
     rows.forEach((row)=>{
-      const tierClass = getTierClassName(row.score);
-      const tierLabel = escapeHTML(getSafetyTier(row.score).label.toUpperCase());
       const shortName = escapeHTML(row.name.replace(/\s+District$/i, ''));
-      const btn = document.createElement('a');
-      btn.className = `sheet-pill ${tierClass}`;
+      const btn = document.createElement('div');
+      btn.className = 'sheet-pill';
       btn.dataset.district = row.id;
-      btn.href = getDistrictDetailUrl(row.id);
-      btn.innerHTML = `<span class="sheet-pill-name">${shortName}</span><strong>${row.score}</strong><span class="sheet-pill-meta">${tierLabel}</span><span class="sheet-pill-link">Open page →</span>`;
+      btn.style.cursor = 'pointer';
+      btn.innerHTML = `<span class="sheet-pill-name">${shortName}</span><span class="sheet-pill-meta">${escapeHTML(row.topCrime)}</span>`;
+      btn.addEventListener('click', ()=>{
+        const p = precincts.find((x)=> x.id === row.id);
+        if(p){
+          const center = getDistrictCenter(row.id, p.coords);
+          map.flyTo({ center, zoom: 13.5, duration: 800 });
+          setSelectedDistrict(row.id, p.name, p.color);
+        }
+      });
       mobileSafetyGrid.appendChild(btn);
     });
   }else{
     mobileSafetyGrid.classList.remove('is-district');
     getRankedWardRows().forEach((entry)=>{
       const wardId = entry.wardId;
-      const tierClass = getTierClassName(entry.score);
-      const tierLabel = escapeHTML(getSafetyTier(entry.score).label.toUpperCase());
-      const btn = document.createElement('a');
-      btn.className = `sheet-pill ${tierClass}`;
+      const d = wardData[wardId] || { topCrime:'N/A' };
+      const btn = document.createElement('div');
+      btn.className = 'sheet-pill';
       btn.dataset.ward = wardId;
-      btn.href = getWardDetailUrl(wardId);
-      btn.innerHTML = `<span class="sheet-pill-name">Ward ${escapeHTML(wardId)}</span><strong>${entry.score}</strong><span class="sheet-pill-meta">${tierLabel}</span>`;
+      btn.style.cursor = 'pointer';
+      btn.innerHTML = `<span class="sheet-pill-name">Ward ${escapeHTML(wardId)}</span><span class="sheet-pill-meta">${escapeHTML(d.topCrime)}</span>`;
+      btn.addEventListener('click', ()=>{
+        const wf = wardsGeoJSON.features.find((x)=> x.properties.ward.toUpperCase() === wardId);
+        if(wf){
+          const coords = wf.geometry.coordinates[0];
+          let lngSum=0,latSum=0;
+          coords.forEach((c)=>{lngSum+=c[0];latSum+=c[1];});
+          const center = [lngSum/coords.length, latSum/coords.length];
+          map.flyTo({ center, zoom: 14, duration: 800 });
+        }
+        setSelectedWard(wardId, d.council || '');
+      });
       mobileSafetyGrid.appendChild(btn);
     });
   }
@@ -4036,7 +4546,6 @@ function renderDistrictSafetyList(){
     .sort((a, b)=> (b.score - a.score) || (a.totalIncidents - b.totalIncidents) || a.name.localeCompare(b.name));
 
   rankedDistrictRows.forEach((row)=>{
-    const tier = getSafetyTier(row.score);
     const districtName = escapeHTML(row.name);
     const topCrime = escapeHTML(row.topCrime);
     const incidents = Number(row.totalIncidents || 0).toLocaleString();
@@ -4045,26 +4554,33 @@ function renderDistrictSafetyList(){
       : `${incidents} incidents (ward est.)`;
     const coverage = escapeHTML(row.coverage);
     const dotColor = safeColor(row.color, '#e8eaed');
-    const tierColor = safeColor(tier.color, '#6b7280');
-    const tierLabel = escapeHTML(tier.label.toUpperCase());
-    const el = document.createElement('a');
+    const el = document.createElement('div');
     el.className = 'ward-item';
     el.dataset.district = row.id;
-    el.href = getDistrictDetailUrl(row.id);
+    el.style.cursor = 'pointer';
     el.innerHTML = `
       <div class="ward-dot" style="background:${dotColor}"></div>
       <div class="ward-content">
         <div class="ward-main-row">
           <div class="ward-name">${districtName}</div>
-          <div class="ward-score-pill" style="background:${tierColor};">${row.score} ${tierLabel}</div>
         </div>
         <div class="ward-meta">
           <div class="ward-top-crime">Top crime: ${topCrime}</div>
           <div class="ward-incidents">${incidentCaption}</div>
         </div>
         <div class="district-coverage">${coverage}</div>
-        <div class="ward-link-hint">Open district page →</div>
+        <a class="ward-link-hint" href="${escapeHTML(getDistrictDetailUrl(row.id))}">Open district page →</a>
       </div>`;
+    el.addEventListener('click', (e)=>{
+      if(e.target.closest('.ward-link-hint')) return;
+      e.preventDefault();
+      const p = precincts.find((x)=> x.id === row.id);
+      if(p){
+        const center = getDistrictCenter(row.id, p.coords);
+        map.flyTo({ center, zoom: 13.5, duration: 800 });
+        setSelectedDistrict(row.id, p.name, p.color);
+      }
+    });
     wardList.appendChild(el);
   });
 }
@@ -4177,7 +4693,7 @@ map.on('load',()=>{
     paint:{'text-color':'#ffffff','text-halo-color':'rgba(0,0,0,0.7)','text-halo-width':1.5}});
   map.addLayer({id:'ward-selected-outline',type:'line',source:'wards',
     filter:['==',['upcase',['get','ward']],'__NONE__'],
-    paint:{'line-color':'#F5A623','line-width':3,'line-opacity':0.95,'line-emissive-strength':1}});
+    paint:{'line-color':'#C9A84C','line-width':3,'line-opacity':0.95,'line-emissive-strength':1}});
   if(!layerState.wardBoundaries){
     ['wards-fill','wards-border','ward-labels','ward-selected-outline'].forEach(l=>map.setLayoutProperty(l,'visibility','none'));
   }
@@ -4290,13 +4806,6 @@ map.on('load',()=>{
     countries: 'us'
   });
   map.addControl(geocoder, 'top-right');
-  if (!isMobileViewport()) {
-    const searchSlot = document.getElementById('map-search-slot');
-    const geocoderContainer = document.querySelector('.mapboxgl-ctrl-geocoder');
-    if (searchSlot && geocoderContainer) {
-      searchSlot.appendChild(geocoderContainer);
-    }
-  }
 
   if (pendingWardHashId) {
     activateWardFromHash(`#ward-${pendingWardHashId.toLowerCase()}`);
@@ -4352,12 +4861,256 @@ function toggleLayer(group, forceVisible){
   if(group==='precincts') allMarkers.forEach(m=>{ m.el.style.display=vis==='visible'?'flex':'none'; });
 }
 
-// TODO: Crime type filter — toggle specific crime categories on/off
-// TODO: Mobile responsive layout — hamburger menu or bottom sheet for sidebar
-// TODO: Export to PDF — generate a one-page summary report
-// TODO: Live data feed — connect to JC Open Data Portal calls-for-service API
-// TODO: Multi-city support — allow switching between JC, Newark, Paterson
-// TODO: Authentication layer — for paid B2B version
+(function(){
+  var fab = document.getElementById('mapLayerFab');
+  var pop = document.getElementById('mapLayerPopover');
+  if(fab && pop){
+    fab.addEventListener('click', function(e){
+      e.stopPropagation();
+      pop.classList.toggle('is-open');
+    });
+    document.addEventListener('click', function(e){
+      if(!pop.contains(e.target) && e.target !== fab){
+        pop.classList.remove('is-open');
+      }
+    });
+  }
+})();
+
+/* ── #3 Dynamic freshness date ── */
+function updateHeaderFreshness(data){
+  var el = document.getElementById('headerEyebrowText');
+  if(!el || !data || !data.meta) return;
+  var m = data.meta;
+  var parts = [];
+  if(m.source) parts.push(m.source.replace(/JCPD CompStat \/ /,''));
+  else parts.push('NIBRS');
+  if(m.ytdNote) parts.push(m.ytdNote);
+  else if(m.comparisonNote) parts.push(m.comparisonNote);
+  if(m.lastUpdated || m.updated){
+    var d = m.lastUpdated || m.updated;
+    parts.push('Updated ' + d);
+  }
+  if(parts.length) el.textContent = parts.join(' · ');
+
+  var periodEl = document.getElementById('reportingPeriod');
+  var periodVal = document.getElementById('reportingPeriodValue');
+  if(periodEl && periodVal){
+    var periodText = '';
+    if(m.comparisonNote) periodText = m.comparisonNote;
+    else if(m.ytdNote) periodText = m.ytdNote;
+    if(m.lastUpdated || m.updated) periodText += (periodText ? ' · ' : '') + 'Updated ' + (m.lastUpdated || m.updated);
+    if(periodText){
+      periodVal.textContent = periodText;
+      periodEl.style.display = '';
+    }
+  }
+}
+
+/* ── #1 Hero KPI banner ── */
+function animateValue(el, end, duration){
+  if(!el) return;
+  var start = 0, startTime = null;
+  var isNeg = end < 0;
+  var absEnd = Math.abs(end);
+  function step(ts){
+    if(!startTime) startTime = ts;
+    var progress = Math.min((ts - startTime) / duration, 1);
+    var eased = 1 - Math.pow(1 - progress, 3);
+    var current = Math.round(eased * absEnd);
+    el.textContent = (isNeg ? '-' : '') + current.toLocaleString();
+    if(progress < 1) requestAnimationFrame(step);
+  }
+  el.classList.add('is-animated');
+  requestAnimationFrame(step);
+}
+
+function updateKpiBanner(data){
+  var crimeEl = document.getElementById('kpiCrimeChange');
+  var homEl = document.getElementById('kpiHomicides');
+  var shootEl = document.getElementById('kpiShootings');
+  var arrestEl = document.getElementById('kpiArrests');
+  if(!data) return;
+  var crime = data.crime || {};
+  var fa = data.firearmsAndArrests || {};
+
+  var ytdNow = 0, ytdPrev = 0, counted = 0;
+  ['Homicides','Shooting Incidents','Robbery Incidents','Aggravated Assault Incidents','Burglary','Theft','Motor Vehicle Theft','Criminal Mischief'].forEach(function(k){
+    var row = crime[k];
+    if(!row || !row.ytd) return;
+    var c = row.ytd.current, p = row.ytd.previous;
+    if(c !== null && c !== undefined && Number.isFinite(Number(c))){ ytdNow += Number(c); counted++; }
+    if(p !== null && p !== undefined && Number.isFinite(Number(p))){ ytdPrev += Number(p); }
+  });
+  if(counted && crimeEl){
+    var pctRaw = ytdPrev > 0 ? ((ytdNow - ytdPrev) / ytdPrev * 100) : 0;
+    var pct = Math.round(pctRaw * 10) / 10;
+    crimeEl.textContent = (pct > 0 ? '+' : '') + pct + '%';
+    crimeEl.className = 'kpi-value' + (pct > 0 ? ' is-up' : pct < 0 ? ' is-down' : ' is-neutral') + ' is-animated';
+  }
+
+  var homRow = crime['Homicides'];
+  if(homRow && homRow.ytd && homRow.ytd.current !== null && homEl){
+    animateValue(homEl, Number(homRow.ytd.current) || 0, 600);
+  }
+  var shootRow = crime['Shooting Incidents'];
+  if(shootRow && shootRow.ytd && shootRow.ytd.current !== null && shootEl){
+    animateValue(shootEl, Number(shootRow.ytd.current) || 0, 600);
+  }
+  var arrestRow = fa['Total arrests (citywide)'];
+  if(arrestRow && arrestRow.ytd && arrestRow.ytd.current !== null && arrestEl){
+    animateValue(arrestEl, Number(arrestRow.ytd.current) || 0, 700);
+  } else if(arrestEl){
+    arrestEl.textContent = '—';
+  }
+}
+
+/* ── #8 Keyboard navigation for CompStat tabs (WAI-ARIA) ── */
+document.addEventListener('keydown', function(e){
+  var tab = e.target.closest('.compstat-tab-btn');
+  if(!tab) return;
+  var bar = tab.closest('.compstat-tab-bar');
+  if(!bar) return;
+  var tabs = Array.from(bar.querySelectorAll('.compstat-tab-btn:not([style*="display:none"])'));
+  var idx = tabs.indexOf(tab);
+  if(idx < 0) return;
+  var next = -1;
+  if(e.key === 'ArrowRight' || e.key === 'ArrowDown') next = (idx + 1) % tabs.length;
+  else if(e.key === 'ArrowLeft' || e.key === 'ArrowUp') next = (idx - 1 + tabs.length) % tabs.length;
+  else if(e.key === 'Home') next = 0;
+  else if(e.key === 'End') next = tabs.length - 1;
+  if(next >= 0){
+    e.preventDefault();
+    tabs[next].focus();
+    tabs[next].click();
+  }
+});
+
+/* ── #9 Animate number changes ── */
+function animateCells(container){
+  if(!container) return;
+  container.querySelectorAll('td').forEach(function(td){
+    td.style.transition = 'none';
+    td.style.opacity = '0';
+    td.style.transform = 'translateY(4px)';
+    requestAnimationFrame(function(){
+      td.style.transition = 'opacity .25s ease-out, transform .25s ease-out';
+      td.style.opacity = '1';
+      td.style.transform = 'translateY(0)';
+    });
+  });
+}
+
+/* ── #5 District drill-down slide-out ── */
+function openDistrictSlideout(districtId){
+  var slideout = document.getElementById('districtSlideout');
+  var titleEl = document.getElementById('slideoutTitle');
+  var bodyEl = document.getElementById('slideoutBody');
+  if(!slideout || !titleEl || !bodyEl) return;
+  var group = districtWardGroups.find(function(g){ return g.id === districtId; });
+  if(!group) return;
+  var details = districtScoreData[districtId];
+  var tier = details ? getSafetyTier(details.score) : { label:'N/A', color:'#6b7280' };
+  titleEl.textContent = group.name;
+
+  var kpiHtml = '<div class="district-slideout-kpis">';
+  kpiHtml += '<div class="district-slideout-kpi"><div class="district-slideout-kpi-val">' + (details ? Number(details.totalIncidents).toLocaleString() : '—') + '</div><div class="district-slideout-kpi-label">' + (districtIncidentYearLabel ? districtIncidentYearLabel + ' YTD' : 'Incidents') + '</div></div>';
+  kpiHtml += '<div class="district-slideout-kpi"><div class="district-slideout-kpi-val">' + (details ? escapeHTML(details.topCrime) : '—') + '</div><div class="district-slideout-kpi-label">Top Crime</div></div>';
+  kpiHtml += '<div class="district-slideout-kpi"><div class="district-slideout-kpi-val">' + (details ? escapeHTML(details.coverage) : '—') + '</div><div class="district-slideout-kpi-label">Wards</div></div>';
+  kpiHtml += '</div>';
+
+  var tableHtml = '';
+  if(__dashboardRawData && __dashboardRawData.districts && Array.isArray(__dashboardRawData.districts.byMonth) && __dashboardRawData.districts.byMonth.length){
+    tableHtml = '<div class="compstat-table-wrap" style="max-height:300px;overflow:auto;">' + buildDistrictCrimeTableMarkup(false, __dashboardRawData, districtId) + '</div>';
+  }
+
+  var linkHtml = '<a class="district-slideout-link" href="' + escapeHTML(getDistrictDetailUrl(districtId)) + '">Full district page &rarr;</a>';
+  bodyEl.innerHTML = kpiHtml + tableHtml + linkHtml;
+  slideout.classList.add('is-open');
+}
+
+function closeDistrictSlideout(){
+  var slideout = document.getElementById('districtSlideout');
+  if(slideout) slideout.classList.remove('is-open');
+}
+
+(function(){
+  var closeBtn = document.getElementById('slideoutClose');
+  if(closeBtn) closeBtn.addEventListener('click', closeDistrictSlideout);
+})();
+
+/* ── #10 Persistent URL state (hash-based) ── */
+function encodeAppState(){
+  var params = [];
+  var activeTab = document.querySelector('.compstat-tab-btn.is-active');
+  if(activeTab){
+    var tabKey = activeTab.getAttribute('data-cstab');
+    if(tabKey && tabKey !== 'crime') params.push('tab=' + tabKey);
+  }
+  if(crimeCategoriesScope && crimeCategoriesScope !== 'citywide') params.push('scope=' + crimeCategoriesScope);
+  if(safetyScoreView && safetyScoreView !== 'district') params.push('view=' + safetyScoreView);
+  var yearSel = document.getElementById('crime-year-select');
+  if(yearSel && yearSel.value !== '2025') params.push('chartYear=' + yearSel.value);
+  var catSel = document.getElementById('crime-category-select');
+  if(catSel && catSel.value !== 'All') params.push('chartCat=' + encodeURIComponent(catSel.value));
+  return params.length ? '#' + params.join('&') : '';
+}
+
+function decodeAppState(){
+  var hash = window.location.hash.replace(/^#/,'');
+  if(!hash) return {};
+  var state = {};
+  hash.split('&').forEach(function(pair){
+    var parts = pair.split('=');
+    if(parts.length === 2) state[parts[0]] = decodeURIComponent(parts[1]);
+  });
+  return state;
+}
+
+function restoreAppState(){
+  var s = decodeAppState();
+  if(s.view && (s.view === 'ward' || s.view === 'district')){
+    setSafetyScoreView(s.view);
+  }
+  if(s.tab){
+    var tabBtn = document.querySelector('.compstat-tab-btn[data-cstab="' + s.tab + '"]');
+    if(tabBtn && !tabBtn.style.display?.includes('none')) tabBtn.click();
+  }
+  if(s.scope){
+    crimeCategoriesScope = s.scope;
+  }
+  if(s.chartYear){
+    var yearSel = document.getElementById('crime-year-select');
+    if(yearSel) yearSel.value = s.chartYear;
+  }
+  if(s.chartCat){
+    var catSel = document.getElementById('crime-category-select');
+    if(catSel) catSel.value = s.chartCat;
+  }
+}
+
+var __stateUpdateTimer = null;
+function scheduleStateSave(){
+  clearTimeout(__stateUpdateTimer);
+  __stateUpdateTimer = setTimeout(function(){
+    var newHash = encodeAppState();
+    if(newHash !== window.location.hash && newHash !== '#'){
+      history.replaceState(null, '', newHash || window.location.pathname + window.location.search);
+    }
+  }, 300);
+}
+
+document.addEventListener('click', function(e){
+  if(e.target.closest('.compstat-tab-btn') || e.target.closest('.safety-view-btn')) scheduleStateSave();
+});
+document.addEventListener('change', function(e){
+  if(e.target.closest('.compstat-crime-scope-select') || e.target.id === 'crime-year-select' || e.target.id === 'crime-category-select') scheduleStateSave();
+});
+
+/* ── #7 Export to PDF / print ── */
+function exportDashboardPDF(){
+  window.print();
+}
 
 (function() {
   function initMobileUi() {
@@ -4416,9 +5169,9 @@ function toggleLayer(group, forceVisible){
 
   <div class="sheet-content">
 
-    <!-- Ward Safety Scores -->
-    <div class="sheet-section-title">Neighborhood Safety Scores</div>
-    <div class="sheet-safety-toggle" role="tablist" aria-label="Mobile safety score view">
+    <!-- Neighborhoods -->
+    <div class="sheet-section-title">Neighborhoods</div>
+    <div class="sheet-safety-toggle" role="tablist" aria-label="Mobile neighborhood view">
       <button type="button" class="sheet-safety-btn safety-view-btn is-active" data-view="district" id="mobile-safety-view-district" onclick="setSafetyScoreView('district')">By District</button>
       <button type="button" class="sheet-safety-btn safety-view-btn" data-view="ward" id="mobile-safety-view-ward" onclick="setSafetyScoreView('ward')">By Ward</button>
     </div>
