@@ -24,7 +24,7 @@
 {
   "@context": "https://schema.org",
   "@type": "WebApplication",
-  "name": "BlockIQ JC",
+  "name": "BlockIQ",
   "url": "https://blockiqjc.com",
   "description": "Jersey City's free neighborhood intelligence dashboard — crime data and safety scores for all 6 wards.",
   "applicationCategory": "PublicSafety",
@@ -1443,6 +1443,25 @@
     min-height:0;
     width:100%;
   }
+  .map-stage-headline{
+    position:absolute;
+    top:14px;
+    left:50%;
+    transform:translateX(-50%);
+    z-index:3;
+    margin:0;
+    padding:6px 14px;
+    font-family:'Bebas Neue',sans-serif;
+    font-size:1.35rem;
+    letter-spacing:0.2em;
+    text-transform:uppercase;
+    color:#f4f7fb;
+    text-shadow:0 1px 10px rgba(0,0,0,0.85);
+    pointer-events:none;
+    border-radius:6px;
+    background:rgba(9,16,29,0.45);
+    border:1px solid rgba(201,168,76,0.25);
+  }
   #compstat-strip{
     width:300px;
     min-width:300px;
@@ -1498,6 +1517,10 @@
     letter-spacing:.12em;
     text-transform:uppercase;
     color:#c7d2e4;
+  }
+  .jc-impact-head .biq-eyebrow{
+    margin-left:auto;
+    margin-right:auto;
   }
   .sidebar-home-link{
     display:inline-block;
@@ -2052,6 +2075,7 @@
   <div id="map-stage">
     <div id="map">
       <div id="map-canvas"></div>
+      <p class="map-stage-headline" id="mapStageHeadline">hello</p>
       <div class="map-time-toolbar" id="mapTimeToolbar">
         <button type="button" class="map-time-btn" data-window="1h">Last Hour</button>
         <button type="button" class="map-time-btn" data-window="24h">24 Hours</button>
