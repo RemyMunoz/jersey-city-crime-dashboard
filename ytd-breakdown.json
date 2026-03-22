@@ -1,0 +1,227 @@
+{
+  "meta": {
+    "sourceSheet": "Crime Breakdown",
+    "sourceFile": "JCIMPACT Weekly Jan Feb 2026.xlsx",
+    "lastUpdated": "",
+    "note": "2026 YTD vs 2025 same period \u2014 from JCPD CompStat export"
+  },
+  "categories": [
+    {
+      "id": "assault",
+      "label": "ASSAULT",
+      "citywide": {
+        "ytd2026": 349,
+        "ytd2025": 415,
+        "pctVs2025": -15.903614457831324
+      },
+      "districts": {
+        "south": {
+          "ytd2026": 134,
+          "ytd2025": 141,
+          "pctVs2025": -4.964539007092199
+        },
+        "west": {
+          "ytd2026": 92,
+          "ytd2025": 113,
+          "pctVs2025": -18.58407079646018
+        },
+        "north": {
+          "ytd2026": 62,
+          "ytd2025": 79,
+          "pctVs2025": -21.518987341772153
+        },
+        "east": {
+          "ytd2026": 61,
+          "ytd2025": 82,
+          "pctVs2025": -25.609756097560975
+        }
+      }
+    },
+    {
+      "id": "stolen-vehicles",
+      "label": "STOLEN VEHICLES",
+      "citywide": {
+        "ytd2026": 104,
+        "ytd2025": 119,
+        "pctVs2025": -12.605042016806722
+      },
+      "districts": {
+        "south": {
+          "ytd2026": 34,
+          "ytd2025": 36,
+          "pctVs2025": -5.555555555555555
+        },
+        "east": {
+          "ytd2026": 27,
+          "ytd2025": 26,
+          "pctVs2025": 3.8461538461538463
+        },
+        "west": {
+          "ytd2026": 25,
+          "ytd2025": 23,
+          "pctVs2025": 8.695652173913043
+        },
+        "north": {
+          "ytd2026": 18,
+          "ytd2025": 34,
+          "pctVs2025": -47.05882352941176
+        }
+      }
+    },
+    {
+      "id": "burglary",
+      "label": "BURGLARY",
+      "citywide": {
+        "ytd2026": 122,
+        "ytd2025": 223,
+        "pctVs2025": -45.2914798206278
+      },
+      "districts": {
+        "south": {
+          "ytd2026": 36,
+          "ytd2025": 41,
+          "pctVs2025": -12.195121951219512
+        },
+        "east": {
+          "ytd2026": 34,
+          "ytd2025": 66,
+          "pctVs2025": -48.484848484848484
+        },
+        "west": {
+          "ytd2026": 31,
+          "ytd2025": 57,
+          "pctVs2025": -45.614035087719294
+        },
+        "north": {
+          "ytd2026": 21,
+          "ytd2025": 59,
+          "pctVs2025": -64.40677966101694
+        }
+      }
+    },
+    {
+      "id": "homicide",
+      "label": "HOMICIDE",
+      "citywide": {
+        "ytd2026": 0,
+        "ytd2025": 5,
+        "pctVs2025": -100.0
+      },
+      "districts": {
+        "north": {
+          "ytd2026": 0,
+          "ytd2025": 3,
+          "pctVs2025": -100.0
+        },
+        "east": {
+          "ytd2026": 0,
+          "ytd2025": 0,
+          "pctVs2025": null
+        },
+        "south": {
+          "ytd2026": 0,
+          "ytd2025": 1,
+          "pctVs2025": -100.0
+        },
+        "west": {
+          "ytd2026": 0,
+          "ytd2025": 1,
+          "pctVs2025": -100.0
+        }
+      }
+    },
+    {
+      "id": "theft",
+      "label": "THEFT",
+      "citywide": {
+        "ytd2026": 407,
+        "ytd2025": 420,
+        "pctVs2025": -3.0952380952380953
+      },
+      "districts": {
+        "east": {
+          "ytd2026": 121,
+          "ytd2025": 161,
+          "pctVs2025": -24.84472049689441
+        },
+        "west": {
+          "ytd2026": 119,
+          "ytd2025": 110,
+          "pctVs2025": 8.181818181818182
+        },
+        "south": {
+          "ytd2026": 113,
+          "ytd2025": 93,
+          "pctVs2025": 21.50537634408602
+        },
+        "north": {
+          "ytd2026": 54,
+          "ytd2025": 56,
+          "pctVs2025": -3.571428571428571
+        }
+      }
+    },
+    {
+      "id": "sex-offenses",
+      "label": "SEX OFFENSES",
+      "citywide": {
+        "ytd2026": 31,
+        "ytd2025": 38,
+        "pctVs2025": -18.421052631578945
+      },
+      "districts": {
+        "north": {
+          "ytd2026": 8,
+          "ytd2025": 7,
+          "pctVs2025": 14.285714285714285
+        },
+        "east": {
+          "ytd2026": 8,
+          "ytd2025": 10,
+          "pctVs2025": -20.0
+        },
+        "south": {
+          "ytd2026": 8,
+          "ytd2025": 12,
+          "pctVs2025": -33.33333333333333
+        },
+        "west": {
+          "ytd2026": 7,
+          "ytd2025": 9,
+          "pctVs2025": -22.22222222222222
+        }
+      }
+    },
+    {
+      "id": "robbery",
+      "label": "ROBBERY",
+      "citywide": {
+        "ytd2026": 44,
+        "ytd2025": 69,
+        "pctVs2025": -36.231884057971016
+      },
+      "districts": {
+        "west": {
+          "ytd2026": 17,
+          "ytd2025": 21,
+          "pctVs2025": -19.047619047619047
+        },
+        "south": {
+          "ytd2026": 14,
+          "ytd2025": 15,
+          "pctVs2025": -6.666666666666667
+        },
+        "north": {
+          "ytd2026": 8,
+          "ytd2025": 14,
+          "pctVs2025": -42.857142857142854
+        },
+        "east": {
+          "ytd2026": 5,
+          "ytd2025": 19,
+          "pctVs2025": -73.68421052631578
+        }
+      }
+    }
+  ]
+}

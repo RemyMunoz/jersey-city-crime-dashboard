@@ -21,4 +21,17 @@ python3 -m http.server 4173
 ## Files
 
 - `index.html` — app UI, data, and map logic
+- `dashboard.html` — CompStat / map dashboard
+- `data.json` — CompStat bundle for charts and tables
+- `ytd-breakdown.json` — **right-hand YTD panel** (7 categories, citywide + district); generated from Excel — see below
 - `jc_dashboard_codex_brief.md` — project brief and context
+
+## Refresh YTD panel from Excel
+
+The right column **Total Crime Count (YTD)** and category cards load from **`ytd-breakdown.json`**, exported from the workbook’s **Crime Breakdown** sheet (not hand-edited numbers in HTML).
+
+```bash
+python3 scripts/export_ytd_breakdown.py "/path/to/JCIMPACT Weekly Jan Feb 2026.xlsx"
+```
+
+Commit the updated `ytd-breakdown.json` and deploy. See **`docs/YTD_PANEL_PREVIEW.md`** for layout and opacity rules.
