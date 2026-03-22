@@ -24,7 +24,7 @@
 {
   "@context": "https://schema.org",
   "@type": "WebApplication",
-  "name": "BlockIQ",
+  "name": "BlockIQ JC",
   "url": "https://blockiqjc.com",
   "description": "Jersey City's free neighborhood intelligence dashboard — crime data and safety scores for all 6 wards.",
   "applicationCategory": "PublicSafety",
@@ -104,8 +104,8 @@
     flex-direction:column;
   }
   #sidebar {
-    width: 400px;
-    min-width: 400px;
+    width: 340px;
+    min-width: 340px;
     background: var(--panel);
     border-right: 1px solid var(--border);
     display: flex;
@@ -251,10 +251,10 @@
     color:var(--muted);
     border-radius:999px;
     font-family:'DM Mono',monospace;
-    font-size:10px;
+    font-size:11px;
     letter-spacing:.12em;
     text-transform:uppercase;
-    padding:6px 10px;
+    padding:7px 11px;
     cursor:pointer;
     transition:all .2s;
   }
@@ -981,7 +981,7 @@
     border-bottom:2px solid transparent;
     color:var(--muted);
     font-family:'DM Mono',monospace;
-    font-size:10px;
+    font-size:11px;
     letter-spacing:0.1em;
     text-transform:uppercase;
     padding:10px 8px 8px;
@@ -1382,6 +1382,12 @@
     }
   }
 
+  /* Readable type in law-enforcement panels (left + right strip) */
+  #sidebar .biq-eyebrow{
+    font-size:0.72rem;
+    padding:5px 14px;
+  }
+
   /* =========================================================
      Law-enforcement layout refresh (three panels + bottom bar)
      ========================================================= */
@@ -1390,7 +1396,7 @@
   }
   #dashboard-shell{
     display:grid;
-    grid-template-columns:250px minmax(0,1fr);
+    grid-template-columns:340px minmax(0,1fr);
     /* Row 2 must fit header + padding + ~160px chart grid (was 200px; content clipped → blank Chart.js canvases). */
     grid-template-rows:minmax(0,1fr) minmax(220px,26vh);
     width:100vw;
@@ -1405,8 +1411,8 @@
   #sidebar{
     grid-column:1;
     grid-row:1;
-    width:250px;
-    min-width:250px;
+    width:340px;
+    min-width:340px;
     border-right:1px solid rgba(201,168,76,0.28);
     background:#122847;
     overflow:auto;
@@ -1415,18 +1421,19 @@
     grid-column:2;
     grid-row:1;
     min-height:0;
-    display:grid;
-    grid-template-columns:minmax(0,1fr) 300px;
-    /* One row fills shell row height so map + compstat stretch; without this, row stays “auto” and map leaves empty blue below. */
-    grid-template-rows:minmax(0,1fr);
-    gap:0;
+    display:flex;
+    flex-direction:row;
+    flex-wrap:nowrap;
+    align-items:stretch;
     align-self:stretch;
+    /* map | compstat — panel hidden until a crime category is selected */
   }
   #map-stage{
+    flex:1 1 0;
     min-width:0;
     min-height:0;
     height:100%;
-    border-right:1px solid rgba(201,168,76,0.22);
+    border-right:none;
     position:relative;
     display:flex;
     flex-direction:column;
@@ -1463,12 +1470,36 @@
     border:1px solid rgba(201,168,76,0.25);
   }
   #compstat-strip{
-    width:300px;
-    min-width:300px;
+    flex:0 0 380px;
+    width:380px;
+    min-width:280px;
     background:#0f223d;
     border-left:1px solid rgba(201,168,76,0.22);
     overflow:auto;
-    padding:14px 12px 16px;
+    padding:16px 14px 18px;
+    display:flex;
+    flex-direction:column;
+  }
+  /* Right stats column: collapse → map uses full width */
+  #main-stage.compstat-right-collapsed #map-stage{
+    flex:1 1 0;
+  }
+  #main-stage.compstat-right-collapsed #compstat-strip{
+    display:none !important;
+  }
+  .right-strip-close-btn{
+    min-width:32px;
+    padding:4px 10px;
+    font-size:1.1rem;
+    line-height:1;
+    font-weight:700;
+  }
+  .right-total-head-actions{
+    display:flex;
+    align-items:center;
+    gap:8px;
+    flex-wrap:wrap;
+    justify-content:flex-end;
   }
   #district-bottom-bar{
     grid-column:1 / span 2;
@@ -1506,14 +1537,14 @@
   }
   .jc-impact-logo{
     font-family:'Bebas Neue',sans-serif;
-    font-size:1.4rem;
+    font-size:1.58rem;
     letter-spacing:2px;
   }
   .jc-impact-logo span{ color:#C9A84C; }
   .jc-impact-title{
     margin-top:6px;
     font-family:'DM Mono',monospace;
-    font-size:0.65rem;
+    font-size:0.78rem;
     letter-spacing:.12em;
     text-transform:uppercase;
     color:#c7d2e4;
@@ -1525,7 +1556,7 @@
   .sidebar-home-link{
     display:inline-block;
     margin-top:10px;
-    font-size:0.72rem;
+    font-size:0.82rem;
     font-family:'DM Mono',monospace;
     color:var(--accent);
     text-decoration:none;
@@ -1537,7 +1568,7 @@
   }
   .left-panel-label{
     font-family:'DM Mono',monospace;
-    font-size:0.62rem;
+    font-size:0.74rem;
     color:#C9A84C;
     letter-spacing:.12em;
     text-transform:uppercase;
@@ -1549,30 +1580,39 @@
     background:#0b1a30;
     color:#f4f7fb;
     border-radius:6px;
-    padding:8px;
-    font-size:0.8rem;
+    padding:10px 10px;
+    font-size:0.92rem;
   }
   .crime-radio-stack{
     display:grid;
-    gap:5px;
-    max-height:172px;
+    gap:6px;
+    max-height:min(52vh, 420px);
     overflow:auto;
+    padding-right:4px;
   }
   .crime-radio-stack label{
     display:flex;
     align-items:center;
-    gap:7px;
-    font-size:0.74rem;
+    gap:8px;
+    font-size:0.88rem;
+    line-height:1.35;
     color:#d8e2f0;
   }
   .crime-radio-stack input{ accent-color:#C9A84C; }
+  .crime-type-radio-hint{
+    font-size:0.72rem;
+    color:var(--muted);
+    line-height:1.4;
+    margin:-2px 0 8px;
+    padding:0 2px;
+  }
   .left-stats-table{
     width:100%;
     border-collapse:collapse;
-    font-size:0.72rem;
+    font-size:0.85rem;
   }
   .left-stats-table th, .left-stats-table td{
-    padding:6px 4px;
+    padding:7px 5px;
     border-bottom:1px solid rgba(201,168,76,0.12);
     text-align:right;
   }
@@ -1583,7 +1623,7 @@
   .left-footnote{
     margin-top:auto;
     padding:10px 12px 14px;
-    font-size:0.67rem;
+    font-size:0.76rem;
     line-height:1.45;
     color:#a8b7cc;
     font-family:'Space Mono',monospace;
@@ -1617,19 +1657,53 @@
     background:#102846;
     border:1px solid rgba(201,168,76,0.28);
     border-radius:8px;
-    padding:12px;
+    padding:14px;
     margin-bottom:10px;
+  }
+  .right-total-head{
+    display:flex;
+    align-items:center;
+    justify-content:space-between;
+    gap:8px;
+    flex-wrap:wrap;
   }
   .right-total-label{
     font-family:'DM Mono',monospace;
     color:#C9A84C;
-    font-size:0.62rem;
+    font-size:0.74rem;
     text-transform:uppercase;
     letter-spacing:.12em;
   }
+  .right-period-toggle{
+    display:inline-flex;
+    border:1px solid rgba(201,168,76,0.3);
+    border-radius:999px;
+    overflow:hidden;
+    background:rgba(10,20,36,0.45);
+  }
+  .right-period-btn{
+    border:none;
+    background:transparent;
+    color:var(--muted);
+    font-family:'DM Mono',monospace;
+    font-size:0.7rem;
+    letter-spacing:.1em;
+    text-transform:uppercase;
+    padding:5px 11px;
+    cursor:pointer;
+    transition:background .15s,color .15s;
+  }
+  .right-period-btn:hover:not(.is-active){
+    color:var(--text);
+  }
+  .right-period-btn.is-active{
+    background:rgba(201,168,76,0.2);
+    color:var(--accent);
+    font-weight:700;
+  }
   .right-total-value{
     font-family:'Bebas Neue',sans-serif;
-    font-size:2.1rem;
+    font-size:2.45rem;
     letter-spacing:1px;
     line-height:1;
     margin-top:3px;
@@ -1642,7 +1716,7 @@
     background:#122847;
     border:1px solid rgba(201,168,76,0.14);
     border-radius:8px;
-    padding:9px 10px;
+    padding:11px 12px;
   }
   .right-stat-head{
     display:flex;
@@ -1651,18 +1725,103 @@
     align-items:baseline;
   }
   .right-stat-name{
-    font-size:0.75rem;
+    font-size:0.88rem;
     color:#d9e3f0;
   }
   .right-stat-value{
     font-family:'Bebas Neue',sans-serif;
-    font-size:1.35rem;
+    font-size:1.52rem;
     letter-spacing:.8px;
   }
   .right-stat-change{
     margin-top:2px;
-    font-size:0.72rem;
+    font-size:0.82rem;
     font-family:'DM Mono',monospace;
+  }
+  .right-category-monthly-table{
+    width:100%;
+    border-collapse:collapse;
+    font-size:0.82rem;
+    font-family:'DM Mono',monospace;
+    margin-top:8px;
+    text-align:center;
+  }
+  .right-category-monthly-table th,
+  .right-category-monthly-table td{
+    padding:6px 8px;
+    border:1px solid rgba(201,168,76,0.22);
+  }
+  .right-category-monthly-table thead th{
+    color:var(--accent);
+    font-weight:600;
+    text-transform:uppercase;
+    letter-spacing:0.06em;
+    font-size:0.72rem;
+  }
+  .right-category-monthly-table tbody td{
+    color:var(--text);
+    font-weight:700;
+  }
+  .right-rank-card{
+    background:#122847;
+    border:1px solid rgba(201,168,76,0.18);
+    border-radius:8px;
+    padding:10px 10px 8px;
+    margin-bottom:10px;
+  }
+  .right-rank-title{
+    font-family:'DM Mono',monospace;
+    font-size:0.72rem;
+    letter-spacing:0.1em;
+    text-transform:uppercase;
+    color:var(--accent);
+    margin-bottom:4px;
+  }
+  .right-rank-hint{
+    font-size:0.76rem;
+    color:var(--muted);
+    line-height:1.35;
+    margin-bottom:8px;
+  }
+  .right-rank-columns{
+    display:grid;
+    grid-template-columns:1fr 1fr;
+    gap:8px;
+  }
+  @media (max-width: 1100px){
+    .right-rank-columns{ grid-template-columns:1fr; }
+  }
+  .right-rank-col{
+    min-width:0;
+    max-height:min(38vh, 320px);
+    overflow:auto;
+  }
+  .right-rank-col-title{
+    font-size:0.78rem;
+    font-weight:600;
+    color:#d9e3f0;
+    margin-bottom:4px;
+  }
+  .right-rank-mini{
+    width:100%;
+    border-collapse:collapse;
+    font-size:0.76rem;
+    font-family:'DM Mono',monospace;
+  }
+  .right-rank-mini th,
+  .right-rank-mini td{
+    padding:4px 5px;
+    border-bottom:1px solid rgba(201,168,76,0.1);
+    text-align:left;
+  }
+  .right-rank-mini th:last-child,
+  .right-rank-mini td:last-child{ text-align:right; }
+  .right-rank-mini td:first-child{ color:var(--muted); width:22px; }
+  .right-rank-unscored{
+    margin-top:8px;
+    font-size:0.7rem;
+    color:#6b7280;
+    line-height:1.35;
   }
   .ytd-panel-toolbar{
     display:flex;
@@ -1674,7 +1833,7 @@
   }
   .ytd-panel-toolbar-label{
     font-family:'DM Mono',monospace;
-    font-size:0.62rem;
+    font-size:0.72rem;
     letter-spacing:0.12em;
     text-transform:uppercase;
     color:var(--muted);
@@ -1690,8 +1849,8 @@
     border:none;
     color:var(--muted);
     font-family:'DM Sans',sans-serif;
-    font-size:0.7rem;
-    padding:6px 10px;
+    font-size:0.8rem;
+    padding:7px 12px;
     cursor:pointer;
     transition:background .15s,color .15s;
   }
@@ -1713,7 +1872,7 @@
     display:grid;
     grid-template-columns:minmax(72px,1fr) repeat(4,minmax(44px,1fr));
     gap:0;
-    font-size:0.68rem;
+    font-size:0.78rem;
     font-family:'DM Mono',monospace;
     min-width:260px;
   }
@@ -1744,13 +1903,13 @@
   }
   .ytd-district-legend{
     margin-top:6px;
-    font-size:0.62rem;
+    font-size:0.72rem;
     color:var(--muted);
     line-height:1.35;
   }
   .ytd-single-district-head{
     font-family:'DM Mono',monospace;
-    font-size:0.62rem;
+    font-size:0.72rem;
     letter-spacing:0.1em;
     text-transform:uppercase;
     color:var(--muted);
@@ -1764,14 +1923,69 @@
     padding:8px 10px;
     border-radius:6px;
     margin-bottom:6px;
-    font-size:0.78rem;
+    font-size:0.86rem;
     color:#f4f7fb;
     border:1px solid rgba(201,168,76,0.12);
   }
   .ytd-sd-row strong{
     font-family:'Bebas Neue',sans-serif;
-    font-size:1.1rem;
+    font-size:1.22rem;
     letter-spacing:0.5px;
+  }
+  .ytd-sd-row--ranked{
+    display:grid;
+    grid-template-columns:26px minmax(0,1fr) auto auto;
+    align-items:center;
+    gap:6px 8px;
+  }
+  .ytd-sd-row--ranked-mty{
+    grid-template-columns:26px minmax(0,1fr) auto;
+  }
+  .ytd-sd-rank{
+    font-family:'DM Mono',monospace;
+    font-size:0.7rem;
+    color:var(--accent);
+    font-weight:700;
+  }
+  .ytd-sd-name{ min-width:0; }
+  .ytd-sd-pct{
+    font-family:'DM Mono',monospace;
+    font-size:0.76rem;
+    min-width:56px;
+    text-align:right;
+  }
+  .right-district-monthly-table{
+    width:100%;
+    border-collapse:collapse;
+    font-size:0.82rem;
+    margin-top:4px;
+  }
+  .right-district-monthly-table th,
+  .right-district-monthly-table td{
+    padding:6px 8px;
+    text-align:right;
+    border-bottom:1px solid rgba(201,168,76,0.12);
+    color:#f4f7fb;
+  }
+  .right-district-monthly-table th{
+    font-family:'DM Mono',monospace;
+    font-size:0.68rem;
+    letter-spacing:0.06em;
+    text-transform:uppercase;
+    color:var(--muted);
+    font-weight:600;
+  }
+  .right-district-monthly-table td:first-child,
+  .right-district-monthly-table th:first-child,
+  .right-district-monthly-table td:nth-child(2),
+  .right-district-monthly-table th:nth-child(2){
+    text-align:left;
+  }
+  .right-district-monthly-caption{
+    font-size:0.7rem;
+    color:var(--muted);
+    margin:8px 0 0;
+    line-height:1.35;
   }
   .district-bar-header{
     display:flex;
@@ -1846,8 +2060,11 @@
     bottom:10px !important;
   }
   @media (max-width: 1100px){
-    #main-stage{ grid-template-columns:minmax(0,1fr) 280px; }
-    #compstat-strip{ width:280px; min-width:280px; }
+    #compstat-strip{
+      flex-basis:340px;
+      width:340px;
+      min-width:280px;
+    }
     .district-chart-grid{ grid-template-columns:repeat(2,minmax(0,1fr)); height:auto; min-height:200px; }
     #district-bottom-bar{ height:auto; min-height:240px; }
     #district-bottom-bar.is-collapsed{ min-height:0 !important; }
@@ -1870,8 +2087,10 @@
     #map-stage{ order:1; height:56vh; border-right:none; }
     #compstat-strip{
       order:2;
-      width:100%;
-      min-width:0;
+      flex:1 1 auto !important;
+      width:100% !important;
+      min-width:0 !important;
+      max-width:none !important;
       border-left:none;
       border-top:1px solid rgba(201,168,76,0.22);
       max-height:none;
@@ -1990,7 +2209,7 @@
 </head>
 <body>
 
-<div id="dashboard-shell">
+<div id="dashboard-shell" class="district-bottom-collapsed">
 
 
 <div id="sidebar">
@@ -2025,23 +2244,40 @@
 
   <div class="left-panel-section">
     <div class="left-panel-label">Crime Type</div>
+    <p class="crime-type-radio-hint">Click the same category again to close the stats panel.</p>
     <div class="crime-radio-stack" id="leftCrimeTypeRadios">
-      <label><input type="radio" name="majorCrimeType" value="all" checked> All Major Categories</label>
+      <label><input type="radio" name="majorCrimeType" value="all" checked> All categories</label>
+      <label><input type="radio" name="majorCrimeType" value="assault-total"> Assault Total</label>
+      <label><input type="radio" name="majorCrimeType" value="agg-assault"> Aggravated Assault</label>
       <label><input type="radio" name="majorCrimeType" value="homicide"> Homicide</label>
-      <label><input type="radio" name="majorCrimeType" value="sex"> Sex Offenses (All)</label>
-      <label><input type="radio" name="majorCrimeType" value="robbery"> Robbery</label>
-      <label><input type="radio" name="majorCrimeType" value="aggassault"> Aggravated Assault</label>
-      <label><input type="radio" name="majorCrimeType" value="burglary"> Burglary</label>
+      <label><input type="radio" name="majorCrimeType" value="sexual-assault"> Sexual Assault</label>
+      <label><input type="radio" name="majorCrimeType" value="robbery-total"> Robbery Total</label>
+      <label><input type="radio" name="majorCrimeType" value="robbery-weapon"> Robbery w/ Weapon</label>
+      <label><input type="radio" name="majorCrimeType" value="burglary-total"> Burglary Total</label>
+      <label><input type="radio" name="majorCrimeType" value="res-burglary"> Residential Burglary</label>
+      <label><input type="radio" name="majorCrimeType" value="com-burglary"> Commercial Burglary</label>
+      <label><input type="radio" name="majorCrimeType" value="theft-auto"> Theft From Auto</label>
       <label><input type="radio" name="majorCrimeType" value="theft"> Theft</label>
+      <label><input type="radio" name="majorCrimeType" value="theft-auto-parts"> Theft of Auto Parts</label>
       <label><input type="radio" name="majorCrimeType" value="mvt"> Motor Vehicle Theft</label>
+      <label><input type="radio" name="majorCrimeType" value="bias"> Bias Incidents</label>
+      <label><input type="radio" name="majorCrimeType" value="drug-arrests"> Drug Arrests</label>
+      <label><input type="radio" name="majorCrimeType" value="shoplifting"> Shoplifting Arrests</label>
+      <label><input type="radio" name="majorCrimeType" value="total-arrests"> Total Arrests</label>
+      <label><input type="radio" name="majorCrimeType" value="summonses"> Summonses</label>
+      <label><input type="radio" name="majorCrimeType" value="guns"> Guns Recovered</label>
+      <label><input type="radio" name="majorCrimeType" value="shots-fired"> Shots Fired Incidents</label>
+      <label><input type="radio" name="majorCrimeType" value="shooting-inc"> Shooting Incidents</label>
+      <label><input type="radio" name="majorCrimeType" value="stabbings"> Stabbings</label>
+      <label><input type="radio" name="majorCrimeType" value="missing-adult"> Missing Persons – Adult</label>
+      <label><input type="radio" name="majorCrimeType" value="missing-juv"> Missing Persons – Juvenile</label>
     </div>
   </div>
 
   <div class="left-panel-section">
     <div class="left-panel-label">Time Period</div>
     <select id="leftPeriodSelect" class="left-panel-select" aria-label="Select time period">
-      <option value="wtd">WTD</option>
-      <option value="day28">28 Day</option>
+      <option value="mty">MTY (vs 2025)</option>
       <option value="ytd" selected>YTD</option>
     </select>
   </div>
@@ -2071,18 +2307,10 @@
   </div>
 </div>
 
-<div id="main-stage">
+<div id="main-stage" class="compstat-right-collapsed">
   <div id="map-stage">
     <div id="map">
       <div id="map-canvas"></div>
-      <p class="map-stage-headline" id="mapStageHeadline">hello</p>
-      <div class="map-time-toolbar" id="mapTimeToolbar">
-        <button type="button" class="map-time-btn" data-window="1h">Last Hour</button>
-        <button type="button" class="map-time-btn" data-window="24h">24 Hours</button>
-        <button type="button" class="map-time-btn" data-window="3d">3 Days</button>
-        <button type="button" class="map-time-btn" data-window="7d">7 Days</button>
-        <button type="button" class="map-time-btn is-active" data-window="28d">28 Days</button>
-      </div>
       <button type="button" class="map-layer-fab" id="mapLayerFab" aria-label="Toggle map layers">
         <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
           <polygon points="12 2 2 7 12 12 22 7 12 2"></polygon>
@@ -2140,7 +2368,16 @@
 
   <div id="compstat-strip">
     <div class="right-total-card">
-      <div class="right-total-label">Total Crime Count (YTD)</div>
+      <div class="right-total-head">
+        <div class="right-total-label" id="rightTotalLabel">Total Crime Count (YTD)</div>
+        <div class="right-total-head-actions">
+          <button type="button" class="map-time-btn right-strip-close-btn" id="rightStripCloseBtn" aria-label="Close stats panel (All categories)" title="Back to All categories">×</button>
+          <div class="right-period-toggle" role="tablist" aria-label="Right panel period">
+            <button type="button" class="right-period-btn" data-right-period="mty" role="tab" aria-selected="false">MTY</button>
+            <button type="button" class="right-period-btn is-active" data-right-period="ytd" role="tab" aria-selected="true">YTD</button>
+          </div>
+        </div>
+      </div>
       <div class="right-total-value" id="rightTotalCount">1,256</div>
       <div class="right-stat-change trend-neutral" id="rightTotalSubtext">Jersey City citywide activity snapshot</div>
     </div>
@@ -2224,10 +2461,10 @@
   </div>
 </div>
 
-<div id="district-bottom-bar">
+<div id="district-bottom-bar" class="is-collapsed">
   <div class="district-bar-header">
     <div class="district-bar-title">District Crime Breakdown (YTD)</div>
-    <button type="button" class="map-time-btn" id="bottomBarToggle" aria-expanded="true" aria-controls="districtChartGrid">Collapse</button>
+    <button type="button" class="map-time-btn" id="bottomBarToggle" aria-expanded="false" aria-controls="districtChartGrid">Expand</button>
   </div>
   <div class="district-chart-grid" id="districtChartGrid" role="region" aria-label="District crime breakdown charts">
     <div class="district-chart-card" data-district="north">
@@ -2671,17 +2908,250 @@ let crimeCategoriesScope = 'citywide';
 let __dashboardRawData = null;
 let __ytdBreakdownData = null;
 let ytdPanelView = 'citywide';
+let rightPeriodScope = 'ytd';
 
-/** Left sidebar Crime Type radios → ytd-breakdown.json category `id` */
-const MAJOR_CRIME_TO_YTD_ID = {
-  all: null,
+/**
+ * Left sidebar Crime Type radios → ytd-breakdown.json `id` (optional) +
+ * data.json citywide.byMonth field + districts.byMonth field.
+ */
+const CRIME_RADIO_META = {
+  'assault-total': { ytdId: null, citywideKey: 'assaultTotal', districtKey: 'assault' },
+  'agg-assault': { ytdId: 'assault', citywideKey: 'aggravatedAssault', districtKey: 'aggravatedAssault' },
+  homicide: { ytdId: 'homicide', citywideKey: 'homicide', districtKey: 'homicide' },
+  'sexual-assault': { ytdId: 'sex-offenses', citywideKey: 'rapeSexOffenses', districtKey: 'sexOffenses' },
+  'robbery-total': { ytdId: 'robbery', citywideKey: 'robberyTotal', districtKey: 'robbery' },
+  'robbery-weapon': { ytdId: null, citywideKey: 'robberyWithWeapon', districtKey: 'robberyWithWeapon' },
+  'burglary-total': { ytdId: 'burglary', citywideKey: 'burglaryTotal', districtKey: 'burglary' },
+  'res-burglary': { ytdId: null, citywideKey: 'residentialBurglary', districtKey: 'burglaryResidential' },
+  'com-burglary': { ytdId: null, citywideKey: 'commercialBurglary', districtKey: 'burglaryCommercial' },
+  'theft-auto': { ytdId: null, citywideKey: 'theftFromAuto', districtKey: 'burglaryAutoTheftFromAuto' },
+  theft: { ytdId: 'theft', citywideKey: 'theft', districtKey: 'theft' },
+  'theft-auto-parts': { ytdId: null, citywideKey: 'theftOfAutoParts', districtKey: 'theftOfAutoParts' },
+  mvt: { ytdId: 'stolen-vehicles', citywideKey: 'autoTheft', districtKey: 'stolenVehicles' },
+  bias: { ytdId: null, citywideKey: 'biasIncidents', districtKey: null },
+  'drug-arrests': { ytdId: null, citywideKey: 'drugArrests', districtKey: 'drugArrests' },
+  shoplifting: { ytdId: null, citywideKey: 'shoplifting', districtKey: 'shoplifting' },
+  'total-arrests': { ytdId: null, citywideKey: 'totalArrests', districtKey: 'arrests' },
+  summonses: { ytdId: null, citywideKey: '__summonses__', districtKey: null },
+  guns: { ytdId: null, citywideKey: 'gunsRecovered', districtKey: 'gunsRecovered' },
+  'shots-fired': { ytdId: null, citywideKey: 'shotsFired', districtKey: null },
+  'shooting-inc': { ytdId: null, citywideKey: 'shootingIncidents', districtKey: null },
+  stabbings: { ytdId: null, citywideKey: 'stabbings', districtKey: 'stabbings' },
+  'missing-adult': { ytdId: null, citywideKey: 'missingPersonsAdult', districtKey: null },
+  'missing-juv': { ytdId: null, citywideKey: 'missingPersonsJuvenile', districtKey: null }
+};
+
+/**
+ * Citywide CompStat snapshot: January & February 2026 + YTD (same period).
+ * Shown in the right column when a single crime category is selected.
+ */
+const CATEGORY_CITYWIDE_MONTHLY_STATS = {
+  'assault-total': { jan: 167, feb: 182, ytd: 349 },
+  'agg-assault': { jan: 75, feb: 77, ytd: 152 },
+  homicide: { jan: 0, feb: 0, ytd: 0 },
+  'sexual-assault': { jan: 14, feb: 17, ytd: 31 },
+  'robbery-total': { jan: 26, feb: 18, ytd: 44 },
+  'robbery-weapon': { jan: 9, feb: 6, ytd: 15 },
+  'burglary-total': { jan: 67, feb: 55, ytd: 122 },
+  'res-burglary': { jan: 16, feb: 14, ytd: 30 },
+  'com-burglary': { jan: 9, feb: 9, ytd: 18 },
+  'theft-auto': { jan: 40, feb: 32, ytd: 72 },
+  theft: { jan: 218, feb: 189, ytd: 407 },
+  'theft-auto-parts': { jan: 36, feb: 19, ytd: 55 },
+  mvt: { jan: 51, feb: 53, ytd: 104 },
+  bias: { jan: 0, feb: 1, ytd: 1 },
+  'drug-arrests': { jan: 44, feb: 40, ytd: 84 },
+  shoplifting: { jan: 26, feb: 17, ytd: 43 },
+  'total-arrests': { jan: 191, feb: 198, ytd: 389 },
+  summonses: { jan: 1686, feb: 2279, ytd: 3965 },
+  guns: { jan: 8, feb: 10, ytd: 18 },
+  'shots-fired': { jan: 3, feb: 1, ytd: 4 },
+  'shooting-inc': { jan: 3, feb: 1, ytd: 4 },
+  stabbings: { jan: 5, feb: 7, ytd: 12 },
+  'missing-adult': { jan: 11, feb: 5, ytd: 16 },
+  'missing-juv': { jan: 21, feb: 11, ytd: 32 }
+};
+
+/**
+ * Published district CompStat snapshot: Jan / Feb / 2026 YTD per category (N/E/S/W).
+ * `ytd: null` renders as "—" (e.g. shots/shooting YTD not published in source table).
+ */
+const DISTRICT_MONTHLY_STATS = {
+  north: {
+    'assault-total': { jan: 31, feb: 31, ytd: 62 },
+    'agg-assault': { jan: 12, feb: 12, ytd: 24 },
+    homicide: { jan: 0, feb: 0, ytd: 0 },
+    'sexual-assault': { jan: 4, feb: 4, ytd: 8 },
+    'robbery-total': { jan: 4, feb: 4, ytd: 8 },
+    'robbery-weapon': { jan: 0, feb: 2, ytd: 2 },
+    'burglary-total': { jan: 15, feb: 6, ytd: 21 },
+    'res-burglary': { jan: 6, feb: 1, ytd: 7 },
+    'com-burglary': { jan: 0, feb: 2, ytd: 2 },
+    'theft-auto': { jan: 9, feb: 3, ytd: 12 },
+    theft: { jan: 28, feb: 26, ytd: 54 },
+    'theft-auto-parts': { jan: 9, feb: 2, ytd: 11 },
+    mvt: { jan: 11, feb: 7, ytd: 18 },
+    bias: { jan: 0, feb: 0, ytd: 0 },
+    'drug-arrests': { jan: 0, feb: 0, ytd: 0 },
+    shoplifting: { jan: 9, feb: 0, ytd: 9 },
+    'total-arrests': { jan: 27, feb: 25, ytd: 52 },
+    summonses: { jan: 724, feb: 929, ytd: 1653 },
+    guns: { jan: 0, feb: 0, ytd: 0 },
+    'shots-fired': { jan: 0, feb: 0, ytd: null },
+    'shooting-inc': { jan: 0, feb: 0, ytd: null },
+    stabbings: { jan: 0, feb: 1, ytd: 1 }
+  },
+  east: {
+    'assault-total': { jan: 26, feb: 35, ytd: 61 },
+    'agg-assault': { jan: 11, feb: 12, ytd: 23 },
+    homicide: { jan: 0, feb: 0, ytd: 0 },
+    'sexual-assault': { jan: 5, feb: 3, ytd: 8 },
+    'robbery-total': { jan: 3, feb: 2, ytd: 5 },
+    'robbery-weapon': { jan: 1, feb: 1, ytd: 2 },
+    'burglary-total': { jan: 12, feb: 22, ytd: 34 },
+    'res-burglary': { jan: 3, feb: 4, ytd: 7 },
+    'com-burglary': { jan: 3, feb: 5, ytd: 8 },
+    'theft-auto': { jan: 5, feb: 13, ytd: 18 },
+    theft: { jan: 67, feb: 54, ytd: 121 },
+    'theft-auto-parts': { jan: 11, feb: 5, ytd: 16 },
+    mvt: { jan: 10, feb: 17, ytd: 27 },
+    bias: { jan: 0, feb: 1, ytd: 1 },
+    'drug-arrests': { jan: 0, feb: 0, ytd: 0 },
+    shoplifting: { jan: 12, feb: 12, ytd: 24 },
+    'total-arrests': { jan: 27, feb: 31, ytd: 58 },
+    summonses: { jan: 673, feb: 203, ytd: 387 },
+    guns: { jan: 2, feb: 1, ytd: 3 },
+    'shots-fired': { jan: 1, feb: 0, ytd: null },
+    'shooting-inc': { jan: 0, feb: 0, ytd: null },
+    stabbings: { jan: 1, feb: 1, ytd: 2 }
+  },
+  south: {
+    'assault-total': { jan: 63, feb: 71, ytd: 134 },
+    'agg-assault': { jan: 30, feb: 30, ytd: 60 },
+    homicide: { jan: 0, feb: 0, ytd: 0 },
+    'sexual-assault': { jan: 2, feb: 6, ytd: 8 },
+    'robbery-total': { jan: 7, feb: 7, ytd: 14 },
+    'robbery-weapon': { jan: 4, feb: 1, ytd: 5 },
+    'burglary-total': { jan: 22, feb: 14, ytd: 36 },
+    'res-burglary': { jan: 4, feb: 4, ytd: 8 },
+    'com-burglary': { jan: 0, feb: 1, ytd: 1 },
+    'theft-auto': { jan: 18, feb: 9, ytd: 27 },
+    theft: { jan: 55, feb: 58, ytd: 113 },
+    'theft-auto-parts': { jan: 7, feb: 4, ytd: 11 },
+    mvt: { jan: 15, feb: 19, ytd: 34 },
+    bias: { jan: 0, feb: 0, ytd: 0 },
+    'drug-arrests': { jan: 37, feb: 12, ytd: 49 },
+    shoplifting: { jan: 0, feb: 0, ytd: 0 },
+    'total-arrests': { jan: 76, feb: 60, ytd: 136 },
+    summonses: { jan: 341, feb: 524, ytd: 865 },
+    guns: { jan: 5, feb: 2, ytd: 7 },
+    'shots-fired': { jan: 1, feb: 0, ytd: null },
+    'shooting-inc': { jan: 3, feb: 1, ytd: null },
+    stabbings: { jan: 3, feb: 2, ytd: 5 }
+  },
+  west: {
+    'assault-total': { jan: 47, feb: 45, ytd: 92 },
+    'agg-assault': { jan: 22, feb: 23, ytd: 45 },
+    homicide: { jan: 0, feb: 0, ytd: 0 },
+    'sexual-assault': { jan: 3, feb: 4, ytd: 7 },
+    'robbery-total': { jan: 12, feb: 5, ytd: 17 },
+    'robbery-weapon': { jan: 4, feb: 2, ytd: 6 },
+    'burglary-total': { jan: 18, feb: 13, ytd: 31 },
+    'res-burglary': { jan: 3, feb: 5, ytd: 8 },
+    'com-burglary': { jan: 6, feb: 1, ytd: 7 },
+    'theft-auto': { jan: 8, feb: 7, ytd: 15 },
+    theft: { jan: 68, feb: 51, ytd: 119 },
+    'theft-auto-parts': { jan: 9, feb: 8, ytd: 17 },
+    mvt: { jan: 15, feb: 10, ytd: 25 },
+    bias: { jan: 0, feb: 0, ytd: 0 },
+    'drug-arrests': { jan: 7, feb: 28, ytd: 35 },
+    shoplifting: { jan: 5, feb: 5, ytd: 10 },
+    'total-arrests': { jan: 61, feb: 82, ytd: 143 },
+    summonses: { jan: 554, feb: 506, ytd: 1060 },
+    guns: { jan: 1, feb: 7, ytd: 8 },
+    'shots-fired': { jan: 1, feb: 1, ytd: null },
+    'shooting-inc': { jan: 0, feb: 0, ytd: null },
+    stabbings: { jan: 1, feb: 3, ytd: 4 }
+  }
+};
+
+const CRIME_RADIO_LABELS = {
+  'assault-total': 'Assault Total',
+  'agg-assault': 'Aggravated Assault',
+  homicide: 'Homicide',
+  'sexual-assault': 'Sexual Assault',
+  'robbery-total': 'Robbery Total',
+  'robbery-weapon': 'Robbery w/ Weapon',
+  'burglary-total': 'Burglary Total',
+  'res-burglary': 'Residential Burglary',
+  'com-burglary': 'Commercial Burglary',
+  'theft-auto': 'Theft From Auto',
+  theft: 'Theft',
+  'theft-auto-parts': 'Theft of Auto Parts',
+  mvt: 'Motor Vehicle Theft',
+  bias: 'Bias Incidents',
+  'drug-arrests': 'Drug Arrests',
+  shoplifting: 'Shoplifting Arrests',
+  'total-arrests': 'Total Arrests',
+  summonses: 'Summonses',
+  guns: 'Guns Recovered',
+  'shots-fired': 'Shots Fired Incidents',
+  'shooting-inc': 'Shooting Incidents',
+  stabbings: 'Stabbings',
+  'missing-adult': 'Missing Persons – Adult',
+  'missing-juv': 'Missing Persons – Juvenile'
+};
+
+/** Map crime radio → Chart tab category (falls back to All). */
+const CRIME_RADIO_TO_CHART_CATEGORY = {
+  all: 'All',
+  'assault-total': 'Aggravated Assault',
+  'agg-assault': 'Aggravated Assault',
+  homicide: 'Homicides',
+  'sexual-assault': 'Sex Offenses (All)',
+  'robbery-total': 'Robbery Incidents',
+  'robbery-weapon': 'Robbery Incidents',
+  'burglary-total': 'Burglary',
+  'res-burglary': 'Burglary',
+  'com-burglary': 'Burglary',
+  'theft-auto': 'Theft',
+  theft: 'Theft',
+  'theft-auto-parts': 'Theft',
+  mvt: 'Motor Vehicle Theft',
+  'shooting-inc': 'Shooting Incidents',
+  'shots-fired': 'Shooting Incidents'
+};
+
+const YTD_CATEGORY_TO_CITYWIDE_KEY = {
+  assault: 'aggravatedAssault',
+  'stolen-vehicles': 'autoTheft',
+  burglary: 'burglaryTotal',
   homicide: 'homicide',
-  sex: 'sex-offenses',
-  robbery: 'robbery',
-  aggassault: 'assault',
-  burglary: 'burglary',
   theft: 'theft',
-  mvt: 'stolen-vehicles'
+  'sex-offenses': 'rapeSexOffenses',
+  robbery: 'robberyTotal'
+};
+
+const YTD_CATEGORY_TO_DISTRICT_MONTH_KEY = {
+  assault: 'aggravatedAssault',
+  'stolen-vehicles': 'stolenVehicles',
+  burglary: 'burglary',
+  homicide: 'homicide',
+  theft: 'theft',
+  'sex-offenses': 'sexOffenses',
+  robbery: 'robbery'
+};
+
+/** data.json baseline2025.series key for YoY (omit if no 2025 monthly baseline exists). */
+const CITYWIDE_TO_BASELINE_2025_KEY = {
+  robberyTotal: 'robbery',
+  aggravatedAssault: 'aggravatedAssault',
+  burglaryTotal: 'burglary',
+  theft: 'theft',
+  autoTheft: 'motorVehicleTheft',
+  criminalMischief: 'criminalMischief',
+  homicide: 'homicides',
+  shootingIncidents: 'shootingIncidents'
 };
 
 function getMajorCrimeRadioValue(){
@@ -2694,11 +3164,395 @@ function findYtdCategoryById(jb, id){
   return jb.categories.find(function(c){ return c.id === id; }) || null;
 }
 
+function computePercentChange(cur, prev){
+  if(!Number.isFinite(cur) || !Number.isFinite(prev) || prev === 0) return null;
+  return ((cur - prev) / prev) * 100;
+}
+
+function getCitywideMonthRowValue(row, citywideKey){
+  if(!row || !citywideKey) return null;
+  if(citywideKey === '__summonses__'){
+    const a = Number(row.movingSummonses);
+    const b = Number(row.parkingSummonses);
+    const c = Number(row.cityOrdinanceSummonses);
+    const sa = Number.isFinite(a) ? a : 0;
+    const sb = Number.isFinite(b) ? b : 0;
+    const sc = Number.isFinite(c) ? c : 0;
+    return sa + sb + sc;
+  }
+  const v = row[citywideKey];
+  return Number.isFinite(Number(v)) ? Number(v) : null;
+}
+
+function sumCitywideYtd2026(data, citywideKey){
+  const months = data && data.citywide && Array.isArray(data.citywide.byMonth) ? data.citywide.byMonth : [];
+  const y2026 = months.filter(function(m){ return Number(m.year) === 2026; });
+  let sum = 0;
+  let ok = false;
+  y2026.forEach(function(m){
+    const v = getCitywideMonthRowValue(m, citywideKey);
+    if(Number.isFinite(v)){ sum += Number(v); ok = true; }
+  });
+  return ok ? sum : null;
+}
+
+function getLatest2026MonthNumber(data){
+  const latest = getLatestCitywideMonthRow(data);
+  return latest && Number.isFinite(Number(latest.month)) ? Number(latest.month) : null;
+}
+
+function sumBaseline2025YtdForCitywideKey(data, citywideKey){
+  const m = getLatest2026MonthNumber(data);
+  if(!m || m < 1) return null;
+  const baselineKey = CITYWIDE_TO_BASELINE_2025_KEY[citywideKey];
+  if(!baselineKey) return null;
+  const series = data && data.baseline2025 && data.baseline2025.series && data.baseline2025.series[baselineKey];
+  if(!Array.isArray(series)) return null;
+  let sum = 0;
+  for(let i = 0; i < m && i < 12; i++){
+    const v = series[i];
+    if(Number.isFinite(v)) sum += Number(v);
+  }
+  return sum;
+}
+
+function getLatestDistrictMonthRow(data){
+  const months = data && data.districts && Array.isArray(data.districts.byMonth) ? data.districts.byMonth : [];
+  if(!months.length) return null;
+  const sorted = months.slice().sort(function(a, b){
+    return (Number(a.year) - Number(b.year)) || (Number(a.month) - Number(b.month));
+  });
+  return sorted[sorted.length - 1] || null;
+}
+
+function sumDistrictLatestMonthField(data, districtKey){
+  const keys = ['north','east','south','west'];
+  const out = { north:0, east:0, south:0, west:0 };
+  if(!districtKey) return out;
+  const latest = getLatestDistrictMonthRow(data);
+  if(!latest) return out;
+  keys.forEach(function(d){
+    const row = latest[d];
+    const v = row && row[districtKey];
+    out[d] = Number.isFinite(v) ? Number(v) : 0;
+  });
+  return out;
+}
+
+function sumDistrictYtdDistrictField(data, districtKey){
+  const keys = ['north','east','south','west'];
+  const out = { north:0, east:0, south:0, west:0 };
+  if(!districtKey) return out;
+  const months = data && data.districts && data.districts.byMonth ? data.districts.byMonth : [];
+  const y2026 = months.filter(function(m){ return Number(m.year) === 2026; });
+  y2026.forEach(function(m){
+    keys.forEach(function(d){
+      const row = m[d];
+      const v = row && row[districtKey];
+      if(Number.isFinite(v)) out[d] += Number(v);
+    });
+  });
+  return out;
+}
+
+function getLatestCitywideMonthRow(data){
+  const months = data && data.citywide && Array.isArray(data.citywide.byMonth) ? data.citywide.byMonth : [];
+  if(!months.length) return null;
+  const sorted = months.slice().sort(function(a, b){
+    return (Number(a.year) - Number(b.year)) || (Number(a.month) - Number(b.month));
+  });
+  return sorted[sorted.length - 1] || null;
+}
+
+function getMtyPairForCitywideKey(data, citywideKey){
+  const latest = getLatestCitywideMonthRow(data);
+  if(!latest) return { current:null, previous:null, pct:null, monthLabel:'' };
+  const monthNum = Number(latest.month);
+  const monthLabel = latest.label || (CRIME_TREND_MONTH_SHORT[Math.max(0, monthNum - 1)] || 'Latest month');
+  const current = getCitywideMonthRowValue(latest, citywideKey);
+
+  const baselineSeries =
+    data && data.baseline2025 && data.baseline2025.series
+      ? data.baseline2025.series[CITYWIDE_TO_BASELINE_2025_KEY[citywideKey]]
+      : null;
+  const previous =
+    Array.isArray(baselineSeries) && monthNum >= 1 && monthNum <= baselineSeries.length && Number.isFinite(baselineSeries[monthNum - 1])
+      ? Number(baselineSeries[monthNum - 1])
+      : null;
+  return {
+    current,
+    previous,
+    pct: computePercentChange(current, previous),
+    monthLabel
+  };
+}
+
+function getPeriodValueForCategory(cat, periodScope){
+  const cw = cat && cat.citywide ? cat.citywide : {};
+  if(periodScope !== 'mty'){
+    const cur = Number.isFinite(cw.ytd2026) ? Number(cw.ytd2026) : null;
+    const prev = Number.isFinite(cw.ytd2025) ? Number(cw.ytd2025) : null;
+    const pct = Number.isFinite(cw.pctVs2025) ? Number(cw.pctVs2025) : computePercentChange(cur, prev);
+    return { current:cur, previous:prev, pct, monthLabel:'' };
+  }
+  const citywideKey = YTD_CATEGORY_TO_CITYWIDE_KEY[cat && cat.id ? cat.id : ''];
+  if(!citywideKey) return { current:null, previous:null, pct:null, monthLabel:'' };
+  return getMtyPairForCitywideKey(__dashboardRawData || {}, citywideKey);
+}
+
+function getPeriodTotalsForAllCategories(jb, periodScope){
+  if(!jb || !Array.isArray(jb.categories) || !jb.categories.length){
+    return { current:0, previous:0, pct:null, monthLabel:'' };
+  }
+  let current = 0;
+  let previous = 0;
+  let curOk = false;
+  let prevOk = false;
+  let monthLabel = '';
+  jb.categories.forEach(function(cat){
+    const p = getPeriodValueForCategory(cat, periodScope);
+    if(Number.isFinite(p.current)){ current += Number(p.current); curOk = true; }
+    if(Number.isFinite(p.previous)){ previous += Number(p.previous); prevOk = true; }
+    if(!monthLabel && p.monthLabel) monthLabel = p.monthLabel;
+  });
+  const pct = curOk && prevOk && previous !== 0 ? ((current - previous) / previous) * 100 : null;
+  return {
+    current: curOk ? current : null,
+    previous: prevOk ? previous : null,
+    pct,
+    monthLabel
+  };
+}
+
+function getPeriodValueForRadioSlugScoped(slug, periodScope){
+  const jb = window.__ytdBreakdownData;
+  const data = __dashboardRawData || {};
+  const meta = CRIME_RADIO_META[slug];
+  if(!meta){
+    return { current:null, previous:null, pct:null, monthLabel:'', label:'' };
+  }
+  const label = CRIME_RADIO_LABELS[slug] || slug;
+  if(meta.ytdId && jb && findYtdCategoryById(jb, meta.ytdId)){
+    const cat = findYtdCategoryById(jb, meta.ytdId);
+    const pv = getPeriodValueForCategory(cat, periodScope);
+    return { current: pv.current, previous: pv.previous, pct: pv.pct, monthLabel: pv.monthLabel, label: label };
+  }
+  if(periodScope === 'mty'){
+    const mty = getMtyPairForCitywideKey(data, meta.citywideKey);
+    return { current:mty.current, previous:mty.previous, pct:mty.pct, monthLabel:mty.monthLabel, label: label };
+  }
+  const cur = sumCitywideYtd2026(data, meta.citywideKey);
+  const prev = sumBaseline2025YtdForCitywideKey(data, meta.citywideKey);
+  const pct = computePercentChange(cur, prev);
+  return { current:cur, previous:prev, pct:pct, monthLabel:'', label: label };
+}
+
+function getPeriodValueForRadioSlug(slug){
+  const periodScope = rightPeriodScope === 'mty' ? 'mty' : 'ytd';
+  return getPeriodValueForRadioSlugScoped(slug, periodScope);
+}
+
+function formatPctSigned(pct){
+  if(!Number.isFinite(pct)) return '—';
+  return (pct > 0 ? '+' : '') + Number(pct).toFixed(1) + '%';
+}
+
+function formatDistrictMonthCell(v){
+  if(v === null || v === undefined) return '—';
+  if(typeof v === 'number' && !Number.isFinite(v)) return '—';
+  return Number(v).toLocaleString();
+}
+
+function getDistrictStaticTriplet(crimeSel, districtKey){
+  const block = DISTRICT_MONTHLY_STATS[districtKey];
+  if(!block || !crimeSel) return null;
+  const t = block[crimeSel];
+  if(!t || typeof t !== 'object') return null;
+  return t;
+}
+
+function districtSortMetricFromStatic(stat, periodScope, fallbackCount){
+  if(!stat) return fallbackCount;
+  if(periodScope === 'ytd'){
+    if(Number.isFinite(stat.ytd)) return stat.ytd;
+    if(stat.ytd === null && Number.isFinite(stat.jan) && Number.isFinite(stat.feb)) return stat.jan + stat.feb;
+    return fallbackCount;
+  }
+  if(Number.isFinite(stat.feb)) return stat.feb;
+  return fallbackCount;
+}
+
+function hasFullDistrictMonthlyStats(crimeSel){
+  return ['north','east','south','west'].every(function(d){
+    return getDistrictStaticTriplet(crimeSel, d) !== null;
+  });
+}
+
+/** Rank all sidebar categories by YoY % change vs 2025 (lower % = fewer incidents = better). */
+function buildCategoryYoYRankingsHtml(periodScope){
+  const slugs = Object.keys(CRIME_RADIO_META);
+  const rows = [];
+  slugs.forEach(function(slug){
+    const pv = getPeriodValueForRadioSlugScoped(slug, periodScope);
+    rows.push({ label: pv.label, pct: pv.pct });
+  });
+  const scored = rows.filter(function(r){ return Number.isFinite(r.pct); });
+  const unscoredLabels = rows.filter(function(r){ return !Number.isFinite(r.pct); }).map(function(r){ return r.label; });
+  scored.sort(function(a, b){ return a.pct - b.pct; });
+  const best = scored.slice(0, 12);
+  const worst = scored.slice().sort(function(a, b){ return b.pct - a.pct; }).slice(0, 12);
+  const periodLabel = periodScope === 'mty' ? 'Latest month vs 2025 same month' : '2026 YTD vs 2025 same period';
+  let html = '<div class="right-rank-card">'
+    + '<div class="right-rank-title">Category rankings · ' + escapeHTML(periodLabel) + '</div>'
+    + '<p class="right-rank-hint">Best = largest decrease vs last year. Worst = largest increase.</p>'
+    + '<div class="right-rank-columns">';
+  function miniTable(title, list){
+    let t = '<div class="right-rank-col"><div class="right-rank-col-title">' + escapeHTML(title) + '</div><table class="right-rank-mini"><thead><tr><th>#</th><th>Category</th><th>Δ</th></tr></thead><tbody>';
+    list.forEach(function(r, i){
+      const cls = professionalRowClass(r.pct);
+      t += '<tr><td>' + (i + 1) + '</td><td>' + escapeHTML(r.label) + '</td><td class="' + cls + '">' + escapeHTML(formatPctSigned(r.pct)) + '</td></tr>';
+    });
+    t += '</tbody></table></div>';
+    return t;
+  }
+  html += miniTable('Doing best (↓ vs 2025)', best);
+  html += miniTable('Worst (↑ vs 2025)', worst);
+  html += '</div>';
+  if(unscoredLabels.length){
+    html += '<div class="right-rank-unscored">No YoY baseline in data: ' + unscoredLabels.map(function(l){ return escapeHTML(l); }).join(', ') + '</div>';
+  }
+  html += '</div>';
+  return html;
+}
+
+/** Per selected category: rank N/E/S/W — best = lowest YoY % when all districts have it, else lowest count (uses published district Jan/Feb/YTD when present). */
+function getDistrictRankedRows(crimeSel, jb, periodScope, byDist){
+  const dkeys = ['north','east','south','west'];
+  const meta = CRIME_RADIO_META[crimeSel];
+  const rows = dkeys.map(function(d){
+    const raw = byDist[d];
+    const count = Number(raw);
+    const c = Number.isFinite(count) ? count : 0;
+    const stat = getDistrictStaticTriplet(crimeSel, d);
+    const metric = districtSortMetricFromStatic(stat, periodScope, c);
+    let pctYoY = null;
+    if(periodScope === 'ytd' && meta && meta.ytdId && jb){
+      const cat = findYtdCategoryById(jb, meta.ytdId);
+      if(cat && cat.districts && cat.districts[d]){
+        const dr = cat.districts[d];
+        if(Number.isFinite(dr.pctVs2025)) pctYoY = Number(dr.pctVs2025);
+      }
+    }
+    return { id: d, count: metric, pctYoY: pctYoY, staticTriplet: stat };
+  });
+  const allHavePct = rows.every(function(r){ return Number.isFinite(r.pctYoY); });
+  rows.sort(function(a, b){
+    if(periodScope === 'ytd' && allHavePct){
+      return a.pctYoY - b.pctYoY;
+    }
+    if(a.count !== b.count) return a.count - b.count;
+    return String(a.id).localeCompare(String(b.id));
+  });
+  return { rows: rows, sortByYoY: periodScope === 'ytd' && allHavePct };
+}
+
+function buildDistrictRankBlock(crimeSel, jb, periodScope, byDist, dshort){
+  const pack = getDistrictRankedRows(crimeSel, jb, periodScope, byDist);
+  const useStaticTable = hasFullDistrictMonthlyStats(crimeSel);
+  const head = useStaticTable
+    ? (periodScope === 'mty'
+      ? 'By district · Jan | Feb | YTD · best → worst (lowest Feb)'
+      : pack.sortByYoY
+        ? 'By district · Jan | Feb | YTD · best → worst (YoY vs 2025)'
+        : 'By district · Jan | Feb | YTD · best → worst (lowest YTD)')
+    : (periodScope === 'mty'
+      ? 'By district · best → worst (lowest count)'
+      : pack.sortByYoY
+        ? 'By district · best → worst (YoY vs 2025)'
+        : 'By district · best → worst (lowest count)');
+  let html = '<div class="ytd-single-district-head">' + escapeHTML(head) + '</div>';
+  const showPctCol = periodScope === 'ytd';
+
+  if(useStaticTable){
+    html += '<table class="right-district-monthly-table" role="table" aria-label="District Jan Feb YTD">'
+      + '<thead><tr>'
+      + '<th scope="col">#</th><th scope="col">Dist</th>'
+      + '<th scope="col">Jan</th><th scope="col">Feb</th><th scope="col">YTD</th>';
+    if(showPctCol) html += '<th scope="col">YoY</th>';
+    html += '</tr></thead><tbody>';
+    pack.rows.forEach(function(r, i){
+      const st = r.staticTriplet;
+      const pctTd = showPctCol
+        ? (Number.isFinite(r.pctYoY)
+          ? '<td class="' + professionalRowClass(r.pctYoY) + '">' + escapeHTML(formatPctSigned(r.pctYoY)) + '</td>'
+          : '<td class="trend-neutral">—</td>')
+        : '';
+      html += '<tr>'
+        + '<td>' + (i + 1) + '</td>'
+        + '<td>' + escapeHTML(dshort[r.id]) + '</td>'
+        + '<td>' + formatDistrictMonthCell(st.jan) + '</td>'
+        + '<td>' + formatDistrictMonthCell(st.feb) + '</td>'
+        + '<td>' + formatDistrictMonthCell(st.ytd) + '</td>'
+        + pctTd
+        + '</tr>';
+    });
+    html += '</tbody></table>'
+      + '<p class="right-district-monthly-caption">Published district counts · Jan–Feb 2026</p>';
+    return html;
+  }
+
+  pack.rows.forEach(function(r, i){
+    const pctPart = showPctCol
+      ? (Number.isFinite(r.pctYoY)
+        ? '<span class="ytd-sd-pct ' + professionalRowClass(r.pctYoY) + '">' + escapeHTML(formatPctSigned(r.pctYoY)) + '</span>'
+        : '<span class="ytd-sd-pct trend-neutral">—</span>')
+      : '';
+    html += '<div class="ytd-sd-row ytd-sd-row--ranked' + (showPctCol ? '' : ' ytd-sd-row--ranked-mty') + '">'
+      + '<span class="ytd-sd-rank">#' + (i + 1) + '</span>'
+      + '<span class="ytd-sd-name">' + escapeHTML(dshort[r.id]) + '</span>'
+      + '<strong>' + r.count.toLocaleString() + '</strong>'
+      + pctPart
+      + '</div>';
+  });
+  return html;
+}
+
+function computeDistrictTotalsForSelectionByPeriod(jb, crimeRadioValue, periodScope){
+  const data = __dashboardRawData || {};
+  if(periodScope !== 'mty'){
+    return computeDistrictTotalsForSelection(jb, crimeRadioValue);
+  }
+  if(crimeRadioValue === 'all'){
+    const latest = getLatestDistrictMonthRow(data);
+    if(!latest || !jb || !Array.isArray(jb.categories)) return { north:0, east:0, south:0, west:0 };
+    const dkeys = ['north','east','south','west'];
+    const out = { north:0, east:0, south:0, west:0 };
+    jb.categories.forEach(function(cat){
+      const dk = YTD_CATEGORY_TO_DISTRICT_MONTH_KEY[cat.id];
+      if(!dk) return;
+      dkeys.forEach(function(d){
+        const row = latest[d];
+        const v = row && row[dk];
+        if(Number.isFinite(v)) out[d] += Number(v);
+      });
+    });
+    return out;
+  }
+  const meta = CRIME_RADIO_META[crimeRadioValue];
+  if(!meta) return { north:0, east:0, south:0, west:0 };
+  if(meta.ytdId && jb && findYtdCategoryById(jb, meta.ytdId)){
+    const dk = YTD_CATEGORY_TO_DISTRICT_MONTH_KEY[meta.ytdId];
+    if(dk) return sumDistrictLatestMonthField(data, dk);
+  }
+  return sumDistrictLatestMonthField(data, meta.districtKey);
+}
+
 function computeDistrictTotalsForSelection(jb, crimeRadioValue){
   const keys = ['north','east','south','west'];
   const out = { north:0, east:0, south:0, west:0 };
-  if(!jb || !jb.categories) return out;
+  const data = __dashboardRawData || {};
   if(crimeRadioValue === 'all'){
+    if(!jb || !jb.categories) return out;
     jb.categories.forEach(function(cat){
       keys.forEach(function(d){
         const v = cat.districts && cat.districts[d] && cat.districts[d].ytd2026;
@@ -2707,25 +3561,19 @@ function computeDistrictTotalsForSelection(jb, crimeRadioValue){
     });
     return out;
   }
-  const yid = MAJOR_CRIME_TO_YTD_ID[crimeRadioValue];
-  if(!yid) return out;
-  const cat = findYtdCategoryById(jb, yid);
-  if(!cat) return out;
-  keys.forEach(function(d){
-    const v = cat.districts && cat.districts[d] && cat.districts[d].ytd2026;
-    out[d] = Number.isFinite(v) ? Number(v) : 0;
-  });
-  return out;
-}
-
-function mapDistrictOpacityFromCounts(byDist){
-  const vals = [byDist.north, byDist.east, byDist.south, byDist.west];
-  const min = Math.min.apply(null, vals);
-  const max = Math.max.apply(null, vals);
-  return function(d){
-    const v = byDist[d];
-    return ytdOpacityForValue(v, min, max);
-  };
+  const meta = CRIME_RADIO_META[crimeRadioValue];
+  if(!meta) return out;
+  if(meta.ytdId && jb){
+    const cat = findYtdCategoryById(jb, meta.ytdId);
+    if(cat){
+      keys.forEach(function(d){
+        const v = cat.districts && cat.districts[d] && cat.districts[d].ytd2026;
+        out[d] = Number.isFinite(v) ? Number(v) : 0;
+      });
+      return out;
+    }
+  }
+  return sumDistrictYtdDistrictField(data, meta.districtKey);
 }
 
 function onCrimeCategoriesScopeChange(e){
@@ -3569,27 +4417,6 @@ function ytdOpacityForValue(v, min, max){
   return Math.min(1, Math.max(0.12, 0.12 + t * 0.88));
 }
 
-/** Police district polygons: opacity ∝ selected crime count per district (min–max across N/E/S/W). */
-function applyDistrictCrimeOpacityToMap(){
-  if(typeof map === 'undefined' || !map || !mapHasLoaded) return;
-  if(!map.getLayer || !map.getLayer('districts-fill')) return;
-  const jb = window.__ytdBreakdownData;
-  const crime = getMajorCrimeRadioValue();
-  const byDist = computeDistrictTotalsForSelection(jb, crime);
-  const opFn = mapDistrictOpacityFromCounts(byDist);
-  try{
-    map.setPaintProperty('districts-fill','fill-opacity',[
-      'match',
-      ['get','id'],
-      'north', opFn('north'),
-      'east', opFn('east'),
-      'south', opFn('south'),
-      'west', opFn('west'),
-      0.22
-    ]);
-  }catch(e){}
-}
-
 function bindYtdPanelToggleOnce(){
   if(window.__ytdPanelToggleBound) return;
   window.__ytdPanelToggleBound = true;
@@ -3608,148 +4435,145 @@ function bindYtdPanelToggleOnce(){
   });
 }
 
+function bindRightPeriodToggleOnce(){
+  if(window.__rightPeriodToggleBound) return;
+  window.__rightPeriodToggleBound = true;
+  document.addEventListener('click', function(e){
+    const btn = e.target.closest('[data-right-period]');
+    if(!btn) return;
+    const v = btn.getAttribute('data-right-period');
+    if(v !== 'mty' && v !== 'ytd') return;
+    rightPeriodScope = v;
+    document.querySelectorAll('[data-right-period]').forEach(function(b){
+      const on = b.getAttribute('data-right-period') === v;
+      b.classList.toggle('is-active', on);
+      b.setAttribute('aria-selected', on ? 'true' : 'false');
+    });
+    const periodSel = document.getElementById('leftPeriodSelect');
+    if(periodSel && periodSel.value !== v) periodSel.value = v;
+    renderProfessionalRightCards();
+    scheduleStateSave();
+  });
+}
+
 function renderProfessionalRightCards(){
   const host = document.getElementById('rightStatsCards');
   const totalEl = document.getElementById('rightTotalCount');
   const subEl = document.getElementById('rightTotalSubtext');
+  const totalLabelEl = document.getElementById('rightTotalLabel');
   if(!host || !totalEl) return;
   bindYtdPanelToggleOnce();
+  bindRightPeriodToggleOnce();
+
+  const periodScope = rightPeriodScope === 'mty' ? 'mty' : 'ytd';
+  const periodShortLabel = periodScope === 'mty' ? 'MTY' : 'YTD';
+  document.querySelectorAll('[data-right-period]').forEach(function(b){
+    const on = b.getAttribute('data-right-period') === periodScope;
+    b.classList.toggle('is-active', on);
+    b.setAttribute('aria-selected', on ? 'true' : 'false');
+  });
+
+  const crimeSel = getMajorCrimeRadioValue();
+  updateCompstatStripVisibility(crimeSel);
+
+  if(crimeSel === 'all'){
+    totalEl.textContent = '—';
+    if(totalLabelEl) totalLabelEl.textContent = 'Stats panel';
+    if(subEl) subEl.textContent = 'Choose a crime category in the left sidebar to open.';
+    host.innerHTML = '';
+    return;
+  }
 
   const jb = window.__ytdBreakdownData;
   if(!jb || !Array.isArray(jb.categories) || !jb.categories.length){
     totalEl.textContent = '—';
+    if(totalLabelEl) totalLabelEl.textContent = 'Total Crime Count (' + periodShortLabel + ')';
     if(subEl) subEl.textContent = 'Add ytd-breakdown.json (see scripts/export_ytd_breakdown.py)';
-    host.innerHTML = '<div class="right-stat-card"><div class="right-stat-head"><div class="right-stat-name">YTD data</div></div><div class="right-stat-change trend-neutral">Export Crime Breakdown from Excel to ytd-breakdown.json.</div></div>';
-    applyDistrictCrimeOpacityToMap();
+    host.innerHTML = '<div class="right-stat-card"><div class="right-stat-head"><div class="right-stat-name">' + periodShortLabel + ' data</div></div><div class="right-stat-change trend-neutral">Export Crime Breakdown from Excel to ytd-breakdown.json.</div></div>';
     return;
   }
 
-  const crimeSel = getMajorCrimeRadioValue();
-  if(crimeSel !== 'all'){
-    const yid = MAJOR_CRIME_TO_YTD_ID[crimeSel];
-    const cat = yid ? findYtdCategoryById(jb, yid) : null;
-    if(!cat){
-      totalEl.textContent = '—';
-      if(subEl) subEl.textContent = 'Category not in ytd-breakdown.json';
-      host.innerHTML = '<div class="right-stat-card"><div class="right-stat-name">YTD</div><div class="right-stat-change trend-neutral">No row for this crime type.</div></div>';
-      applyDistrictCrimeOpacityToMap();
-      return;
+  const radioMeta = CRIME_RADIO_META[crimeSel];
+  if(!radioMeta){
+    totalEl.textContent = '—';
+    if(totalLabelEl) totalLabelEl.textContent = 'Total Crime Count (' + periodShortLabel + ')';
+    if(subEl) subEl.textContent = 'Unknown crime type';
+    host.innerHTML = '<div class="right-stat-card"><div class="right-stat-name">' + periodShortLabel + '</div><div class="right-stat-change trend-neutral">Unknown selection.</div></div>';
+    return;
+  }
+  const periodPair = getPeriodValueForRadioSlug(crimeSel);
+  const cur = periodPair.current;
+  const pct = periodPair.pct;
+  const lab = periodPair.label ? periodPair.label : formatCategoryLabel(crimeSel);
+  const snap = CATEGORY_CITYWIDE_MONTHLY_STATS[crimeSel];
+  const cls = professionalRowClass(pct);
+  const dir = pct === null || pct === undefined || !Number.isFinite(Number(pct))
+    ? 'flat'
+    : Number(pct) < 0 ? 'down' : Number(pct) > 0 ? 'up' : 'flat';
+  const pctText = pct === null || pct === undefined || !Number.isFinite(Number(pct))
+    ? '—'
+    : (Number(pct) > 0 ? '+' : '') + Number(pct).toFixed(1) + '%';
+  const meta = jb.meta || {};
+  const src = meta.sourceFile ? ' · Source: ' + meta.sourceFile : '';
+
+  if(snap){
+    const hero = periodScope === 'ytd' ? snap.ytd : snap.feb;
+    totalEl.textContent = Number(hero).toLocaleString();
+    if(totalLabelEl){
+      totalLabelEl.textContent = periodScope === 'ytd' ? '2026 YTD' : 'Feb 2026';
     }
-    const cw = cat.citywide || {};
-    const cur = cw.ytd2026;
-    const pct = cw.pctVs2025;
-    totalEl.textContent = Number.isFinite(cur) ? Number(cur).toLocaleString() : '—';
-    const meta = jb.meta || {};
-    const src = meta.sourceFile ? ' · Source: ' + meta.sourceFile : '';
     if(subEl){
-      const lab = formatCategoryLabel(cat.label || cat.id || '');
-      const note = crimeSel === 'aggassault' ? ' · CompStat Assault category' : '';
-      subEl.textContent = lab + ' · 2026 YTD' + note + src;
+      subEl.textContent = lab + ' · Citywide · Jan–Feb 2026' + src;
     }
-    const cls = professionalRowClass(pct);
-    const dir = pct === null || pct === undefined || !Number.isFinite(Number(pct))
-      ? 'flat'
-      : Number(pct) < 0 ? 'down' : Number(pct) > 0 ? 'up' : 'flat';
-    const pctText = pct === null || pct === undefined || !Number.isFinite(Number(pct))
-      ? '—'
-      : (Number(pct) > 0 ? '+' : '') + Number(pct).toFixed(1) + '%';
-    const byDist = computeDistrictTotalsForSelection(jb, crimeSel);
-    const dkeys = ['north','east','south','west'];
-    const dshort = { north:'North', east:'East', south:'South', west:'West' };
-    const mmMin = Math.min(byDist.north, byDist.east, byDist.south, byDist.west);
-    const mmMax = Math.max(byDist.north, byDist.east, byDist.south, byDist.west);
-    let distBlock = '<div class="ytd-single-district-head">2026 YTD by district</div>';
-    dkeys.forEach(function(d){
-      const n = byDist[d];
-      const op = ytdOpacityForValue(n, mmMin, mmMax);
-      const bg = 'rgba(201,168,76,' + op.toFixed(3) + ')';
-      distBlock += '<div class="ytd-sd-row" style="background:' + bg + '"><span>' + escapeHTML(dshort[d]) + '</span><strong>' + n.toLocaleString() + '</strong></div>';
-    });
-    distBlock += '<div class="ytd-district-legend">Map opacity uses the same min–max for this crime (min ' + mmMin.toLocaleString() + ' → max ' + mmMax.toLocaleString() + ').</div>';
-    const mainCard = '<div class="right-stat-card">'
-      + '<div class="right-stat-head">'
-      + '<div class="right-stat-name">Citywide 2026 YTD</div>'
-      + '<div class="right-stat-value">' + (Number.isFinite(cur) ? Number(cur).toLocaleString() : '—') + '</div>'
-      + '</div>'
-      + '<div class="right-stat-change ' + cls + '">' + dir + ' ' + escapeHTML(pctText) + ' vs 2025</div>'
-      + '</div>';
-    host.innerHTML = mainCard + distBlock;
-    applyDistrictCrimeOpacityToMap();
-    return;
+  } else {
+    totalEl.textContent = Number.isFinite(cur) ? Number(cur).toLocaleString() : '—';
+    if(totalLabelEl){
+      totalLabelEl.textContent = 'Total Crime Count (' + periodShortLabel + ')';
+    }
+    if(subEl){
+      if(periodScope === 'mty'){
+        const monthText = periodPair.monthLabel ? periodPair.monthLabel : 'Latest month';
+        subEl.textContent = lab + ' · ' + monthText + ' vs 2025 same month (where baseline exists)' + src;
+      } else {
+        subEl.textContent = lab + ' · 2026 YTD · citywide CompStat' + src;
+      }
+    }
   }
 
-  const total = jb.categories.reduce(function(s, cat){
-    const v = cat.citywide && cat.citywide.ytd2026;
-    return s + (Number.isFinite(v) ? Number(v) : 0);
-  }, 0);
-  totalEl.textContent = total.toLocaleString();
-  if(subEl){
-    const meta = jb.meta || {};
-    const src = meta.sourceFile ? ' · ' + meta.sourceFile : '';
-    subEl.textContent = 'Sum of ' + jb.categories.length + ' categories (2026 YTD)' + src;
-  }
+  const tableHtml = snap
+    ? '<table class="right-category-monthly-table" role="table" aria-label="' + escapeHTML(lab) + ' Jan Feb YTD">'
+      + '<thead><tr><th scope="col">Jan</th><th scope="col">Feb</th><th scope="col">YTD</th></tr></thead>'
+      + '<tbody><tr>'
+      + '<td>' + snap.jan.toLocaleString() + '</td>'
+      + '<td>' + snap.feb.toLocaleString() + '</td>'
+      + '<td>' + snap.ytd.toLocaleString() + '</td>'
+      + '</tr></tbody></table>'
+      + '<div class="right-stat-change trend-neutral" style="margin-top:8px;font-size:0.65rem;line-height:1.35;">Published citywide counts · Jan–Feb 2026</div>'
+    : '';
 
-  const toolbar = '<div class="ytd-panel-toolbar">'
-    + '<span class="ytd-panel-toolbar-label">View</span>'
-    + '<div class="ytd-view-toggle" role="tablist" aria-label="YTD view">'
-    + '<button type="button" data-ytd-view="citywide" class="' + (ytdPanelView === 'citywide' ? 'is-active' : '') + '" role="tab">By YTD</button>'
-    + '<button type="button" data-ytd-view="district" class="' + (ytdPanelView === 'district' ? 'is-active' : '') + '" role="tab">By District</button>'
-    + '</div></div>';
+  const yoyLine = snap && Number.isFinite(Number(pct))
+    ? '<div class="right-stat-change ' + cls + '">vs 2025 same period (CompStat): ' + escapeHTML(pctText) + '</div>'
+    : (!snap ? '<div class="right-stat-change ' + cls + '">' + dir + ' ' + escapeHTML(pctText) + ' vs 2025</div>' : '');
 
-  if(ytdPanelView === 'district'){
-    const mm = ytdDistrictValueMinMax(jb.categories);
-    const dkeys = ['north','east','south','west'];
-    const dlabels = { north:'North', east:'East', south:'South', west:'West' };
-    let grid = '<div class="ytd-district-wrap"><div class="ytd-district-grid">';
-    grid += '<div class="ytd-h">Category</div>';
-    dkeys.forEach(function(d){
-      grid += '<div class="ytd-h">' + escapeHTML(dlabels[d]) + '</div>';
-    });
-    jb.categories.forEach(function(cat){
-      const lab = formatCategoryLabel(cat.label || cat.id || '');
-      grid += '<div class="ytd-cat">' + escapeHTML(lab) + '</div>';
-      dkeys.forEach(function(d){
-        const row = cat.districts && cat.districts[d];
-        const v = row && row.ytd2026;
-        const n = Number.isFinite(v) ? Number(v) : 0;
-        const op = ytdOpacityForValue(n, mm.min, mm.max);
-        const bg = 'rgba(201,168,76,' + op.toFixed(3) + ')';
-        grid += '<div class="ytd-cell" style="background:' + bg + '">' + n.toLocaleString() + '</div>';
-      });
-    });
-    grid += '</div></div>';
-    const legend = '<div class="ytd-district-legend">Opacity = count (min ' + mm.min.toLocaleString() + ' → max ' + mm.max.toLocaleString() + ' over all district cells). Updates when data changes.</div>';
-    host.innerHTML = toolbar + grid + legend;
-    applyDistrictCrimeOpacityToMap();
-    return;
-  }
+  const byDist = computeDistrictTotalsForSelectionByPeriod(jb, crimeSel, periodScope);
+  const dshort = { north:'North', east:'East', south:'South', west:'West' };
+  const distBlock = buildDistrictRankBlock(crimeSel, jb, periodScope, byDist, dshort);
 
-  const cards = jb.categories.map(function(cat){
-    const cw = cat.citywide || {};
-    const cur = cw.ytd2026;
-    const pct = cw.pctVs2025;
-    const cls = professionalRowClass(pct);
-    const dir = pct === null || pct === undefined || !Number.isFinite(Number(pct))
-      ? 'flat'
-      : Number(pct) < 0 ? 'down' : Number(pct) > 0 ? 'up' : 'flat';
-    const pctText = pct === null || pct === undefined || !Number.isFinite(Number(pct))
-      ? '—'
-      : (Number(pct) > 0 ? '+' : '') + Number(pct).toFixed(1) + '%';
-    const label = formatCategoryLabel(cat.label || cat.id || '');
-    return '<div class="right-stat-card">'
-      + '<div class="right-stat-head">'
-      + '<div class="right-stat-name">' + escapeHTML(label) + '</div>'
-      + '<div class="right-stat-value">' + (Number.isFinite(cur) ? Number(cur).toLocaleString() : '—') + '</div>'
-      + '</div>'
-      + '<div class="right-stat-change ' + cls + '">' + dir + ' ' + escapeHTML(pctText) + ' vs 2025</div>'
-      + '</div>';
-  }).join('');
-  host.innerHTML = toolbar + cards;
-  applyDistrictCrimeOpacityToMap();
+  const mainCard = '<div class="right-stat-card">'
+    + '<div class="right-stat-head">'
+    + '<div class="right-stat-name">' + escapeHTML(lab) + '</div>'
+    + (snap ? '' : '<div class="right-stat-value">' + (Number.isFinite(cur) ? Number(cur).toLocaleString() : '—') + '</div>')
+    + '</div>'
+    + tableHtml
+    + yoyLine
+    + '</div>';
+  host.innerHTML = mainCard + distBlock;
 }
 
 function renderDistrictBottomCharts(selectedDistrict){
   if(typeof Chart === 'undefined') return;
+  const bottomBarEl = document.getElementById('district-bottom-bar');
+  if(bottomBarEl && bottomBarEl.classList.contains('is-collapsed')) return;
   const keys = ['north','east','south','west'];
   const labels = ['Assault','Robbery','Burglary','Theft','Auto Theft','Arrests','Guns'];
   const valueFor = (id)=> {
@@ -3810,6 +4634,93 @@ if(document.readyState === 'loading'){
   scheduleDistrictBreakdownCharts();
 }
 
+function scheduleMapResizeAfterStripToggle(){
+  (function scheduleMapResize(){
+    function tryResize(){
+      try{
+        if(typeof map !== 'undefined' && map && typeof map.resize === 'function') map.resize();
+      }catch(e){}
+    }
+    tryResize();
+    requestAnimationFrame(function(){
+      requestAnimationFrame(tryResize);
+    });
+    setTimeout(tryResize, 220);
+    setTimeout(tryResize, 400);
+  })();
+}
+
+/** Right column: visible only when a crime category (not All) is selected. */
+function updateCompstatStripVisibility(crimeSel){
+  const mainStage = document.getElementById('main-stage');
+  const strip = document.getElementById('compstat-strip');
+  if(!mainStage) return;
+  const hide = !crimeSel || crimeSel === 'all';
+  mainStage.classList.toggle('compstat-right-collapsed', hide);
+  if(strip) strip.setAttribute('aria-hidden', hide ? 'true' : 'false');
+  scheduleMapResizeAfterStripToggle();
+}
+
+/**
+ * Clicking the already-selected crime radio again clears to "All categories".
+ * Uses a pointer snapshot (not input.dataset) cleared on every `change` so repeat
+ * select→deselect cycles don't get stuck after keyboard/cancelled clicks or preventDefault quirks.
+ */
+function bindCrimeTypeRadioDeselectOnce(){
+  if(window.__crimeRadioDeselectBound) return;
+  const stack = document.getElementById('leftCrimeTypeRadios');
+  if(!stack) return;
+  window.__crimeRadioDeselectBound = true;
+  /** @type {{ value: string, wasChecked: boolean } | null} */
+  let crimePointerSnapshot = null;
+  function targetInput(e){
+    const lab = e.target.closest('label');
+    const fromLabel = lab && lab.querySelector('input[name="majorCrimeType"]');
+    const direct = e.target.closest('input[name="majorCrimeType"]');
+    return fromLabel || direct;
+  }
+  function recordPointerSnapshot(e){
+    if(e.type === 'mousedown' && e.button !== 0) return;
+    if(e.pointerType === 'mouse' && e.button !== 0) return;
+    const input = targetInput(e);
+    if(!input || input.name !== 'majorCrimeType') return;
+    if(input.value === 'all'){
+      crimePointerSnapshot = null;
+      return;
+    }
+    crimePointerSnapshot = { value: input.value, wasChecked: input.checked };
+  }
+  if(typeof window.PointerEvent !== 'undefined'){
+    stack.addEventListener('pointerdown', recordPointerSnapshot, true);
+  } else {
+    stack.addEventListener('mousedown', recordPointerSnapshot, true);
+  }
+  stack.addEventListener('change', function(){
+    crimePointerSnapshot = null;
+  });
+  stack.addEventListener('click', function(e){
+    const input = targetInput(e);
+    if(!input || input.name !== 'majorCrimeType'){
+      crimePointerSnapshot = null;
+      return;
+    }
+    if(input.value === 'all'){
+      crimePointerSnapshot = null;
+      return;
+    }
+    const snap = crimePointerSnapshot;
+    crimePointerSnapshot = null;
+    if(!snap || snap.value !== input.value) return;
+    if(!snap.wasChecked || !input.checked) return;
+    const allRadio = stack.querySelector('input[name="majorCrimeType"][value="all"]');
+    if(!allRadio) return;
+    allRadio.checked = true;
+    try{ allRadio.focus({ preventScroll: true }); }catch(err){ try{ allRadio.focus(); }catch(e2){} }
+    allRadio.dispatchEvent(new Event('input', { bubbles: true }));
+    allRadio.dispatchEvent(new Event('change', { bubbles: true }));
+  });
+}
+
 function bindProfessionalFilters(){
   if(window.__professionalLayoutBound) return;
   window.__professionalLayoutBound = true;
@@ -3828,25 +4739,23 @@ function bindProfessionalFilters(){
     });
   }
   if(periodSel){
+    if(periodSel.value === 'mty' || periodSel.value === 'ytd'){
+      rightPeriodScope = periodSel.value;
+    } else {
+      periodSel.value = rightPeriodScope;
+    }
     periodSel.addEventListener('change', ()=>{
+      const v = periodSel.value;
+      if(v === 'mty' || v === 'ytd') rightPeriodScope = v;
       if(typeof renderProfessionalRightCards === 'function') renderProfessionalRightCards();
+      scheduleStateSave();
     });
   }
   radios.forEach((r)=>{
     r.addEventListener('change', ()=>{
       const c = document.getElementById('crime-category-select');
       if(!c || !r.checked) return;
-      const map = {
-        all:'All',
-        homicide:'Homicides',
-        sex:'Sex Offenses (All)',
-        robbery:'Robbery Incidents',
-        aggassault:'Aggravated Assault',
-        burglary:'Burglary',
-        theft:'Theft',
-        mvt:'Motor Vehicle Theft'
-      };
-      c.value = map[r.value] || 'All';
+      c.value = CRIME_RADIO_TO_CHART_CATEGORY[r.value] || 'All';
       if(typeof initCrimeChart === 'function') initCrimeChart();
       if(typeof initDonutChart === 'function') initDonutChart();
       if(typeof renderProfessionalRightCards === 'function') renderProfessionalRightCards();
@@ -3882,6 +4791,15 @@ function bindProfessionalFilters(){
         setTimeout(tryResize, 220);
         setTimeout(tryResize, 400);
       })();
+      /* Zoom out a bit when breakdown is open so Jersey City stays in view with less map cropped. */
+      try{
+        if(typeof map !== 'undefined' && map && typeof map.easeTo === 'function'){
+          map.easeTo({
+            zoom: nowCollapsed ? MAP_ZOOM_DISTRICT_BREAKDOWN_CLOSED : MAP_ZOOM_DISTRICT_BREAKDOWN_OPEN,
+            duration: 450
+          });
+        }
+      }catch(e){}
       /* Re-run charts after expand so Chart.js gets correct canvas size */
       if(!nowCollapsed && typeof renderDistrictBottomCharts === 'function'){
         const ds = document.getElementById('leftDistrictSelect');
@@ -3893,6 +4811,19 @@ function bindProfessionalFilters(){
       }
     });
   }
+  const rightStripCloseBtn = document.getElementById('rightStripCloseBtn');
+  if(rightStripCloseBtn && !rightStripCloseBtn.__bound){
+    rightStripCloseBtn.__bound = true;
+    rightStripCloseBtn.addEventListener('click', function(){
+      const allRadio = document.querySelector('input[name="majorCrimeType"][value="all"]');
+      if(allRadio){
+        allRadio.checked = true;
+        allRadio.dispatchEvent(new Event('change', { bubbles: true }));
+      }
+      scheduleStateSave();
+    });
+  }
+  bindCrimeTypeRadioDeselectOnce();
 }
 
 function renderProfessionalLayoutPanels(){
@@ -4458,9 +5389,12 @@ function getDistrictFeatureAtLngLat(lng, lat) {
   }
   throw new Error(msg);
 })();
+/** Slightly zoomed out while District Crime Breakdown is open (more map visible above the chart strip). */
+const MAP_ZOOM_DISTRICT_BREAKDOWN_OPEN = 12.0;
+const MAP_ZOOM_DISTRICT_BREAKDOWN_CLOSED = 12.35;
 const map = new mapboxgl.Map({
   container:'map-canvas', style:'mapbox://styles/mapbox/standard',
-  center:[-74.0706,40.7178], zoom:12.7
+  center:[-74.0706,40.7178], zoom:MAP_ZOOM_DISTRICT_BREAKDOWN_CLOSED
 });
 map.addControl(new mapboxgl.NavigationControl(),'top-right');
 
@@ -4978,7 +5912,6 @@ function applySafetyViewToMap(){
   if(!mapHasLoaded) return;
   if(map.getLayer('wards-fill')) toggleLayer('wardBoundaries', showWardMap);
   if(map.getLayer('districts-fill')) toggleLayer('districts', !showWardMap);
-  if(typeof applyDistrictCrimeOpacityToMap === 'function') applyDistrictCrimeOpacityToMap();
 }
 
 function setSafetyScoreView(view){
@@ -5058,7 +5991,7 @@ map.on('load',()=>{
   // Ward polygons (on top)
   map.addSource('wards',{type:'geojson',data:wardsGeoJSON});
   map.addLayer({id:'wards-fill',type:'fill',source:'wards',
-    paint:{'fill-color':['match',['upcase',['get','ward']],'A','#1B9E77','B','#D95F02','C','#7570B3','D','#E7298A','E','#66A61E','F','#E6AB02','#64748B'],'fill-opacity':0.75,'fill-emissive-strength':1}});
+    paint:{'fill-color':['match',['upcase',['get','ward']],'A','#1B9E77','B','#D95F02','C','#7570B3','D','#E7298A','E','#66A61E','F','#E6AB02','#64748B'],'fill-opacity':0.5,'fill-emissive-strength':0.62}});
   map.addLayer({id:'wards-border',type:'line',source:'wards',
     paint:{'line-color':'#ffffff','line-width':1.5,'line-opacity':0.9,'line-emissive-strength':1}});
   map.addLayer({id:'ward-labels',type:'symbol',source:'wards',
@@ -5073,7 +6006,6 @@ map.on('load',()=>{
 
   applySafetyViewToMap();
   syncAllLayerToggles();
-  applyDistrictCrimeOpacityToMap();
 
   // Precinct markers
   precincts.forEach(p=>{
@@ -5387,6 +6319,8 @@ function encodeAppState(){
   if(yearSel && yearSel.value !== '2025') params.push('chartYear=' + yearSel.value);
   var catSel = document.getElementById('crime-category-select');
   if(catSel && catSel.value !== 'All') params.push('chartCat=' + encodeURIComponent(catSel.value));
+  if(rightPeriodScope && rightPeriodScope !== 'ytd') params.push('period=' + rightPeriodScope);
+  var mainStage = document.getElementById('main-stage');
   return params.length ? '#' + params.join('&') : '';
 }
 
@@ -5413,6 +6347,11 @@ function restoreAppState(){
   }
   if(s.scope){
     crimeCategoriesScope = s.scope;
+  }
+  if(s.period && (s.period === 'mty' || s.period === 'ytd')){
+    rightPeriodScope = s.period;
+    var leftPeriod = document.getElementById('leftPeriodSelect');
+    if(leftPeriod) leftPeriod.value = s.period;
   }
   if(s.chartYear){
     var yearSel = document.getElementById('crime-year-select');
@@ -5443,7 +6382,7 @@ document.addEventListener('click', function(e){
   if(e.target.closest('.compstat-tab-btn') || e.target.closest('.safety-view-btn')) scheduleStateSave();
 });
 document.addEventListener('change', function(e){
-  if(e.target.closest('.compstat-crime-scope-select') || e.target.id === 'crime-year-select' || e.target.id === 'crime-category-select') scheduleStateSave();
+  if(e.target.closest('.compstat-crime-scope-select') || e.target.id === 'crime-year-select' || e.target.id === 'crime-category-select' || e.target.id === 'leftPeriodSelect') scheduleStateSave();
 });
 
 /* ── #7 Export to PDF / print ── */
