@@ -804,19 +804,19 @@
 
     const METRIC_ROWS = [
       ['homicide', 'Homicide'],
-      ['robbery', 'Robbery Incidents'],
-      ['robberyVictims', 'Robbery Victims'],
+      ['robbery', 'Robbery'],
       ['robberyWithWeapon', 'Robbery w/ weapon'],
-      ['aggravatedAssault', 'Aggravated Assault Incidents'],
-      ['aggravatedAssaultVictims', 'Aggravated Assault Victims'],
-      ['burglary', 'Burglary Total'],
+      ['aggravatedAssault', 'Aggravated assault'],
+      ['assault', 'Assault (total)'],
+      ['burglary', 'Burglary (total)'],
       ['burglaryResidential', 'Burglary — residential'],
       ['burglaryCommercial', 'Burglary — commercial'],
-      ['burglaryAutoTheftFromAuto', 'Theft From Auto'],
+      ['burglaryAutoTheftFromAuto', 'Burglary — auto (theft from auto)'],
       ['theft', 'Theft'],
       ['theftOfAutoParts', 'Theft of auto parts'],
-      ['stolenVehicles', 'Motor Vehicle Theft'],
-      ['sexOffenses', 'Sexual Assault'],
+      ['stolenVehicles', 'Stolen vehicles'],
+      ['criminalMischief', 'Criminal mischief'],
+      ['sexOffenses', 'Sex offenses'],
       ['stabbings', 'Stabbings'],
       ['drugArrests', 'Drug arrests'],
       ['shoplifting', 'Shoplifting'],
@@ -825,7 +825,7 @@
     ];
 
     const MONTH_TABLE_KEYS = [
-      'aggravatedAssault', 'robbery', 'robberyWithWeapon', 'burglary', 'theft', 'theftOfAutoParts',
+      'assault', 'aggravatedAssault', 'robbery', 'robberyWithWeapon', 'burglary', 'theft', 'theftOfAutoParts',
       'stolenVehicles', 'stabbings', 'arrests', 'gunsRecovered'
     ];
 
@@ -910,12 +910,14 @@
 
     const DISTRICT_COMPSTAT_TOP_CRIME_ROWS = [
       ['homicide', 'Homicide'],
-      ['robbery', 'Robbery Incidents'],
-      ['aggravatedAssault', 'Aggravated Assault Incidents'],
+      ['robbery', 'Robbery'],
+      ['aggravatedAssault', 'Aggravated assault'],
+      ['assault', 'Assault'],
       ['burglary', 'Burglary'],
       ['theft', 'Theft'],
-      ['stolenVehicles', 'Motor Vehicle Theft'],
-      ['sexOffenses', 'Sexual Assault']
+      ['stolenVehicles', 'Stolen vehicles'],
+      ['criminalMischief', 'Criminal mischief'],
+      ['sexOffenses', 'Sex offenses']
     ];
 
     function districtCompstatBurden(sums){
@@ -923,6 +925,7 @@
         (Number(sums.homicide) || 0) * 50 +
         (Number(sums.robbery) || 0) * 4 +
         (Number(sums.aggravatedAssault) || 0) * 3 +
+        (Number(sums.assault) || 0) * 0.8 +
         (Number(sums.burglary) || 0) * 2 +
         (Number(sums.stolenVehicles) || 0) * 2 +
         (Number(sums.theft) || 0) * 0.4 +
@@ -933,6 +936,7 @@
 
     function districtCompstatIncidentTotal(sums){
       return (
+        (Number(sums.assault) || 0) +
         (Number(sums.aggravatedAssault) || 0) +
         (Number(sums.robbery) || 0) +
         (Number(sums.burglary) || 0) +
@@ -1337,7 +1341,7 @@
         : 'Weighted by ward incidents in this district.';
       const tableBody = METRIC_ROWS.map(([key, label])=>{
         const val = sums[key];
-        const display = val === undefined || val === null ? 'Data Pending' : formatNumber(val);
+        const display = val === undefined || val === null ? '—' : formatNumber(val);
         const signal = (key === 'homicide' || key === 'robbery' || key === 'aggravatedAssault') && Number(val) > 0;
         const cls = signal ? 'signal-row' : '';
         return `<tr class="${cls}"><td>${escapeHTML(label)}</td><td><span class="crime-count">${escapeHTML(display)}</span></td></tr>`;
@@ -1351,7 +1355,7 @@
       const monthBody = monthlyRows.map((mr)=>{
         const cells = MONTH_TABLE_KEYS.map((k)=>{
           const v = mr.stats[k];
-          const d = v === undefined || v === null ? 'Data Pending' : formatNumber(v);
+          const d = v === undefined || v === null ? '—' : formatNumber(v);
           return `<td><span class="crime-count">${d}</span></td>`;
         }).join('');
         return `<tr><td>${escapeHTML(mr.label)}</td>${cells}</tr>`;
