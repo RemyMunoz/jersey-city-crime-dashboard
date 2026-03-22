@@ -445,6 +445,37 @@
     font-family:'Space Mono',monospace;
     line-height:1.5;
   }
+  .impact-framework-section{
+    margin-top:10px;
+    border:1px solid var(--border);
+    border-radius:8px;
+    overflow:hidden;
+    background:#0b1220;
+  }
+  .impact-framework-head{
+    padding:8px 10px;
+    border-bottom:1px solid var(--border);
+    font-family:'DM Mono',monospace;
+    font-size:10px;
+    letter-spacing:.08em;
+    text-transform:uppercase;
+    color:var(--accent);
+  }
+  .impact-framework-row{
+    display:flex;
+    justify-content:space-between;
+    gap:8px;
+    padding:8px 10px;
+    border-bottom:1px solid rgba(255,255,255,0.04);
+    font-size:11px;
+  }
+  .impact-framework-row:last-child{ border-bottom:none; }
+  .impact-framework-val{
+    font-family:'Space Mono',monospace;
+    color:#d6e7f6;
+    white-space:nowrap;
+  }
+  .impact-framework-val.pending{ color:#8a99b4; }
   .compstat-block{ margin-top:12px; }
   .compstat-block:first-of-type{ margin-top:0; }
   .compstat-block-title{
@@ -2210,12 +2241,19 @@
         <div style="display:flex;align-items:center;gap:10px;margin-bottom:10px;">
           <label class="crime-categories-toolbar-label" for="sidebar-year-select" style="flex-shrink:0;">Year</label>
           <select id="sidebar-year-select" class="compstat-crime-scope-select" style="min-width:140px;" aria-label="Select year">
-            <option value="2026">2026 YTD</option>
-            <option value="2025" selected>2025</option>
-            <option value="2024">2024</option>
+            <option value="2026" selected>2026 YTD</option>
           </select>
         </div>
         <div id="sidebar-year-body"></div>
+      </div>
+    </details>
+  </div>
+
+  <div class="section section-collapsible">
+    <details class="collapse-panel" id="impactFrameworkPanel" open>
+      <summary>JC IMPACT Framework (10 Sections)</summary>
+      <div class="panel-content">
+        <div id="impact-framework-body"></div>
       </div>
     </details>
   </div>
@@ -2230,29 +2268,12 @@
       <summary>📊 Data Sources</summary>
       <div class="sources-list">
         <div class="source-card">
-          <div class="source-name">FBI Crime Data Explorer</div>
-          <a class="source-url" href="https://cde.ucr.cjis.gov" target="_blank" rel="noopener noreferrer">cde.ucr.cjis.gov</a>
-          <div class="source-desc">Federal verified crime data by city. Most recent: 2024 (released Sept 2025).</div>
+          <div class="source-name">JC IMPACT Weekly Jan Feb 2026 (Excel)</div>
+          <div class="source-desc">Primary source for section metrics and public dashboard values.</div>
         </div>
         <div class="source-card">
-          <div class="source-name">NJ State Police UCR</div>
-          <a class="source-url" href="https://www.njsp.gov/ucr" target="_blank" rel="noopener noreferrer">njsp.gov/ucr</a>
-          <div class="source-desc">Annual statewide report broken down by municipality. Gold standard for NJ comparisons.</div>
-        </div>
-        <div class="source-card">
-          <div class="source-name">JC Open Data Portal</div>
-          <a class="source-url" href="https://data.jerseycitynj.gov" target="_blank" rel="noopener noreferrer">data.jerseycitynj.gov</a>
-          <div class="source-desc">Official city datasets including JCPD calls-for-service and geographic boundaries.</div>
-        </div>
-        <div class="source-card">
-          <div class="source-name">JC Public Safety Office</div>
-          <a class="source-url" href="https://www.jerseycitynj.gov/cityhall/public_safety" target="_blank" rel="noopener noreferrer">jerseycitynj.gov/cityhall/public_safety</a>
-          <div class="source-desc">Year-end press releases with JCPD-reported stats. Updated annually in December.</div>
-        </div>
-        <div class="source-card">
-          <div class="source-name">2025 Crime Stats: JCPD Official Stats (NIBRS)</div>
-          <a class="source-url" href="https://cdnsm5-hosted.civiclive.com/UserFiles/Servers/Server_6189660/File/City%20Hall/Public%20Safety/UCR%20Crime%20Data%20Report/2025-JCPD-Crime-Stats.png" target="_blank" rel="noopener noreferrer">cdnsm5-hosted.civiclive.com/.../2025-JCPD-Crime-Stats.png</a>
-          <div class="source-desc">Official full-year 2025 JCPD crime statistics image published by Jersey City Public Safety (updated March 4, 2026).</div>
+          <div class="source-name">JC IMPACT Master Tracking Categories (DOCX)</div>
+          <div class="source-desc">Single source of truth for structure, naming, and grouping across all dashboard sections.</div>
         </div>
       </div>
     </details>
@@ -2265,7 +2286,7 @@
   </div>
   <p class="biq-disclaimer">Data from official government sources for informational purposes only. Not legal or financial advice. BlockIQ JC is not responsible for decisions made based on this information.</p>
 
-  <div class="data-note">Source: FBI UCR 2024 · jerseycitynj.gov<br>Hover wards &amp; precincts for details<br>Ward &amp; district list rows open detail pages (map still clickable when viewing districts)</div>
+  <div class="data-note">Source: JC IMPACT Weekly Excel + Master Tracking Categories<br>Hover wards &amp; precincts for details<br>Ward &amp; district list rows open detail pages (map still clickable when viewing districts)</div>
 </div>
 
 <div id="main-stage">
@@ -2384,19 +2405,17 @@
             <div class="compstat-block-title" style="margin-bottom:0;">Monthly Crime Trends</div>
             <div class="chart-select-row">
               <select id="crime-year-select" class="chart-select" aria-label="Crime trend year">
-                <option value="2024">2024</option>
-                <option value="2025" selected>2025</option>
-                <option value="2026">2026 (YTD)</option>
+                <option value="2026" selected>2026 (YTD)</option>
               </select>
               <select id="crime-category-select" class="chart-select" aria-label="Crime category">
                 <option value="All" selected>All (combined)</option>
                 <option value="Theft">Theft</option>
-                <option value="Stolen Vehicles">Stolen Vehicles</option>
-                <option value="Robbery">Robbery</option>
+                <option value="Motor Vehicle Theft">Motor Vehicle Theft</option>
+                <option value="Robbery Incidents">Robbery Incidents</option>
                 <option value="Aggravated Assault">Aggravated Assault</option>
-                <option value="Criminal Mischief">Criminal Mischief</option>
                 <option value="Burglary">Burglary</option>
                 <option value="Homicides">Homicides</option>
+                <option value="Sexual Assault">Sexual Assault</option>
                 <option value="Shooting Incidents">Shooting Incidents</option>
                 <option value="Shooting Victims">Shooting Victims</option>
               </select>
@@ -2421,7 +2440,7 @@
 mapboxgl.accessToken = 'pk.eyJ1IjoiY2xhd3JlbXkiLCJhIjoiY21sdzFlMTU0MGRxaDNlb252N3U1aWp5MyJ9.gJ3BZ2twJBzvlIDlW_sA7Q';
 
 const wardData = {
-  'A':{ description:'Greenville',                   incidents:312, level:'High',        topCrime:'Assault',   color:'#e63946', dot:'#e63946', safetyScore:45 },
+  'A':{ description:'Greenville',                   incidents:312, level:'High',        topCrime:'Aggravated Assault',   color:'#e63946', dot:'#e63946', safetyScore:45 },
   'B':{ description:'West Side',                    incidents:245, level:'High',        topCrime:'Robbery',   color:'#c1121f', dot:'#c1121f', safetyScore:57 },
   'C':{ description:'Journal Square',               incidents:198, level:'Medium-High', topCrime:'Larceny',   color:'#e9c46a', dot:'#e9c46a', safetyScore:65 },
   'D':{ description:'The Heights',                  incidents:176, level:'Medium',      topCrime:'Burglary',  color:'#f4a261', dot:'#f4a261', safetyScore:69 },
@@ -2438,39 +2457,7 @@ const districtWardGroups = [
 
 const CRIME_TREND_MONTH_SHORT = ['Jan', 'Feb', 'Mar', 'Apr', 'May', 'Jun', 'Jul', 'Aug', 'Sep', 'Oct', 'Nov', 'Dec'];
 
-/** 2024 JC annuals from dashboard FBI UCR / jerseycitynj.gov table; months apportioned with 2025 JCPD seasonality. Robbery, burglary, criminal mischief: 98% of 2025 NIBRS annual as proxy (2024 line totals not listed). */
-const crimeStats2024 = {
-  source: '2024: FBI UCR / jerseycitynj.gov annuals (sidebar). Monthly pattern follows 2025 JCPD seasonality. Robbery, burglary, criminal mischief use 98% of 2025 annual as JC proxy.',
-  months: CRIME_TREND_MONTH_SHORT,
-  categories: {
-    'Homicides': [3, 0, 0, 1, 0, 1, 1, 0, 1, 0, 0, 0],
-    'Shooting Incidents': [2, 2, 2, 3, 6, 4, 1, 2, 3, 2, 0, 2],
-    'Shooting Victims': [2, 2, 2, 5, 7, 7, 1, 2, 4, 2, 0, 2],
-    'Robbery': [46, 34, 18, 36, 30, 30, 36, 26, 32, 32, 33, 27],
-    'Aggravated Assault': [85, 67, 104, 89, 75, 98, 83, 67, 97, 90, 69, 62],
-    'Criminal Mischief': [170, 129, 242, 194, 168, 199, 198, 198, 174, 170, 119, 128],
-    'Burglary': [68, 25, 37, 43, 47, 31, 30, 45, 41, 35, 27, 24],
-    'Theft': [336, 256, 361, 377, 395, 350, 340, 343, 327, 397, 343, 300],
-    'Stolen Vehicles': [57, 63, 56, 65, 67, 79, 81, 74, 77, 63, 72, 52]
-  }
-};
-
-const crimeStats2025 = {
-  source: "JCPD Official Stats (NIBRS Data, subject to revision pending investigation)",
-  coverage: "January - December 2025",
-  months: CRIME_TREND_MONTH_SHORT,
-  categories: {
-    "Shooting Incidents": [2, 3, 2, 4, 8, 5, 1, 2, 4, 2, 0, 3],
-    "Shooting Victims":   [3, 3, 3, 6, 8, 9, 1, 2, 5, 2, 0, 3],
-    "Homicides":          [5, 0, 0, 2, 0, 1, 1, 0, 1, 1, 0, 1],
-    "Robbery":            [47, 35, 18, 37, 31, 30, 37, 26, 33, 33, 34, 27],
-    "Aggravated Assault": [82, 65, 101, 86, 73, 95, 81, 65, 94, 87, 67, 60],
-    "Criminal Mischief":  [173, 132, 247, 198, 171, 203, 202, 202, 178, 174, 121, 131],
-    "Burglary":           [69, 25, 38, 44, 48, 32, 31, 46, 42, 36, 27, 24],
-    "Theft":              [329, 250, 353, 369, 387, 342, 333, 336, 320, 388, 336, 294],
-    "Stolen Vehicles":    [60, 66, 58, 68, 70, 83, 85, 77, 81, 66, 75, 54]
-  }
-};
+/* Crime trend charts are fed by CompStat monthly rows from data.json (Excel-backed). */
 
 const COMPSTAT_PERIODS = [
   { key:'wtd', label:'WTD' },
@@ -2484,13 +2471,14 @@ const COMPSTAT_SECTION_ORDER = {
     'Shooting Incidents',
     'Shooting Victims',
     'Robbery Incidents',
+    'Robbery Victims',
     'Aggravated Assault Incidents',
+    'Aggravated Assault Victims',
     'Burglary',
     'Theft From Auto',
     'Theft',
     'Motor Vehicle Theft',
-    'Criminal Mischief',
-    'Sex Offenses',
+    'Sexual Assault',
     'Shots Fired'
   ],
   firearmsAndArrests: [
@@ -2501,6 +2489,29 @@ const COMPSTAT_SECTION_ORDER = {
     'Total arrests (citywide)'
   ]
 };
+
+const COMPSTAT_DISPLAY_LABELS = {
+  'Homicides': 'Homicide',
+  'Sex Offenses': 'Sexual Assault',
+  'Stolen Vehicles': 'Motor Vehicle Theft'
+};
+
+const COMPSTAT_ROW_ALIASES = {
+  'Sexual Assault': ['Sexual Assault', 'Sex Offenses']
+};
+
+function normalizeImpactLabel(label){
+  const raw = String(label || '').trim();
+  if(!raw) return raw;
+  if(raw === 'Criminal Mischief') return '';
+  if(raw === 'Homicides') return 'Homicide';
+  if(raw === 'Sex Offenses' || raw === 'Sex Offense' || raw === 'Rape / Sex Offenses') return 'Sexual Assault';
+  if(raw === 'Stolen Vehicles' || raw === 'Stolen Auto' || raw === 'Auto theft') return 'Motor Vehicle Theft';
+  if(raw === 'Assault Total' || raw === 'Assault (total)' || raw === 'Agg Assault') return 'Aggravated Assault Incidents';
+  if(raw === 'Robbery' || raw === 'Robbery Total' || raw === 'Robbery (total)') return 'Robbery Incidents';
+  if(raw === 'Burglary — auto (theft from auto)' || raw === 'Auto (Theft F/A)' || raw === 'B&T Auto' || raw === 'Burg Auto') return 'Theft From Auto';
+  return raw;
+}
 
 const EMPTY_COMPSTAT_DATA = {
   meta: {
@@ -2514,23 +2525,23 @@ const EMPTY_COMPSTAT_DATA = {
 /** Citywide monthly metrics — keys must match data.json citywide.byMonth[]. */
 const CITYWIDE_CRIME_ROWS = [
   { key: 'homicide', label: 'Homicide' },
-  { key: 'rapeSexOffenses', label: 'Rape / Sex Offenses' },
-  { key: 'robberyTotal', label: 'Robbery (total)' },
+  { key: 'rapeSexOffenses', label: 'Sexual Assault' },
+  { key: 'robberyTotal', label: 'Robbery Incidents' },
+  { key: 'robberyVictims', label: 'Robbery Victims' },
   { key: 'robberyWithWeapon', label: 'Robbery w/ weapon' },
-  { key: 'aggravatedAssault', label: 'Aggravated assault' },
-  { key: 'assaultTotal', label: 'Assault (total)' },
-  { key: 'burglaryTotal', label: 'Burglary (total)' },
+  { key: 'aggravatedAssault', label: 'Aggravated Assault Incidents' },
+  { key: 'aggravatedAssaultVictims', label: 'Aggravated Assault Victims' },
+  { key: 'burglaryTotal', label: 'Burglary Total' },
   { key: 'residentialBurglary', label: 'Residential burglary' },
   { key: 'commercialBurglary', label: 'Commercial burglary' },
-  { key: 'theftFromAuto', label: 'Theft from auto' },
+  { key: 'theftFromAuto', label: 'Theft From Auto' },
   { key: 'theft', label: 'Theft' },
   { key: 'theftOfAutoParts', label: 'Theft of auto parts' },
-  { key: 'autoTheft', label: 'Auto theft' },
+  { key: 'autoTheft', label: 'Motor Vehicle Theft' },
   { key: 'shootingIncidents', label: 'Shooting incidents' },
   { key: 'shootingVictims', label: 'Shooting victims' },
   { key: 'shotsFired', label: 'Shots fired' },
   { key: 'stabbings', label: 'Stabbings' },
-  { key: 'criminalMischief', label: 'Criminal mischief' },
   { key: 'drugArrests', label: 'Drug arrests' },
   { key: 'shoplifting', label: 'Shoplifting' },
   { key: 'biasIncidents', label: 'Bias incidents' },
@@ -2546,19 +2557,19 @@ const CITYWIDE_CRIME_ROWS = [
 /** Keys present on districts.byMonth[*].north|east|south|west — aligned labels for crime categories UI. */
 const DISTRICT_CRIME_CATEGORY_ROWS = [
   { key: 'homicide', label: 'Homicide' },
-  { key: 'robbery', label: 'Robbery' },
+  { key: 'robbery', label: 'Robbery Incidents' },
+  { key: 'robberyVictims', label: 'Robbery Victims' },
   { key: 'robberyWithWeapon', label: 'Robbery w/ weapon' },
-  { key: 'aggravatedAssault', label: 'Aggravated assault' },
-  { key: 'assault', label: 'Assault (total)' },
-  { key: 'burglary', label: 'Burglary (total)' },
+  { key: 'aggravatedAssault', label: 'Aggravated Assault Incidents' },
+  { key: 'aggravatedAssaultVictims', label: 'Aggravated Assault Victims' },
+  { key: 'burglary', label: 'Burglary Total' },
   { key: 'burglaryResidential', label: 'Burglary — residential' },
   { key: 'burglaryCommercial', label: 'Burglary — commercial' },
-  { key: 'burglaryAutoTheftFromAuto', label: 'Burglary — auto (theft from auto)' },
+  { key: 'burglaryAutoTheftFromAuto', label: 'Theft From Auto' },
   { key: 'theft', label: 'Theft' },
   { key: 'theftOfAutoParts', label: 'Theft of auto parts' },
-  { key: 'stolenVehicles', label: 'Motor vehicle theft' },
-  { key: 'criminalMischief', label: 'Criminal mischief' },
-  { key: 'sexOffenses', label: 'Sex offenses' },
+  { key: 'stolenVehicles', label: 'Motor Vehicle Theft' },
+  { key: 'sexOffenses', label: 'Sexual Assault' },
   { key: 'stabbings', label: 'Stabbings' },
   { key: 'drugArrests', label: 'Drug arrests' },
   { key: 'shoplifting', label: 'Shoplifting' },
@@ -2801,10 +2812,10 @@ document.addEventListener('click', function(e){
 
 const CRIME_CHART_CATEGORY_TO_CITYWIDE = {
   'Theft': 'theft',
-  'Stolen Vehicles': 'autoTheft',
-  'Robbery': 'robberyTotal',
+  'Motor Vehicle Theft': 'autoTheft',
+  'Robbery Incidents': 'robberyTotal',
   'Aggravated Assault': 'aggravatedAssault',
-  'Criminal Mischief': 'criminalMischief',
+  'Sexual Assault': 'rapeSexOffenses',
   'Burglary': 'burglaryTotal',
   'Homicides': 'homicide',
   'Shooting Incidents': 'shootingIncidents',
@@ -2878,24 +2889,6 @@ function buildCrimeTrendBundleFromCitywide(byMonth, year){
 
 function resolveCrimeTrendBundle(year, dashboardData){
   const y = Number(year);
-  if(y === 2024){
-    return {
-      labels: crimeStats2024.months,
-      categories: enrichCrimeTrendBundleCategories(crimeStats2024.categories),
-      source: crimeStats2024.source,
-      isPartial: false,
-      isEmpty: false
-    };
-  }
-  if(y === 2025){
-    return {
-      labels: crimeStats2025.months,
-      categories: enrichCrimeTrendBundleCategories(crimeStats2025.categories),
-      source: crimeStats2025.source + ' · Jan–Dec 2025',
-      isPartial: false,
-      isEmpty: false
-    };
-  }
   const data = dashboardData !== undefined && dashboardData !== null
     ? dashboardData
     : (typeof window !== 'undefined' ? __dashboardRawData : null);
@@ -3311,7 +3304,9 @@ function buildKeyTrendsTableMarkup(mobile, data){
   const nameClass = mobile ? 'sheet-compstat-name' : 'compstat-name';
   const numClass = mobile ? 'citywide-metric-num' : 'citywide-metric-num';
   const body = rows.map((r)=>{
-    const metric = escapeHTML(r.metric || '—');
+    const displayMetric = normalizeImpactLabel(r.metric || '—');
+    if(!displayMetric) return '';
+    const metric = escapeHTML(displayMetric);
     const y26 = parseCompstatValue(r.y2026);
     const y25 = parseCompstatValue(r.y2025);
     const a = y26 === null ? '—' : y26.toLocaleString();
@@ -3348,9 +3343,9 @@ function getCompstatCellState(periodData){
 
   if(isEmpty){
     return {
-      currentText: '—',
-      compareText: 'Awaiting data',
-      changeText: '• n/a',
+      currentText: 'Data Pending',
+      compareText: 'Data Pending',
+      changeText: '• pending',
       changeClass: 'neutral',
       isEmpty: true
     };
@@ -3436,7 +3431,14 @@ function buildCompstatTableMarkup(sectionKey, mobile, data){
   const labelClass = mobile ? 'sheet-compstat-name' : 'compstat-name';
 
   const rows = order.map((label) => {
-    const row = sectionData[label] || {};
+    const aliasList = COMPSTAT_ROW_ALIASES[label] || [label];
+    let row = {};
+    for(const alias of aliasList){
+      if(sectionData[alias] && typeof sectionData[alias] === 'object'){
+        row = sectionData[alias];
+        break;
+      }
+    }
     const cells = COMPSTAT_PERIODS.map((period) => {
       const state = getCompstatCellState(row[period.key]);
       return `
@@ -3450,7 +3452,8 @@ function buildCompstatTableMarkup(sectionKey, mobile, data){
       `;
     }).join('');
 
-    return `<tr><td class="${labelClass}">${escapeHTML(label)}</td>${cells}</tr>`;
+    const displayLabel = COMPSTAT_DISPLAY_LABELS[label] || label;
+    return `<tr><td class="${labelClass}">${escapeHTML(displayLabel)}</td>${cells}</tr>`;
   }).join('');
 
   return `
@@ -3521,7 +3524,10 @@ function getWeeklyImpactMonthEntry(data, year, month){
 
 function weeklyRowsForScope(monthEntry, scopeId){
   if(!monthEntry || !monthEntry.scopes || !monthEntry.scopes[scopeId]) return [];
-  return monthEntry.scopes[scopeId].rows || [];
+  const rows = monthEntry.scopes[scopeId].rows || [];
+  return rows
+    .map((r)=> ({ ...r, label: normalizeImpactLabel(r.label || r.k) }))
+    .filter((r)=> String(r.label || '').trim() !== '');
 }
 
 function computeWeeklyBarSeries(monthEntry, scopeId, metricKey, weeklyImpactRoot){
@@ -3533,7 +3539,7 @@ function computeWeeklyBarSeries(monthEntry, scopeId, metricKey, weeklyImpactRoot
     return { labels: [], values: [], datasetLabel: '—' };
   }
   if(metricKey === '__mix__'){
-    const keys = (weeklyImpactRoot && weeklyImpactRoot.mixKeys) || [];
+    const keys = ((weeklyImpactRoot && weeklyImpactRoot.mixKeys) || []).filter((k)=> k !== 'criminalMischief');
     const vals = new Array(n).fill(0);
     keys.forEach((k)=>{
       const r = byK[k];
@@ -3545,7 +3551,7 @@ function computeWeeklyBarSeries(monthEntry, scopeId, metricKey, weeklyImpactRoot
     return {
       labels: wl,
       values: vals,
-      datasetLabel: (weeklyImpactRoot && weeklyImpactRoot.mixLabel) || '8-category mix'
+      datasetLabel: 'Impact category mix'
     };
   }
   const r = byK[metricKey];
@@ -3555,7 +3561,7 @@ function computeWeeklyBarSeries(monthEntry, scopeId, metricKey, weeklyImpactRoot
   return {
     labels: wl,
     values: r.weeks.map((v)=> Number(v) || 0),
-    datasetLabel: r.label || metricKey
+    datasetLabel: normalizeImpactLabel(r.label || metricKey)
   };
 }
 
@@ -3723,95 +3729,164 @@ function repopulateWeeklyMetricSelect(data){
   });
 }
 
+function impactValueText(value){
+  if(value === null || value === undefined || value === '' || !Number.isFinite(Number(value))) return 'Data Pending';
+  return Number(value).toLocaleString();
+}
+
+function impactSumCitywide(data, key){
+  const months = data && data.citywide && Array.isArray(data.citywide.byMonth) ? data.citywide.byMonth : [];
+  if(!months.length) return null;
+  let total = 0;
+  let saw = false;
+  months.forEach((m)=>{
+    const n = Number(m && m[key]);
+    if(Number.isFinite(n)){
+      total += n;
+      saw = true;
+    }
+  });
+  return saw ? total : null;
+}
+
+function renderImpactFrameworkSections(data){
+  const host = document.getElementById('impact-framework-body');
+  if(!host) return;
+  const crime = data && data.crime ? data.crime : {};
+  const firearms = data && data.firearmsAndArrests ? data.firearmsAndArrests : {};
+  const crimeYtd = (label)=> {
+    const row = crime[label];
+    return row && row.ytd ? row.ytd.current : null;
+  };
+  const sections = [
+    {
+      title: '1. 7 Major Impact Crime Categories',
+      metrics: [
+        ['Homicide', crimeYtd('Homicides')],
+        ['Sexual Assault', crimeYtd('Sex Offenses')],
+        ['Robbery Incidents', crimeYtd('Robbery Incidents')],
+        ['Robbery Victims', null],
+        ['Aggravated Assault Incidents', crimeYtd('Aggravated Assault Incidents')],
+        ['Aggravated Assault Victims', null],
+        ['Burglary Total', crimeYtd('Burglary')],
+        ['Theft', crimeYtd('Theft')],
+        ['Motor Vehicle Theft', crimeYtd('Motor Vehicle Theft')]
+      ]
+    },
+    {
+      title: '2. Supplemental Crime Stats',
+      metrics: [
+        ['Theft From Auto', crimeYtd('Theft From Auto')],
+        ['Theft of Auto Parts', impactSumCitywide(data, 'theftOfAutoParts')],
+        ['Shots Fired Incidents', crimeYtd('Shots Fired')],
+        ['Hits (Persons Struck)', impactSumCitywide(data, 'shootingVictims')],
+        ['Shots Fired Arrests', null],
+        ['Shooting Incidents', crimeYtd('Shooting Incidents')],
+        ['Shooting Victims', crimeYtd('Shooting Victims')],
+        ['Stabbings', impactSumCitywide(data, 'stabbings')],
+        ['Bias Incidents', impactSumCitywide(data, 'biasIncidents')],
+        ['Drug Arrests', impactSumCitywide(data, 'drugArrests')],
+        ['Shoplifting', impactSumCitywide(data, 'shoplifting')],
+        ['Domestic Violence Incidents', null],
+        ['DV Arrests', null],
+        ['Restraining Orders Served', null]
+      ]
+    },
+    {
+      title: '3. Arrests & Gun Offenses Unit',
+      metrics: [
+        ['Total Arrests', impactSumCitywide(data, 'totalArrests')],
+        ['Guns Recovered', firearms['Guns Recovered']?.ytd?.current ?? impactSumCitywide(data, 'gunsRecovered')],
+        ['GOU Arrests', null],
+        ['Illegal Gun Trafficking Cases', null]
+      ]
+    },
+    { title: '4. Traffic & Vision Zero', metrics: [['MVA Total', null], ['Pedestrians Struck', null]] },
+    {
+      title: '5. Missing Persons',
+      metrics: [
+        ['Missing Persons — Adult', impactSumCitywide(data, 'missingPersonsAdult')],
+        ['Recovered — Adult', null],
+        ['Missing Persons — Juvenile', impactSumCitywide(data, 'missingPersonsJuvenile')],
+        ['Recovered — Juvenile', null]
+      ]
+    },
+    {
+      title: '6. Communications / 911',
+      metrics: [['911 Calls — Total received', null], ['Dropped Calls', null], ['Average Response Time — Priority 1', null], ['Average Response Time — Priority 2', null]]
+    },
+    {
+      title: '7. Internal Affairs',
+      metrics: [['IA Complaints — Total filed', null], ['IA Sustained', null], ['IA Not Sustained', null], ['IA Pending', null]]
+    },
+    {
+      title: '8. Workforce & Wellness',
+      metrics: [['Sick Leave Days', null], ['Overtime Hours', null], ['Officer Accolades', null]]
+    },
+    {
+      title: '9. External Coordination',
+      metrics: [["Essex County Prosecutor's Office Referrals", null], ['Open Warrant Count', null], ['Wanted Persons', null]]
+    },
+    {
+      title: '10. Community Engagement',
+      metrics: [['Community Engagements', null], ['Citizen Complaints', null]]
+    }
+  ];
+  host.innerHTML = sections.map((section)=>{
+    const rows = section.metrics.map((m)=>{
+      const val = impactValueText(m[1]);
+      const cls = val === 'Data Pending' ? 'impact-framework-val pending' : 'impact-framework-val';
+      return '<div class="impact-framework-row"><span>' + escapeHTML(m[0]) + '</span><span class="' + cls + '">' + escapeHTML(val) + '</span></div>';
+    }).join('');
+    return '<div class="impact-framework-section"><div class="impact-framework-head">' + escapeHTML(section.title) + '</div>' + rows + '</div>';
+  }).join('');
+}
+
 function renderSidebarYearBody(year){
   var el = document.getElementById('sidebar-year-body');
   if(!el) return;
-  var rows;
-  if(String(year) === '2026'){
-    rows = [
-      ['Homicides', '0', 'pct-down', '\u2212100.0%'],
-      ['Shooting Incidents', '4', 'pct-down', '\u221288.9%'],
-      ['Shooting Victims', '4', 'pct-down', '\u221291.1%'],
-      ['Robbery', '44', 'pct-down', '\u221288.7%'],
-      ['Aggravated Assault', '152', 'pct-down', '\u221284.1%'],
-      ['Criminal Mischief', '172', 'pct-down', '\u221291.9%'],
-      ['Burglary', '122', 'pct-down', '\u221273.6%'],
-      ['Theft', '407', 'pct-down', '\u221289.9%'],
-      ['Stolen Vehicles', '104', 'pct-down', '\u221287.7%'],
-      ['Firearms Recovered', '18', '', '']
-    ];
-    var trs = rows.map(function(r){
-      var pct = r[3] ? ' <span class="proj-val-pct ' + escapeHTML(r[2]) + '">' + escapeHTML(r[3]) + '</span>' : '';
-      return '<tr><td>' + escapeHTML(r[0]) + '</td><td class="proj-val">' + escapeHTML(r[1]) + pct + '</td></tr>';
-    }).join('');
-    el.textContent = '';
-    var wrap = document.createElement('div');
-    wrap.className = 'summary-table-wrap';
-    var tbl = document.createElement('table');
-    tbl.className = 'summary-table';
-    tbl.innerHTML = '<thead><tr><th>Offense</th><th>2026 YTD</th></tr></thead><tbody>' + trs + '</tbody>';
-    wrap.appendChild(tbl);
-    el.appendChild(wrap);
-    var foot = document.createElement('div');
-    foot.className = 'summary-foot';
-    foot.textContent = 'Source: JCPD CompStat through Feb 2026. % vs 2025 full year (partial-vs-annual, not same-period YoY).';
-    el.appendChild(foot);
-  } else if(String(year) === '2025'){
-    rows = [
-      ['Homicides', '12'],
-      ['Shooting Incidents', '36'],
-      ['Shooting Victims', '45'],
-      ['Robbery', '388'],
-      ['Aggravated Assault', '956'],
-      ['Criminal Mischief', '2,132'],
-      ['Burglary', '462'],
-      ['Theft', '4,037'],
-      ['Stolen Vehicles', '843']
-    ];
-    var trs2 = rows.map(function(r){
-      return '<tr><td>' + escapeHTML(r[0]) + '</td><td class="ytd-val">' + escapeHTML(r[1]) + '</td></tr>';
-    }).join('');
-    el.textContent = '';
-    var wrap2 = document.createElement('div');
-    wrap2.className = 'summary-table-wrap';
-    var tbl2 = document.createElement('table');
-    tbl2.className = 'summary-table';
-    tbl2.innerHTML = '<thead><tr><th>Offense</th><th>2025 Total</th></tr></thead><tbody>' + trs2 + '</tbody>';
-    wrap2.appendChild(tbl2);
-    el.appendChild(wrap2);
-    var badge = document.createElement('div');
-    badge.className = 'freshness-badge';
-    badge.textContent = 'NIBRS \u00B7 Jan\u2013Dec 2025 \u00B7 Updated March 4, 2026';
-    el.appendChild(badge);
-  } else {
-    el.textContent = '';
-    var note = document.createElement('div');
-    note.className = 'nibrs-note';
-    note.innerHTML = '\u26A0\uFE0F <strong>Data Note:</strong> JCPD switched to NIBRS in Jan 2024. Pre-2024 comparisons may reflect methodology changes.';
-    el.appendChild(note);
-    rows = [
-      ['Violent Crime (total)', '609', 'down', '\u2193 47.8%'],
-      ['Property Crime (total)', '3,825', 'down', '\u2193 2.9%'],
-      ['Aggravated Assault', '986', 'up', '\u2191 25%'],
-      ['Total Thefts', '4,125', 'up', '\u2191 41%'],
-      ['Auto Theft', '806', 'up', '\u2191 28%'],
-      ['Illegal Guns Recovered', '214', 'neutral', '\u2014']
-    ];
-    var trs3 = rows.map(function(r){
-      return '<tr><td>' + escapeHTML(r[0]) + '</td><td class="crime-metric">' + escapeHTML(r[1]) + ' <span class="' + escapeHTML(r[2]) + '">' + escapeHTML(r[3]) + '</span></td></tr>';
-    }).join('');
-    var wrap3 = document.createElement('div');
-    wrap3.className = 'crime-table-wrap';
-    var tbl3 = document.createElement('table');
-    tbl3.className = 'crime-table';
-    tbl3.innerHTML = '<thead><tr><th>Crime Type</th><th style="text-align:right;">Count + Trend</th></tr></thead><tbody>' + trs3 + '</tbody>';
-    wrap3.appendChild(tbl3);
-    el.appendChild(wrap3);
-    var src = document.createElement('div');
-    src.className = 'crime-source';
-    src.textContent = 'Source: FBI UCR 2024 / jerseycitynj.gov. Homicides (7) and shootings (29) = historic lows.';
-    el.appendChild(src);
-  }
+  var data = __dashboardRawData || {};
+  var crime = data.crime || {};
+  var firearms = data.firearmsAndArrests || {};
+  var labels = [
+    ['Homicide', 'Homicides'],
+    ['Shooting Incidents', 'Shooting Incidents'],
+    ['Shooting Victims', 'Shooting Victims'],
+    ['Robbery Incidents', 'Robbery Incidents'],
+    ['Robbery Victims', 'Robbery Victims'],
+    ['Aggravated Assault Incidents', 'Aggravated Assault Incidents'],
+    ['Aggravated Assault Victims', 'Aggravated Assault Victims'],
+    ['Burglary Total', 'Burglary'],
+    ['Theft From Auto', 'Theft From Auto'],
+    ['Theft', 'Theft'],
+    ['Motor Vehicle Theft', 'Motor Vehicle Theft'],
+    ['Sexual Assault', 'Sex Offenses']
+  ];
+  var rows = labels.map(function(item){
+    var display = item[0];
+    var key = item[1];
+    var row = crime[key] || {};
+    var val = row && row.ytd ? row.ytd.current : null;
+    var txt = (val === null || val === undefined || !Number.isFinite(Number(val))) ? 'Data Pending' : Number(val).toLocaleString();
+    return [display, txt];
+  });
+  var gunVal = firearms['Guns Recovered'] && firearms['Guns Recovered'].ytd ? firearms['Guns Recovered'].ytd.current : null;
+  rows.push(['Guns Recovered', (gunVal === null || gunVal === undefined || !Number.isFinite(Number(gunVal))) ? 'Data Pending' : Number(gunVal).toLocaleString()]);
+  var trs = rows.map(function(r){
+    return '<tr><td>' + escapeHTML(r[0]) + '</td><td class="proj-val">' + escapeHTML(r[1]) + '</td></tr>';
+  }).join('');
+  el.textContent = '';
+  var wrap = document.createElement('div');
+  wrap.className = 'summary-table-wrap';
+  var tbl = document.createElement('table');
+  tbl.className = 'summary-table';
+  tbl.innerHTML = '<thead><tr><th>Metric</th><th>2026 YTD</th></tr></thead><tbody>' + trs + '</tbody>';
+  wrap.appendChild(tbl);
+  el.appendChild(wrap);
+  var foot = document.createElement('div');
+  foot.className = 'summary-foot';
+  foot.textContent = 'Source: JC IMPACT workbook values loaded via data.json. Missing values display as Data Pending.';
+  el.appendChild(foot);
 }
 
 (function(){
@@ -3858,6 +3933,7 @@ async function loadCompstatData(){
   __dashboardRawData = null;
   districtIncidentYearLabel = null;
   renderCompstatSections(EMPTY_COMPSTAT_DATA);
+  renderImpactFrameworkSections(EMPTY_COMPSTAT_DATA);
   try {
     const dataUrl = new URL('data.json', window.location.href).href;
     const response = await fetch(dataUrl, { cache: 'no-store' });
@@ -3866,6 +3942,8 @@ async function loadCompstatData(){
     window.__dashboardDataLoadError = '';
     __dashboardRawData = data;
     renderCompstatSections(data);
+    renderImpactFrameworkSections(data);
+    renderSidebarYearBody('2026');
     updateHeaderFreshness(data);
     updateKpiBanner(data);
     if(applyDistrictCompstatScores(data)){
@@ -3883,6 +3961,8 @@ async function loadCompstatData(){
     window.__dashboardDataLoadError = error && error.message ? error.message : String(error);
     __dashboardRawData = null;
     renderCompstatSections(EMPTY_COMPSTAT_DATA);
+    renderImpactFrameworkSections(EMPTY_COMPSTAT_DATA);
+    renderSidebarYearBody('2026');
     if(typeof initCrimeChart === 'function') initCrimeChart();
   }
 }
@@ -4935,7 +5015,7 @@ function updateKpiBanner(data){
   var fa = data.firearmsAndArrests || {};
 
   var ytdNow = 0, ytdPrev = 0, counted = 0;
-  ['Homicides','Shooting Incidents','Robbery Incidents','Aggravated Assault Incidents','Burglary','Theft','Motor Vehicle Theft','Criminal Mischief'].forEach(function(k){
+  ['Homicides','Shooting Incidents','Robbery Incidents','Aggravated Assault Incidents','Burglary','Theft','Motor Vehicle Theft','Sex Offenses'].forEach(function(k){
     var row = crime[k];
     if(!row || !row.ytd) return;
     var c = row.ytd.current, p = row.ytd.previous;
@@ -5243,7 +5323,7 @@ function exportDashboardPDF(){
     <div class="sheet-section-title">2025 Crime Stats (Jan–Dec)</div>
     <div class="sheet-stat-grid">
       <div class="sheet-stat red">
-        <div class="sheet-stat-label">Homicides</div>
+        <div class="sheet-stat-label">Homicide</div>
         <div class="sheet-stat-value">12</div>
         <div class="sheet-stat-sub">2025 Total</div>
       </div>
@@ -5258,7 +5338,7 @@ function exportDashboardPDF(){
         <div class="sheet-stat-sub">2025 Total</div>
       </div>
       <div class="sheet-stat orange">
-        <div class="sheet-stat-label">Stolen Vehicles</div>
+        <div class="sheet-stat-label">Motor Vehicle Theft</div>
         <div class="sheet-stat-value">843</div>
         <div class="sheet-stat-sub">2025 Total</div>
       </div>
@@ -5341,15 +5421,14 @@ function exportDashboardPDF(){
         <span>2025 Crime Numbers (Jan–Dec)</span><span class="sheet-accordion-arrow">+</span>
       </div>
       <div class="sheet-accordion-body">
-        <div class="sheet-crime-row"><span>Homicides</span><strong>12</strong></div>
+        <div class="sheet-crime-row"><span>Homicide</span><strong>12</strong></div>
         <div class="sheet-crime-row"><span>Shooting Incidents</span><strong>36</strong></div>
         <div class="sheet-crime-row"><span>Shooting Victims</span><strong>45</strong></div>
-        <div class="sheet-crime-row"><span>Robbery</span><strong>388</strong></div>
+        <div class="sheet-crime-row"><span>Robbery Incidents</span><strong>388</strong></div>
         <div class="sheet-crime-row"><span>Aggravated Assault</span><strong>956</strong></div>
-        <div class="sheet-crime-row"><span>Criminal Mischief</span><strong>2,132</strong></div>
         <div class="sheet-crime-row"><span>Burglary</span><strong>462</strong></div>
         <div class="sheet-crime-row"><span>Theft</span><strong>4,037</strong></div>
-        <div class="sheet-crime-row"><span>Stolen Vehicles</span><strong>843</strong></div>
+        <div class="sheet-crime-row"><span>Motor Vehicle Theft</span><strong>843</strong></div>
       </div>
     </div>
 
@@ -5380,7 +5459,7 @@ function exportDashboardPDF(){
       <div class="sheet-accordion-body">
         <div class="sheet-crime-row"><span>Total Incidents</span><strong>7,841</strong></div>
         <div class="sheet-crime-row"><span>Homicide</span><strong>17</strong></div>
-        <div class="sheet-crime-row"><span>Robbery</span><strong>498</strong></div>
+        <div class="sheet-crime-row"><span>Robbery Incidents</span><strong>498</strong></div>
         <div class="sheet-crime-row"><span>Aggravated Assault</span><strong>612</strong></div>
         <div class="sheet-crime-row"><span>Burglary</span><strong>334</strong></div>
         <div class="sheet-crime-row"><span>Larceny/Theft</span><strong>4,102</strong></div>
@@ -5394,14 +5473,13 @@ function exportDashboardPDF(){
         <span>Data Sources</span><span class="sheet-accordion-arrow">+</span>
       </div>
       <div class="sheet-accordion-body sheet-source-links">
-        <a href="https://data.jerseycitynj.gov" target="_blank" rel="noopener noreferrer">JC Open Data Portal</a>
-        <a href="https://ucr.fbi.gov" target="_blank" rel="noopener noreferrer">FBI UCR 2024</a>
-        <a href="https://www.jerseycitynj.gov/cityservices/publicsafety/policeindex" target="_blank" rel="noopener noreferrer">JCPD Official Site</a>
+        <span>JC IMPACT Weekly Jan Feb 2026 (Excel)</span>
+        <span>JC IMPACT Master Tracking Categories (DOCX)</span>
       </div>
     </div>
 
     <div class="sheet-source-note">
-      Source: JCPD NIBRS · FBI UCR 2024 · JC Open Data Portal<br>
+      Source: JC IMPACT workbook and master tracking taxonomy<br>
       For informational purposes only. Not legal or financial advice.
     </div>
 

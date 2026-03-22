@@ -753,7 +753,7 @@
   <div class="page-shell" id="pageShell"></div>
   <script>
     const wardData = {
-      'A':{ description:'Greenville', incidents:312, level:'High', topCrime:'Assault', safetyScore:45 },
+      'A':{ description:'Greenville', incidents:312, level:'High', topCrime:'Aggravated Assault', safetyScore:45 },
       'B':{ description:'West Side', incidents:245, level:'High', topCrime:'Robbery', safetyScore:57 },
       'C':{ description:'Journal Square', incidents:198, level:'Medium-High', topCrime:'Larceny', safetyScore:65 },
       'D':{ description:'The Heights', incidents:176, level:'Medium', topCrime:'Burglary', safetyScore:69 },
@@ -804,19 +804,19 @@
 
     const METRIC_ROWS = [
       ['homicide', 'Homicide'],
-      ['robbery', 'Robbery'],
+      ['robbery', 'Robbery Incidents'],
+      ['robberyVictims', 'Robbery Victims'],
       ['robberyWithWeapon', 'Robbery w/ weapon'],
-      ['aggravatedAssault', 'Aggravated assault'],
-      ['assault', 'Assault (total)'],
-      ['burglary', 'Burglary (total)'],
+      ['aggravatedAssault', 'Aggravated Assault Incidents'],
+      ['aggravatedAssaultVictims', 'Aggravated Assault Victims'],
+      ['burglary', 'Burglary Total'],
       ['burglaryResidential', 'Burglary — residential'],
       ['burglaryCommercial', 'Burglary — commercial'],
-      ['burglaryAutoTheftFromAuto', 'Burglary — auto (theft from auto)'],
+      ['burglaryAutoTheftFromAuto', 'Theft From Auto'],
       ['theft', 'Theft'],
       ['theftOfAutoParts', 'Theft of auto parts'],
-      ['stolenVehicles', 'Stolen vehicles'],
-      ['criminalMischief', 'Criminal mischief'],
-      ['sexOffenses', 'Sex offenses'],
+      ['stolenVehicles', 'Motor Vehicle Theft'],
+      ['sexOffenses', 'Sexual Assault'],
       ['stabbings', 'Stabbings'],
       ['drugArrests', 'Drug arrests'],
       ['shoplifting', 'Shoplifting'],
@@ -825,7 +825,7 @@
     ];
 
     const MONTH_TABLE_KEYS = [
-      'assault', 'aggravatedAssault', 'robbery', 'robberyWithWeapon', 'burglary', 'theft', 'theftOfAutoParts',
+      'aggravatedAssault', 'robbery', 'robberyWithWeapon', 'burglary', 'theft', 'theftOfAutoParts',
       'stolenVehicles', 'stabbings', 'arrests', 'gunsRecovered'
     ];
 
@@ -910,14 +910,12 @@
 
     const DISTRICT_COMPSTAT_TOP_CRIME_ROWS = [
       ['homicide', 'Homicide'],
-      ['robbery', 'Robbery'],
-      ['aggravatedAssault', 'Aggravated assault'],
-      ['assault', 'Assault'],
+      ['robbery', 'Robbery Incidents'],
+      ['aggravatedAssault', 'Aggravated Assault Incidents'],
       ['burglary', 'Burglary'],
       ['theft', 'Theft'],
-      ['stolenVehicles', 'Stolen vehicles'],
-      ['criminalMischief', 'Criminal mischief'],
-      ['sexOffenses', 'Sex offenses']
+      ['stolenVehicles', 'Motor Vehicle Theft'],
+      ['sexOffenses', 'Sexual Assault']
     ];
 
     function districtCompstatBurden(sums){
@@ -925,7 +923,6 @@
         (Number(sums.homicide) || 0) * 50 +
         (Number(sums.robbery) || 0) * 4 +
         (Number(sums.aggravatedAssault) || 0) * 3 +
-        (Number(sums.assault) || 0) * 0.8 +
         (Number(sums.burglary) || 0) * 2 +
         (Number(sums.stolenVehicles) || 0) * 2 +
         (Number(sums.theft) || 0) * 0.4 +
@@ -936,7 +933,6 @@
 
     function districtCompstatIncidentTotal(sums){
       return (
-        (Number(sums.assault) || 0) +
         (Number(sums.aggravatedAssault) || 0) +
         (Number(sums.robbery) || 0) +
         (Number(sums.burglary) || 0) +
@@ -1341,7 +1337,7 @@
         : 'Weighted by ward incidents in this district.';
       const tableBody = METRIC_ROWS.map(([key, label])=>{
         const val = sums[key];
-        const display = val === undefined || val === null ? '—' : formatNumber(val);
+        const display = val === undefined || val === null ? 'Data Pending' : formatNumber(val);
         const signal = (key === 'homicide' || key === 'robbery' || key === 'aggravatedAssault') && Number(val) > 0;
         const cls = signal ? 'signal-row' : '';
         return `<tr class="${cls}"><td>${escapeHTML(label)}</td><td><span class="crime-count">${escapeHTML(display)}</span></td></tr>`;
@@ -1355,7 +1351,7 @@
       const monthBody = monthlyRows.map((mr)=>{
         const cells = MONTH_TABLE_KEYS.map((k)=>{
           const v = mr.stats[k];
-          const d = v === undefined || v === null ? '—' : formatNumber(v);
+          const d = v === undefined || v === null ? 'Data Pending' : formatNumber(v);
           return `<td><span class="crime-count">${d}</span></td>`;
         }).join('');
         return `<tr><td>${escapeHTML(mr.label)}</td>${cells}</tr>`;
